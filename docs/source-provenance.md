@@ -656,14 +656,20 @@ Generated local-only outputs:
 - `data/outputs/sat_safe_honen_shinran_focus_map_text-embedding-3-large_700_100.json`
 - `data/outputs/pca_direction_interpretation_2026-06-04_text-embedding-3-large_700_100.json`
 - `data/outputs/pca_direction_representative_chunks_2026-06-04.csv`
+- `data/outputs/nearest_neighbor_subsampling_2026-06-04_text-embedding-3-large_700_100.json`
+- `data/outputs/nearest_neighbor_subsampling_2026-06-04_text-embedding-3-large_700_100.csv`
+- `data/outputs/high_dim_isolation_ranking_2026-06-04.csv`
 - `data/outputs/honen_three_layer_sequence_2026-06-04_text-embedding-3-large_700_100.json`
 - `data/outputs/honen_three_layer_sequence_2026-06-04.csv`
 - `data/outputs/shinran_three_layer_sequence_2026-06-04_text-embedding-3-large_700_100.json`
 - `data/outputs/shinran_three_layer_sequence_2026-06-04.csv`
 - `docs/readable-map-analysis-2026-06-04.md`
 - `docs/pca-direction-interpretation-2026-06-04.md`
+- `docs/nearest-neighbor-subsampling-2026-06-04.md`
+- `docs/high-dim-isolation-2026-06-04.md`
 - `docs/honen-three-layer-sequence-2026-06-04.md`
 - `docs/shinran-three-layer-sequence-2026-06-04.md`
+- `docs/figures/shared-core-protrusion-nearest-bars.png`
 - `docs/figures/sat-safe-honen-shinran-focus-map.png`
 - `docs/figures/honen-three-layer-sequence-heatmap.png`
 - `docs/figures/shinran-three-layer-sequence-heatmap.png`
@@ -690,6 +696,22 @@ Run summary:
   the current focus map, PC1+ is Shinran 信巻/化身土巻 with 罪救済 and
   廃立/取捨 markers; PC1- is relatively Honen/shared 選択論証; PC2+ is
   阿弥陀・光明・名号・願回向; PC2- is 信/三心・罪救済・方便/外教.
+- Nearest-neighbor subsampling was added to check reference-group chunk count
+  bias. Each non-target author group was capped at `min(20, group_size)` chunks
+  over 1000 iterations. Honen-to-Shinran simple nearest-neighbor ratio drops
+  from `0.724638` to a sampled mean `0.339275`, so the simple count clearly
+  includes candidate-count effects. The broad reading remains that Honen is
+  strongest toward Shinran/Daochuo, while Shinran is distributed across
+  Daochuo/Honen/Vasubandhu/Tanluan after the cap.
+- A high-dimensional isolation ranking was added as a PCA-independent companion
+  to protrusion score. It uses `1 - nearest_nonself_cosine` from existing
+  text-free protrusion CSVs. The top-20 summary still centers Honen on
+  付属・証誠・選択総結 and 三輩・一向専念, and Shinran on 信巻 and 化身土巻,
+  so the broad protrusion reading does not depend only on 2D map distance.
+- A shared-core/protrusion and nearest-neighbor bar figure was added for the
+  paper. The top panel is a qualitative schematic of the shared-core/protrusion
+  summary table; the bottom panels visualize simple nearest non-self chunk
+  counts for Honen and Shinran. It contains no raw text or embeddings.
 - A Honen three-layer chunk-sequence heatmap was added. The semantic layer uses
   3072D max cosine from each Honen chunk to Shinran/high-priest author groups;
   the style and source-marker layers use the same dictionaries as the Shinran
@@ -717,3 +739,87 @@ Interpretive boundary:
   distinguish quoted source stance from Shinran/Honen authorial stance.
 - Short top terms are feature labels, not source text passages. Treat the
   generated data as local-only until publication review.
+
+## 2026-06-04 Paper Finalization Pass
+
+Scope:
+
+- Revised `docs/paper/okyou2-honen-shinran-draft.tex` toward a paper-facing
+  manuscript tone.
+- Regenerated `docs/paper/okyou2-honen-shinran-draft.pdf`.
+- Regenerated `docs/figures/sat-safe-honen-shinran-high-priest-anchor-map.png`
+  from the existing anchor-map metadata using the shared PNG renderer.
+
+Source and API boundary:
+
+- No OpenAI API calls.
+- No new SAT, J-SOKEN, or other source text fetches.
+- Existing local SAT-derived chunks, caches, and metadata were reused.
+- Raw/processed text and embedding caches remain local-only under `data/`.
+
+Paper-facing cleanup:
+
+- Replaced internal or draft-like wording in the paper body with paper-facing
+  terms, while preserving the exploratory-method caveat.
+- Kept the three-layer names from the predecessor paper:
+  意味層, 文体語彙層, 典拠マーカー層.
+- Changed the high-priest anchor figure title to
+  `SAT漢文・Unicode-safeチャンク地図：法然・親鸞・祖師文献`.
+- Unified the paper-facing figure renderer for the focus-only map and the
+  high-priest anchor map in `scripts/sat_safe_map_renderer.py`.
+- The paper-facing focus ellipses for 法然 and 親鸞 now use the same coordinate
+  values, display extent, covariance ellipse calculation, and PNG drawing path
+  in both figures. The older SVG renderer is not used for paper figures.
+
+Verification:
+
+- `python -m py_compile` passed for the changed/new analysis and figure scripts.
+- Recomputed figure metadata and confirmed that 法然 and 親鸞 centroid,
+  ellipse width, ellipse height, ellipse angle, p90 radius, renderer, and
+  display extent match exactly between the focus-only and anchor-map paper
+  figures.
+- `uplatex` was run twice and `dvipdfmx` once.
+- The rebuilt PDF was rendered to PNG with PyMuPDF and visually checked.
+- Generated JSON/CSV/Markdown outputs were checked for forbidden raw fields
+  (`text`, `body`, `embedding`, `preview`, `chunk_text`, `raw_text`) and
+  `U+FFFD`; no matches were found.
+- `git diff --check` passed.
+- Predecessor `/Users/daishin/Documents/Codex/Okyou` remained unchanged.
+
+## 2026-06-04 Prior-Research Positioning Memo
+
+External input:
+
+- `/Users/daishin/Downloads/okyou2-honen-shinran-prior-research-positioning.md`
+
+Purpose:
+
+- Add a paper-facing prior-research positioning section for the comparison of
+  Honen's `選択集` and Shinran's `教行信証`.
+- Clarify that the novelty is not the comparison itself, but the whole-text
+  chunk distribution and three-layer visualization of existing comparison
+  questions.
+
+Bibliographic checks used:
+
+- INBUDS entries for 森脇一掬「選択集と教行信証に関する一考察」
+  and 梅原隆章「選択集と教行信証」.
+- Otani University repository entry for 稲葉秀賢「『教行信証』と『選択集』」.
+- 行信教校 `行信学報` journal list for 浅井成海「『選択集』と
+  『教行信証』――基本的問題の継承と展開――」.
+- NDL Search and Books.or.jp for 根津茂『日本仏教を変えた親鸞の独自性』.
+
+Paper updates:
+
+- Added `1.2 先行研究と本稿の位置づけ`.
+- Added `表1: 先行研究の関心と本稿の分析観点`.
+- Added references for Moriwaki 1953, Inaba 1972, Umehara 1974, Asai 2004,
+  and Nezu 2024.
+
+Verification:
+
+- `uplatex` was run twice and `dvipdfmx` once.
+- The rebuilt PDF was rendered to PNG with PyMuPDF and visually checked on
+  the title/abstract, new prior-research section, new table, and references.
+- `git diff --check` passed.
+- Predecessor `/Users/daishin/Documents/Codex/Okyou` remained unchanged.

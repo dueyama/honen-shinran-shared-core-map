@@ -9,6 +9,7 @@ import html
 import json
 import os
 import re
+import shutil
 import sys
 import time
 import urllib.request
@@ -34,7 +35,11 @@ from compare_sat_chunking_strategies import (  # noqa: E402
     request_embeddings,
     rounded,
 )
-from make_simple_2d_map import covariance_ellipse, svg_escape  # noqa: E402
+from sat_safe_map_renderer import (  # noqa: E402
+    ANCHOR_AUTHORS,
+    FOCUS_AUTHORS,
+    render_sat_safe_map_png,
+)
 
 
 RAW_DIR = ROOT / "data" / "raw" / "sat_anchors"
@@ -42,8 +47,8 @@ CACHE_DIR = ROOT / "data" / "cache"
 OUT_DIR = ROOT / "data" / "outputs"
 CACHE_PATH = CACHE_DIR / f"sat_safe_high_priest_anchor_embeddings_{MODEL}_{MAX_TOKENS}_{OVERLAP}.json"
 META_PATH = OUT_DIR / f"sat_safe_honen_shinran_high_priest_anchor_map_{MODEL}_{MAX_TOKENS}_{OVERLAP}.json"
-SVG_PATH = OUT_DIR / f"sat_safe_honen_shinran_high_priest_anchor_map_{MODEL}_{MAX_TOKENS}_{OVERLAP}.svg"
-PNG_PATH = OUT_DIR / f"sat_safe_honen_shinran_high_priest_anchor_map_{MODEL}_{MAX_TOKENS}_{OVERLAP}.svg.png"
+PNG_PATH = OUT_DIR / f"sat_safe_honen_shinran_high_priest_anchor_map_{MODEL}_{MAX_TOKENS}_{OVERLAP}.png"
+DOC_FIGURE_PATH = ROOT / "docs/figures/sat-safe-honen-shinran-high-priest-anchor-map.png"
 BATCH_SIZE = int(os.getenv("OKYOU2_EMBEDDING_BATCH_SIZE", "64"))
 
 
@@ -415,124 +420,6 @@ def anchor_records(chunks: list[AnchorChunk], coords: np.ndarray) -> list[dict[s
     ]
 
 
-COLORS = {
-    "法然": "#1f78b4",
-    "親鸞": "#d63f3f",
-    "龍樹": "#8b5cf6",
-    "天親": "#0f9f9a",
-    "曇鸞": "#2f8f4e",
-    "道綽": "#b7791f",
-    "善導": "#6d5bd0",
-    "源信": "#e26d2f",
-}
-
-
-def render_svg(records: list[dict[str, Any]], pca_ratio: list[float]) -> str:
-    width, height = 1620, 1060
-    pad_l, pad_r, pad_t, pad_b = 90, 280, 118, 90
-    plot_w = width - pad_l - pad_r
-    plot_h = height - pad_t - pad_b
-    xs = [record["x"] for record in records]
-    ys = [record["y"] for record in records]
-    x_min, x_max = min(xs), max(xs)
-    y_min, y_max = min(ys), max(ys)
-    x_pad = max((x_max - x_min) * 0.08, 0.03)
-    y_pad = max((y_max - y_min) * 0.08, 0.03)
-    x_min -= x_pad
-    x_max += x_pad
-    y_min -= y_pad
-    y_max += y_pad
-
-    def sx(value: float) -> float:
-        return pad_l + (value - x_min) / (x_max - x_min) * plot_w
-
-    def sy(value: float) -> float:
-        return pad_t + (y_max - value) / (y_max - y_min) * plot_h
-
-    groups: dict[str, list[dict[str, Any]]] = defaultdict(list)
-    for record in records:
-        groups[record["author"]].append(record)
-
-    lines = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">',
-        '<rect width="100%" height="100%" fill="#fbfaf7"/>',
-        f'<text x="{pad_l}" y="48" font-family="Hiragino Sans, Yu Gothic, sans-serif" font-size="29" font-weight="700" fill="#25221d">SAT漢文 safe chunk map: 法然・親鸞 + 高僧文献</text>',
-        f'<text x="{pad_l}" y="80" font-family="Hiragino Sans, Yu Gothic, sans-serif" font-size="15" fill="#686158">PCA fit=法然/親鸞のみ。anchors=高僧文献を同じ面へ投影。model={svg_escape(MODEL)}, 700 token / overlap 100, PC1+PC2={sum(pca_ratio)*100:.1f}%。</text>',
-        f'<rect x="{pad_l}" y="{pad_t}" width="{plot_w}" height="{plot_h}" rx="8" fill="#ffffff" stroke="#ddd6ca"/>',
-    ]
-    if x_min < 0 < x_max:
-        lines.append(f'<line x1="{sx(0):.1f}" y1="{pad_t+24}" x2="{sx(0):.1f}" y2="{pad_t+plot_h-24}" stroke="#d8d2c5"/>')
-    if y_min < 0 < y_max:
-        lines.append(f'<line x1="{pad_l+24}" y1="{sy(0):.1f}" x2="{pad_l+plot_w-24}" y2="{sy(0):.1f}" stroke="#d8d2c5"/>')
-
-    for author, rows in groups.items():
-        pts = np.array([[row["x"], row["y"]] for row in rows], dtype=float)
-        center = pts.mean(axis=0)
-        ew, eh, angle = covariance_ellipse(pts, center, radius=1.25)
-        color = COLORS.get(author, "#64748b")
-        rx = max(ew / (x_max - x_min) * plot_w, 10.0)
-        ry = max(eh / (y_max - y_min) * plot_h, 10.0)
-        opacity = "0.11" if author in {"法然", "親鸞"} else "0.065"
-        lines.append(
-            f'<ellipse cx="{sx(center[0]):.1f}" cy="{sy(center[1]):.1f}" rx="{rx:.1f}" ry="{ry:.1f}" '
-            f'transform="rotate({-angle:.1f} {sx(center[0]):.1f} {sy(center[1]):.1f})" '
-            f'fill="{color}" fill-opacity="{opacity}" stroke="{color}" stroke-opacity="0.36" stroke-width="1.8"/>'
-        )
-
-    for record in records:
-        color = COLORS.get(record["author"], "#64748b")
-        is_focus = record["role"] == "focus"
-        radius = 5.2 if is_focus else 3.8
-        opacity = "0.65" if is_focus else "0.42"
-        lines.append(
-            f'<circle cx="{sx(record["x"]):.1f}" cy="{sy(record["y"]):.1f}" r="{radius}" fill="{color}" fill-opacity="{opacity}">'
-            f'<title>{svg_escape(record["author"] + " " + record["work"] + " #" + str(record["chunk_index"]))}</title></circle>'
-        )
-
-    label_offsets = {
-        "法然": (-52, -16),
-        "親鸞": (12, -18),
-        "龍樹": (12, -12),
-        "天親": (12, 24),
-        "曇鸞": (12, -16),
-        "道綽": (12, 22),
-        "善導": (12, -16),
-        "源信": (12, 22),
-    }
-    for author, rows in groups.items():
-        pts = np.array([[row["x"], row["y"]] for row in rows], dtype=float)
-        center = pts.mean(axis=0)
-        color = COLORS.get(author, "#64748b")
-        radius = 12 if author in {"法然", "親鸞"} else 9
-        lines.append(f'<circle cx="{sx(center[0]):.1f}" cy="{sy(center[1]):.1f}" r="{radius}" fill="{color}" stroke="#ffffff" stroke-width="3"/>')
-        dx, dy = label_offsets.get(author, (12, -12))
-        label = f"{author} 重心" if author in {"法然", "親鸞"} else author
-        lines.append(
-            f'<text x="{sx(center[0])+dx:.1f}" y="{sy(center[1])+dy:.1f}" font-family="Hiragino Sans, Yu Gothic, sans-serif" '
-            f'font-size="15" font-weight="700" fill="{color}">{svg_escape(label)}</text>'
-        )
-
-    lx = width - pad_r + 36
-    ly = pad_t + 8
-    lines.append(f'<g font-family="Hiragino Sans, Yu Gothic, sans-serif" font-size="14" fill="#25221d">')
-    lines.append(f'<text x="{lx}" y="{ly}" font-size="18" font-weight="700">凡例</text>')
-    y = ly + 34
-    for author in ["法然", "親鸞", "龍樹", "天親", "曇鸞", "道綽", "善導", "源信"]:
-        if author not in groups:
-            continue
-        color = COLORS.get(author, "#64748b")
-        count = len(groups[author])
-        lines.append(f'<circle cx="{lx+8}" cy="{y-5}" r="7" fill="{color}" fill-opacity="0.72"/>')
-        lines.append(f'<text x="{lx+26}" y="{y}">{svg_escape(author)} n={count}</text>')
-        y += 27
-    lines.append(f'<text x="{lx}" y="{y+20}" font-size="12.5" fill="#686158">点=Unicode-safe 700 token chunk</text>')
-    lines.append(f'<text x="{lx}" y="{y+40}" font-size="12.5" fill="#686158">高僧は法然/親鸞PCA面へ投影</text>')
-    lines.append(f'<text x="{lx}" y="{y+60}" font-size="12.5" fill="#686158">本文は図・メタに含めない</text>')
-    lines.append("</g>")
-    lines.append("</svg>")
-    return "\n".join(lines)
-
-
 def author_stats(records: list[dict[str, Any]]) -> dict[str, Any]:
     groups: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for record in records:
@@ -581,9 +468,10 @@ def build_summary(
     anchors: list[AnchorText],
     anchor_chunks: list[AnchorChunk],
     pca_ratio: list[float],
+    render_stats: dict[str, Any],
 ) -> dict[str, Any]:
     return {
-        "title": "SAT safe Honen/Shinran semantic map with Pure Land patriarch anchors",
+        "title": "SAT kanbun Unicode-safe Honen/Shinran semantic map with Pure Land patriarch anchors",
         "method": {
             "text_basis": "SAT kanbun-basis prepared text",
             "focus_texts": ["SAT T2608 選擇本願念佛集", "SAT T2646 顯淨土眞實教行證文類"],
@@ -594,11 +482,21 @@ def build_summary(
             "chunking": "Unicode-safe near-700-token chunks via decode_with_offsets; SAT line refs retained as provenance metadata",
             "pca_fit_scope": "focus chunks only: 法然 and 親鸞",
             "anchor_projection": "anchor chunks projected into the fixed focus PCA plane",
+            "display_extent": "fitted to Honen/Shinran chunks; identical renderer to the focus-only paper figure",
+            "paper_figure": str(DOC_FIGURE_PATH.relative_to(ROOT)),
+            "paper_figure_renderer": "scripts/sat_safe_map_renderer.py",
             "pca_explained_variance_ratio_on_fit_scope": [rounded(value) for value in pca_ratio],
             "raw_text_policy": "public metadata excludes raw/chunk text; raw and processed text remain local-only under data/",
         },
+        "figure_rendering": render_stats.get("_figure", {}),
         "anchor_sources": source_records(anchors, anchor_chunks),
-        "author_stats": author_stats(records),
+        "author_stats": {
+            author: {
+                **stats,
+                **({"rendered_ellipse": render_stats[author]} if author in render_stats else {}),
+            }
+            for author, stats in author_stats(records).items()
+        },
         "chunks": [
             {
                 key: (rounded(value) if key in {"x", "y"} and isinstance(value, float) else value)
@@ -639,14 +537,30 @@ def main() -> None:
     anchor_vectors = get_anchor_embeddings(anchor_chunks)
     anchor_coords = project(anchor_vectors, mean, components)
     records = focus_records(focus_chunks, focus_coords) + anchor_records(anchor_chunks, anchor_coords)
+    paper_records = [
+        {**record, "x": rounded(record["x"]), "y": rounded(record["y"])}
+        for record in records
+    ]
+    render_stats = render_sat_safe_map_png(
+        paper_records,
+        DOC_FIGURE_PATH,
+        title="SAT漢文 Unicode-safeチャンク地図: 法然・親鸞・祖師文献",
+        subtitle=f"PCA fit=法然/親鸞。祖師文献は同じ面へ投影。model={MODEL}, {MAX_TOKENS}/{OVERLAP} token, PC1+PC2={sum(pca_ratio)*100:.1f}%。",
+        legend_order=list(FOCUS_AUTHORS) + list(ANCHOR_AUTHORS),
+        show_anchor_note=True,
+    )
+    PNG_PATH.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(DOC_FIGURE_PATH, PNG_PATH)
 
-    SVG_PATH.write_text(render_svg(records, pca_ratio), encoding="utf-8")
+    # Paper figures use the shared PNG renderer. The older SVG renderer is not
+    # emitted here because its rotation semantics can diverge visually.
     META_PATH.write_text(
-        json.dumps(build_summary(records, anchor_texts, anchor_chunks, pca_ratio), ensure_ascii=False, indent=2)
+        json.dumps(build_summary(paper_records, anchor_texts, anchor_chunks, pca_ratio, render_stats), ensure_ascii=False, indent=2)
         + "\n",
         encoding="utf-8",
     )
-    print(f"wrote {SVG_PATH.relative_to(ROOT)}")
+    print(f"wrote {DOC_FIGURE_PATH.relative_to(ROOT)}")
+    print(f"wrote {PNG_PATH.relative_to(ROOT)}")
     print(f"wrote {META_PATH.relative_to(ROOT)}")
     print("chunks:", dict(Counter(record["author"] for record in records)))
 

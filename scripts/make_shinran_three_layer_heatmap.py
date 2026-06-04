@@ -212,10 +212,10 @@ def draw_heatmap(layers: dict[str, Any]) -> None:
     label_font = font(14)
     panel_font = font(17)
 
-    draw.text((34, 28), "親鸞『教行信証』三層chunk sequence", fill=(37, 34, 29), font=title_font)
+    draw.text((34, 28), "親鸞『教行信証』三層チャンク列", fill=(37, 34, 29), font=title_font)
     draw.text(
         (34, 64),
-        "上=意味層(3072次元cosine) / 中=文体語彙層 / 下=典拠マーカー層。本文は含めない。",
+        "上=意味層(3072次元cosine) / 中=文体語彙層 / 下=典拠マーカー層。",
         fill=(104, 97, 88),
         font=small_font,
     )
@@ -259,7 +259,7 @@ def draw_heatmap(layers: dict[str, Any]) -> None:
             draw.line((chart_x, yy, chart_x + chart_w, yy), fill=(239, 235, 228), width=1)
         return heat_y + panel_h
 
-    y = draw_panel(y, "意味層: 親鸞chunkから各文献群への最大cosine", SEMANTIC_ROWS, layers["semantic_scaled"], PANEL_COLORS["semantic"])
+    y = draw_panel(y, "意味層: 親鸞チャンクから各文献群への最大cosine", SEMANTIC_ROWS, layers["semantic_scaled"], PANEL_COLORS["semantic"])
     y += gap
     y = draw_panel(y, "文体語彙層: 語群カウント", STYLE_ROWS, layers["style_scaled"], PANEL_COLORS["style"])
     y += gap
@@ -275,7 +275,7 @@ def draw_heatmap(layers: dict[str, Any]) -> None:
             value = step / 39
             draw.rectangle((legend_x + 52 + step * 2, yy + 2, legend_x + 53 + step * 2, yy + 17), fill=color_for(value, color))
     draw.text((legend_x, legend_y + 202), "縦線=巻境界", fill=(104, 97, 88), font=small_font)
-    draw.text((legend_x, legend_y + 224), "横軸=親鸞chunk順", fill=(104, 97, 88), font=small_font)
+    draw.text((legend_x, legend_y + 224), "横軸=親鸞チャンク順", fill=(104, 97, 88), font=small_font)
 
     FIGURE_PATH.parent.mkdir(parents=True, exist_ok=True)
     image.save(FIGURE_PATH, quality=95)
@@ -443,7 +443,7 @@ def render_doc(summary: dict[str, Any]) -> str:
         "",
         "- 意味層の最大 cosine は典拠関係の証明ではない。",
         "- 文体語彙層と典拠マーカー層は辞書ベースの最小版であり、引用文の立場と親鸞自身の立場をまだ分けていない。",
-        "- この図は、三層が一致する場所とズレる場所を探すための作業図である。",
+        "- この図は、三層が一致する場所とズレる場所を探すための分析図である。",
         "",
         "## データ",
         "",

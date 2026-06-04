@@ -22,6 +22,51 @@
   - Listed scaffold files and confirmed only README/AGENTS/docs/memory/gitignore placeholders are present.
 - Commit: pending.
 
+## 2026-06-04 JST: Paper Finalization Pass
+
+- Summary: Moved `docs/paper/okyou2-honen-shinran-draft.tex` closer to a submission-style manuscript by removing work-list and internal-note tone from the paper body.
+- Text changes:
+  - Replaced draft-like phrases such as `最小構成`, `今回`, `現段階`, and `ズレ` with paper-facing wording such as `基本構成`, `本分析`, `現行の処理`, and `対応しない箇所`.
+  - Kept the core caveat that the argument is an embedding-based exploratory inference, not a conclusion verified through historical or citation studies.
+  - Removed standalone future-work structure from the paper and folded remaining tasks into the `限界` section as methodological limitations.
+- Figure changes:
+  - Regenerated the high-priest anchor figure with a Japanese, paper-facing title: `SAT漢文・Unicode-safeチャンク地図：法然・親鸞・祖師文献`.
+  - Reused existing caches only; no OpenAI API calls and no new source fetches.
+- Verification:
+  - `python -m py_compile scripts/analyze_nearest_neighbor_subsampling.py scripts/analyze_high_dim_isolation.py scripts/make_shared_core_bar_figure.py scripts/make_sat_safe_honen_shinran_focus_figure.py scripts/make_sat_safe_high_priest_anchor_map.py scripts/make_honen_three_layer_heatmap.py scripts/make_shinran_three_layer_heatmap.py`
+  - `uplatex` twice and `dvipdfmx` once regenerated `docs/paper/okyou2-honen-shinran-draft.pdf`.
+  - Rendered the PDF to PNG with PyMuPDF and visually checked title, focus map, high-priest anchor map, shared-core/bar figure, three-layer figures, and conclusion/reference pages.
+  - Checked generated JSON/CSV/Markdown outputs for forbidden raw fields (`text`, `body`, `embedding`, `preview`, `chunk_text`, `raw_text`) and `U+FFFD`.
+  - `git diff --check` passed, and predecessor `/Users/daishin/Documents/Codex/Okyou` had empty `git status --short`.
+- Commit: pending.
+
+## 2026-06-04 JST: Prior-Research Positioning Pass
+
+- Summary: Incorporated the external positioning memo
+  `/Users/daishin/Downloads/okyou2-honen-shinran-prior-research-positioning.md`
+  into the paper draft.
+- Text changes:
+  - Added `先行研究と本稿の位置づけ` to the introduction.
+  - Clarified that the paper is not the first comparison of `選択集` and
+    `教行信証`.
+  - Positioned the contribution as re-placing existing comparison questions
+    into whole-text chunk distribution, nearest-neighbor, anchor, vocabulary,
+    and source-marker views.
+  - Added a short caution that `親鸞側の展開` is not a value judgment that
+    Shinran completed an incomplete Honen.
+  - Added a positioning table linking prior-research concerns to the paper's
+    computational views.
+- Added references:
+  - Moriwaki 1953, Inaba 1972, Umehara 1974, Asai 2004, Nezu 2024.
+- Verification:
+  - Bibliographic details were checked against INBUDS, Otani repository,
+    Gyoshin journal list, NDL Search, and Books.or.jp where available.
+  - `uplatex` twice and `dvipdfmx` once regenerated the PDF.
+  - Rendered the PDF to PNG and visually checked pages 1--3 and 15--16.
+  - `git diff --check` passed.
+  - Predecessor `/Users/daishin/Documents/Codex/Okyou` remained unchanged.
+- Commit: pending.
+
 ## 2026-06-03 JST: Honen/Shinran Semantic Map and High-Priest Anchors
 
 - Summary: Built the first Okyou2 semantic-map line of inquiry around Honen, Shinran, and Pure Land patriarch/source anchors.
@@ -225,4 +270,65 @@
   - `uplatex` was run twice and `dvipdfmx` regenerated the paper draft PDF.
   - Rendered the PDF to PNG via PyMuPDF and visually checked the Honen and Shinran three-layer figure pages.
   - `git diff --check` passed, and predecessor `/Users/daishin/Documents/Codex/Okyou` remained unchanged.
+- Commit: pending.
+
+## 2026-06-04 JST: Shared-Core Revision and Nearest-Neighbor Bias Check
+
+- Summary: Revised the paper draft around the shared-core/protrusion framing and added a capped nearest-neighbor subsampling check.
+- Method:
+  - No new OpenAI API calls or source-text fetches.
+  - Used existing SAT safe chunks and `text-embedding-3-large` caches.
+  - Kept the three-layer terminology from the predecessor paper: 意味層・文体語彙層・典拠マーカー層.
+  - Clarified that the current 文体語彙層 implementation is a dictionary-based doctrinal vocabulary proxy, not strict stylometry.
+  - Defined protrusion score as `p_i = d_i * (1 - s_i)`, where `d_i` is nearest non-self distance in the 2D PCA plane and `s_i` is nearest non-self cosine in 3072D.
+  - Ran 1000 iterations of reference-group capped nearest-neighbor subsampling with `sample_cap = 20`.
+- Outputs:
+  - `scripts/analyze_nearest_neighbor_subsampling.py`
+  - `scripts/analyze_high_dim_isolation.py`
+  - `scripts/make_shared_core_bar_figure.py`
+  - `docs/nearest-neighbor-subsampling-2026-06-04.md`
+  - `docs/high-dim-isolation-2026-06-04.md`
+  - `docs/figures/shared-core-protrusion-nearest-bars.png`
+  - `data/outputs/nearest_neighbor_subsampling_2026-06-04_text-embedding-3-large_700_100.json`
+  - `data/outputs/nearest_neighbor_subsampling_2026-06-04_text-embedding-3-large_700_100.csv`
+  - `data/outputs/high_dim_isolation_ranking_2026-06-04.csv`
+  - updated `docs/paper/okyou2-honen-shinran-draft.tex`
+- Findings:
+  - Honen-to-Shinran simple nearest-neighbor ratio is `0.724638`, but capped subsampling mean is `0.339275` with 95% range `0.115942`--`0.550725`.
+  - Honen-to-Daochuo capped subsampling mean is `0.272`, and Honen-to-Shandao is `0.182464`.
+  - Shinran capped subsampling is more distributed: Daochuo `0.227791`, Honen `0.189869`, Vasubandhu `0.159194`, Tanluan `0.14389`, Genshin `0.140906`.
+  - Interpretation: simple nearest-neighbor counts include candidate-count bias; the shared-core/protrusion reading remains useful only as an exploratory indicator and must be read with the capped check.
+  - High-dimensional isolation ranking using `1 - nearest_nonself_cosine` keeps the broad protrusion reading: Honen centers on 付属・証誠・選択総結 and 三輩・一向専念, while Shinran centers on 信巻 and 化身土巻.
+  - Added a paper figure that turns the shared-core/protrusion summary into a qualitative horizontal flow and the simple nearest-neighbor counts into horizontal bars.
+- Verification:
+  - `python -m py_compile scripts/analyze_nearest_neighbor_subsampling.py scripts/analyze_high_dim_isolation.py scripts/make_shared_core_bar_figure.py`
+  - `python scripts/analyze_nearest_neighbor_subsampling.py`
+  - `python scripts/analyze_high_dim_isolation.py`
+  - `python scripts/make_shared_core_bar_figure.py`
+  - Confirmed generated JSON/CSV/Markdown have no forbidden raw fields (`text`, `body`, `embedding`, `preview`, `chunk_text`, `raw_text`) and no `U+FFFD`.
+  - Confirmed analysis chunks loaded by `make_all_chunks()` have `0` U+FFFD chunks.
+  - Rebuilt the paper with `uplatex` twice and `dvipdfmx` once.
+  - Rendered the PDF to PNG via PyMuPDF and visually checked title page, shared/protrusion summary table, subsampling table, Honen/Shinran three-layer figure pages, and conclusion/references.
+  - `git diff --check` passed, and predecessor `/Users/daishin/Documents/Codex/Okyou` remained unchanged.
+- Commit: pending.
+
+## 2026-06-04 JST: Paper Map Figure Renderer Unification
+
+- Summary: Fixed the paper Figure 1/Figure 2 Honen/Shinran ellipse mismatch by using one shared PNG renderer for both paper-facing maps.
+- Cause:
+  - The embedding, PCA coordinates, and nearest-neighbor analysis were not changed.
+  - The mismatch was a rendering-layer problem: the focus-only figure and the high-priest anchor figure had been produced through different drawing paths.
+- Method:
+  - Added `scripts/sat_safe_map_renderer.py`.
+  - Regenerated `docs/figures/sat-safe-honen-shinran-focus-map.png` and `docs/figures/sat-safe-honen-shinran-high-priest-anchor-map.png` through `render_sat_safe_map_png`.
+  - Stopped emitting the older SVG path from `scripts/make_sat_safe_high_priest_anchor_map.py` for the paper figure.
+  - Clarified in `docs/paper/okyou2-honen-shinran-draft.tex` that the two paper figures use the same coordinate values, display extent, covariance ellipse calculation, and PNG drawing procedure for 法然 and 親鸞.
+- Verification:
+  - `python -m py_compile scripts/sat_safe_map_renderer.py scripts/make_sat_safe_honen_shinran_focus_figure.py scripts/make_sat_safe_high_priest_anchor_map.py`
+  - `python scripts/make_sat_safe_high_priest_anchor_map.py`
+  - `python scripts/make_sat_safe_honen_shinran_focus_figure.py`
+  - Compared the generated JSON metadata and confirmed exact matches for 法然 and 親鸞 centroid, ellipse width, ellipse height, ellipse angle, p90 radius, renderer, and display extent between the two figures.
+  - Rebuilt the paper with `uplatex` twice and `dvipdfmx` once.
+  - Rendered PDF pages 5--7 to PNG via PyMuPDF and visually checked Figure 1 and Figure 2.
+  - No OpenAI API calls and no new source-text fetches.
 - Commit: pending.
