@@ -1,0 +1,27 @@
+.DS_Store
+.env
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Local source texts and generated research artifacts.
+data/
+**/data/raw/
+**/data/processed/
+**/outputs/
+**/cache/
+
+# Generated document intermediates.
+*.aux
+*.dvi
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
+
+# Do not re-import the completed predecessor project's private/local folders.
+お経/
+埋め込みお経/
+埋め込みテスト/

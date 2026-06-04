@@ -1,0 +1,180 @@
+# Okyou2 Memory
+
+## 2026-06-03 JST
+
+- Summary: Initialized `Okyou2` as a new successor project, not a Git continuation of predecessor `Okyou`.
+- Context:
+  - Read the completed predecessor repository `Okyou`, including README, AI researcher guide, publication checklist, results, manifests, git remote/log status, and recent memory entries.
+  - Initially cloned `Okyou` into `Okyou2`, then corrected course after clarifying that `Okyou2` is a successor but not a continuation.
+  - Moved that mistaken clone to a temporary backup outside this repository.
+  - Clarified that predecessor `Okyou` is released and closed; it is a read-only reference and must not be changed.
+- Files prepared:
+  - `README.md`
+  - `AGENTS.md`
+  - `.gitignore`
+  - `docs/okyou1-reading-notes.md`
+  - `docs/development-brief.md`
+  - `memory.md`
+- Verification:
+  - Confirmed `Okyou2` is a new Git repository on `main` with no remote configured.
+  - Confirmed no local absolute project paths, temporary backup paths, API-key env var names, or OpenAI API key pattern remained in the scaffold documents.
+  - Ran `git diff --check`; no whitespace errors.
+  - Listed scaffold files and confirmed only README/AGENTS/docs/memory/gitignore placeholders are present.
+- Commit: pending.
+
+## 2026-06-03 JST: Honen/Shinran Semantic Map and High-Priest Anchors
+
+- Summary: Built the first Okyou2 semantic-map line of inquiry around Honen, Shinran, and Pure Land patriarch/source anchors.
+- Method:
+  - Followed predecessor `Okyou` baseline: `text-embedding-3-large`, `tiktoken` `cl100k_base`, 700-token chunks, 100-token overlap.
+  - Used seiten HTML for Honen `選択本願念仏集` and Shinran `教行信証`.
+  - Fit PCA on Honen/Shinran chunks only.
+  - Projected SAT anchor texts for 龍樹, 天親, 曇鸞, 道綽, 善導, and 源信 into that fixed PCA plane.
+- Outputs:
+  - `data/outputs/honen_shinran_predecessor_style_embedding_map.png`
+  - `data/outputs/honen_shinran_high_priest_anchor_map.png`
+  - `docs/source-provenance.md`
+  - `docs/working-summary-2026-06-03.md`
+- Interpretation note:
+  - Honen and Shinran overlap substantially, while Shinran spreads farther in the displayed map.
+  - High-priest anchors suggest 善導/道綽 near the shared core, with 曇鸞 and 源信 closer to Shinran-side spread.
+  - Treat this as semantic-layer evidence only; source-marker and style layers are still required before historical claims.
+- Public boundary:
+  - Raw text, processed text, embedding cache, and generated outputs remain local-only under ignored `data/`.
+  - Do not publish or commit obtained texts.
+- Verification:
+  - Confirmed predecessor repo `/Users/daishin/Documents/Codex/Okyou` had no local changes after reference reads.
+  - Ran `git diff --check`; no whitespace errors.
+- Commit: pending.
+
+## 2026-06-03 JST: Shinran-Only Zone Summary
+
+- Summary: Added a first-pass summary of map regions where Shinran chunks are far from Honen and high-priest/source anchor points.
+- Method:
+  - Used `data/outputs/honen_shinran_high_priest_anchor_map_meta.json`.
+  - Selected Shinran chunks with nearest non-Shinran 2D PCA distance >= `0.10`.
+  - Read local-only chunk text for keyword flags, but wrote no raw text to outputs.
+- Outputs:
+  - `scripts/summarize_shinran_isolated_zones.py`
+  - `docs/shinran-isolated-zones-2026-06-03.md`
+  - `data/outputs/shinran_isolated_zones_meta.json`
+- Result:
+  - Selected 20 Shinran chunks.
+  - Initial zone labels: 行巻・真仏土の上方島, 信巻右下の阿闍世・涅槃経島, 化身土末の護法・鬼神・宇宙秩序島, 化身土末の外教批判島, 化身土本の方便・雑行島.
+- Caveat:
+  - This is a 2D semantic-layer diagnostic. High-dimensional nearest-neighbor checks and source-marker/style layers are still needed.
+- Commit: pending.
+
+## 2026-06-03 JST: SAT Kanbun Text Preparation
+
+- Summary: Stopped analysis work and prepared clean SAT kanbun-basis texts before any further embeddings.
+- Reason:
+  - The earlier seiten run used Japanese reading text, not original kanbun.
+  - A trial SAT embedding map was generated before a strict text-quality gate and should not be treated as an accepted result.
+- Source texts:
+  - SAT T2608 `選擇本願念佛集`.
+  - SAT T2646 `顯淨土眞實教行證文類`, range `83:0589a01-0643c29`.
+- Outputs:
+  - `scripts/prepare_sat_kanbun_texts.py`
+  - `data/processed/sat_kanbun/honen_t2608_senchakushu.txt`
+  - `data/processed/sat_kanbun/honen_t2608_senchakushu.lines.jsonl`
+  - `data/processed/sat_kanbun/shinran_t2646_kyogyoshinsho.txt`
+  - `data/processed/sat_kanbun/shinran_t2646_kyogyoshinsho.lines.jsonl`
+  - `data/processed/sat_kanbun/manifest.json`
+  - `docs/kanbun-text-preparation-2026-06-03.md`
+- Quality gate:
+  - T2608: 1644 SAT lines, 27246 compact chars, 0 quality issues.
+  - T2646: 4215 SAT lines, 76030 compact chars, 0 quality issues.
+  - Checked for U+FFFD, HTML tags/entities, image placeholders, button labels, SAT line refs in body text, control characters, empty text, and missing parsed lines.
+- Public boundary:
+  - Processed text under `data/` contains source text and must not be committed or published.
+- Next:
+  - Rebuild embeddings only from the prepared `.lines.jsonl` files, using Unicode-safe near-700-token chunks.
+- Commit: pending.
+
+## 2026-06-03 JST: Predecessor Text Integrity Audit
+
+- Summary: Audited predecessor `Okyou` read-only for token-boundary chunk decode noise.
+- Reason:
+  - Okyou2 trial SAT chunks showed `U+FFFD` when arbitrary token slices were decoded.
+  - The predecessor method used the same fixed-token slice then `encoder.decode()` pattern.
+- Outputs:
+  - `scripts/audit_predecessor_text_integrity.py`
+  - `docs/predecessor-text-integrity-audit-2026-06-03.md`
+  - `data/outputs/predecessor_text_integrity_audit.json`
+- Findings:
+  - Predecessor processed body texts had 0 `U+FFFD` replacement characters.
+  - `sect_sutra_map`: 256/433 reproduced chunks had `U+FFFD`, 326 replacement chars total.
+  - `sect_sutra_map/outputs/embeddings.json`: 147/433 previews had `U+FFFD`, 173 replacement chars total.
+  - `multilingual_sutra_map`: 44/105 reproduced chunks had `U+FFFD`, 58 replacement chars total.
+- Interpretation:
+  - The predecessor text bodies were not corrupt, but predecessor chunk embeddings included boundary-level decode noise.
+  - Treat predecessor results as useful reference, not as a strict text-clean baseline for Okyou2.
+- Verification:
+  - No edits were made to `/Users/daishin/Documents/Codex/Okyou`.
+- Commit: pending.
+
+## 2026-06-03 JST: SAT Chunking Strategy Comparison
+
+- Summary: Compared old token-slice decode chunks against Unicode-safe near-700-token chunks on SAT T2608/T2646.
+- Method:
+  - Old: `cl100k_base` token ids sliced at 700 tokens with 100 overlap, then decoded.
+  - New: same token grid, but chunk text boundaries are rounded to Python Unicode string offsets via `tiktoken.decode_with_offsets()`.
+  - Embedded both with `text-embedding-3-large`.
+- Outputs:
+  - `scripts/compare_sat_chunking_strategies.py`
+  - `docs/chunking-strategy-comparison-2026-06-03.md`
+  - `data/outputs/sat_chunking_strategy_compare_text-embedding-3-large_700_100.json`
+  - `data/outputs/sat_chunking_strategy_compare_text-embedding-3-large_700_100.svg`
+  - `data/outputs/sat_chunking_strategy_compare_text-embedding-3-large_700_100.svg.png`
+  - `data/cache/sat_chunking_strategy_compare_text-embedding-3-large_700_100.json`
+- Findings:
+  - Old method: 260 chunks, 148 affected chunks, 181 replacement chars.
+  - New method: 260 chunks, 0 affected chunks, 0 replacement chars.
+  - Same-index old/new cosine mean: 法然 `0.990319`, 親鸞 `0.990932`.
+  - Old/new centroid cosine: 法然 `0.999352`, 親鸞 `0.999443`.
+- Interpretation:
+  - The replacement-character issue is real text-quality debt, but it barely moves the large-scale embedding geometry in this comparison.
+  - Use Unicode-safe near-700-token chunks as Okyou2's fixed-length baseline; keep row/natural-unit chunks as separate experiments.
+- Commit: pending.
+
+## 2026-06-03 JST: SAT Safe High-Priest Anchor Map
+
+- Summary: Rebuilt the Honen/Shinran + high-priest overlay on the accepted SAT kanbun safe-chunk baseline.
+- Method:
+  - Focus: SAT T2608 法然 `選擇本願念佛集`, SAT T2646 親鸞 `顯淨土眞實教行證文類`.
+  - Anchors: 龍樹 T1521 易行品 range, 天親 T1524, 曇鸞 T1819, 道綽 T1958, 善導 T1753, 源信 T2682.
+  - Chunking: Unicode-safe near-700-token chunks, overlap 100.
+  - Embedding: `text-embedding-3-large`.
+  - PCA fit: 法然・親鸞 chunks only; anchor chunks projected into that fixed plane.
+- Outputs:
+  - `scripts/make_sat_safe_high_priest_anchor_map.py`
+  - `docs/sat-safe-high-priest-anchor-map-2026-06-03.md`
+  - `data/outputs/sat_safe_honen_shinran_high_priest_anchor_map_text-embedding-3-large_700_100.svg`
+  - `data/outputs/sat_safe_honen_shinran_high_priest_anchor_map_text-embedding-3-large_700_100.svg.png`
+  - `data/outputs/sat_safe_honen_shinran_high_priest_anchor_map_text-embedding-3-large_700_100.json`
+  - `data/cache/sat_safe_high_priest_anchor_embeddings_text-embedding-3-large_700_100.json`
+- Results:
+  - Chunk counts: 法然 69, 親鸞 191, 龍樹 6, 天親 9, 曇鸞 31, 道綽 42, 善導 23, 源信 73.
+  - PCA fit-scope PC1 `0.068562`, PC2 `0.047405`.
+  - In 2D centroid distance to 親鸞: 道綽 `0.048035`, 善導 `0.076170`, 源信 `0.080767`, 曇鸞 `0.089145`, 天親 `0.099764`, 龍樹 `0.109235`.
+- Interpretation:
+  - Semantic-layer first reading: 道綽/善導 are near the shared or Shinran-side core; 曇鸞 and 源信 overlap Shinran-side spread; 天親 is more intermediate; 龍樹 is Shinran-side but separated on PC2.
+  - Needs source-marker and style-layer checks before historical claims.
+- Commit: pending.
+
+## 2026-06-03 JST: Honen Distinctive Zones
+
+- Summary: Analyzed Honen chunks that protrude from Shinran/high-priest neighborhoods on the SAT safe map.
+- Outputs:
+  - `scripts/analyze_honen_distinctive_zones.py`
+  - `docs/honen-distinctive-zones-2026-06-03.md`
+  - `data/outputs/honen_distinctive_zones_text-embedding-3-large_700_100.json`
+- Findings:
+  - For all 69 Honen chunks, nearest non-Honen groups were 親鸞 50, 道綽 11, 源信 4, 善導 3, 曇鸞 1.
+  - When restricted to high-priest anchors, nearest anchors were 道綽 28, 源信 24, 善導 11, 曇鸞 5, 天親 1.
+  - Left/lower Honen protrusions show many markers for 選択, 正雑二行, 諸行との取捨, 三心, 善導/観経, and 往生.
+  - The most isolated high-dimensional terminal chunk appears to include end/colophon-like material and should not be overread as doctrinal distinctiveness.
+- Interpretation:
+  - A better first hypothesis is not "Honen has a different nembutsu meaning" but "Honen compresses the classification and selection of nembutsu against other practices."
+- Commit: pending.
