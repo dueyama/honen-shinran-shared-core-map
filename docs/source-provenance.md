@@ -463,6 +463,7 @@ Processing:
 - Parsed SAT line bodies for anchor texts from local cached HTML.
 - Created Unicode-safe near-700-token chunks with 100-token overlap.
 - Embedded with OpenAI `text-embedding-3-large`.
+- Embedding dimension: `3072`.
 - Fit PCA only on focus chunks, then projected anchor chunks into the fixed
   focus PCA plane.
 
@@ -481,6 +482,13 @@ Interpretive boundary:
 - This is still semantic-layer evidence. Do not treat it as proof of
   historical influence without source-marker and style-layer checks.
 - The 2D PCA plane explains about 11.6% of the focus embedding variance.
+- The displayed 2D plane is therefore an exploratory projection of the 3072D
+  embedding space; high-dimensional nearest-neighbor counts use the original
+  3072D vectors.
+- PCA is not the only possible 2D projection. It is used here as the baseline
+  because it is linear, stable, and allows anchor chunks to be projected into
+  the same fitted plane. UMAP, t-SNE, MDS, or other projections remain future
+  robustness checks.
 
 Generated local-only outputs:
 
@@ -631,6 +639,11 @@ Processing:
 - Assigned approximate Shinran volume labels from SAT line ranges.
 - Assigned coarse Honen section labels from SAT line ranges.
 - Counted dictionary-based style vocabulary groups and source-marker groups.
+- Calculated a Shinran protrusion score with the same shape as the Honen table:
+  nearest non-Shinran 2D distance multiplied by one minus nearest non-self
+  cosine.
+- Added coarse Shinran protrusion-zone labels for 信巻, 真仏土巻, and 化身土巻
+  based on local-only text feature counts and marker hits.
 - Wrote only line ranges, chunk ids, hashes, coordinates, metrics, keyword
   counts, and short top terms; no raw or chunk text field was written.
 
@@ -639,7 +652,21 @@ Generated local-only outputs:
 - `data/outputs/readable_map_analysis_2026-06-04_text-embedding-3-large_700_100.json`
 - `data/outputs/honen_protrusion_table_2026-06-04.csv`
 - `data/outputs/shinran_volume_affinity_table_2026-06-04.csv`
+- `data/outputs/shinran_protrusion_table_2026-06-04.csv`
+- `data/outputs/sat_safe_honen_shinran_focus_map_text-embedding-3-large_700_100.json`
+- `data/outputs/pca_direction_interpretation_2026-06-04_text-embedding-3-large_700_100.json`
+- `data/outputs/pca_direction_representative_chunks_2026-06-04.csv`
+- `data/outputs/honen_three_layer_sequence_2026-06-04_text-embedding-3-large_700_100.json`
+- `data/outputs/honen_three_layer_sequence_2026-06-04.csv`
+- `data/outputs/shinran_three_layer_sequence_2026-06-04_text-embedding-3-large_700_100.json`
+- `data/outputs/shinran_three_layer_sequence_2026-06-04.csv`
 - `docs/readable-map-analysis-2026-06-04.md`
+- `docs/pca-direction-interpretation-2026-06-04.md`
+- `docs/honen-three-layer-sequence-2026-06-04.md`
+- `docs/shinran-three-layer-sequence-2026-06-04.md`
+- `docs/figures/sat-safe-honen-shinran-focus-map.png`
+- `docs/figures/honen-three-layer-sequence-heatmap.png`
+- `docs/figures/shinran-three-layer-sequence-heatmap.png`
 
 Run summary:
 
@@ -650,6 +677,31 @@ Run summary:
 - Honen protrusion table keeps 24 chunks, prioritizing doctrinal argument
   candidates over paratext/terminal candidates.
 - Shinran table labels 191 chunks by approximate volume and affinity zone.
+- Shinran protrusion table keeps 24 chunks. Its top-volume counts are 信巻
+  `13`, 化身土巻 `8`, 真仏土巻 `2`, 証巻 `1`.
+- Shinran protrusion zones are led by 信巻の信/三心・罪救済 `13`, 化身土巻の
+  護法・鬼神・宇宙秩序 `4`, 真仏土巻の名号・本願・真実 `2`, 化身土巻の
+  外教批判 `1`, and 化身土巻の方便・真仮整理 `1`.
+- The paper figure order now starts with a focus-only Honen/Shinran map and
+  then shows the high-priest anchor overlay separately. Both figures use the
+  same PCA coordinate basis; the focus-only figure fits the visible extent to
+  Honen/Shinran chunks for readability.
+- PCA direction interpretation was added as a post-hoc edge-chunk summary. In
+  the current focus map, PC1+ is Shinran 信巻/化身土巻 with 罪救済 and
+  廃立/取捨 markers; PC1- is relatively Honen/shared 選択論証; PC2+ is
+  阿弥陀・光明・名号・願回向; PC2- is 信/三心・罪救済・方便/外教.
+- A Honen three-layer chunk-sequence heatmap was added. The semantic layer uses
+  3072D max cosine from each Honen chunk to Shinran/high-priest author groups;
+  the style and source-marker layers use the same dictionaries as the Shinran
+  heatmap. The first read is that Honen keeps strong semantic proximity to
+  Shinran while the style layer concentrates around 選択/本願, 正雑/諸行,
+  念仏/称名, and 往生/浄土 across the argument sections.
+- A Shinran three-layer chunk-sequence heatmap was added. The semantic layer
+  uses 3072D max cosine from each Shinran chunk to Honen/high-priest author
+  groups; the style layer uses dictionary count groups; the source-marker layer
+  uses explicit sutra/commentary/patriarch/citation-introduction markers.
+  Source-marker rows are dominated by 引用導入, showing that this minimal marker
+  layer identifies citation density more readily than precise source structure.
 
 Quality checks:
 

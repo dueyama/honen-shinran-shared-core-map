@@ -181,15 +181,16 @@
 - 法然『選擇本願念佛集』: SAT `T2608`。
 - 親鸞『顯淨土眞實教行證文類』: SAT `T2646`。
 - embedding model: OpenAI `text-embedding-3-large`。
+- embedding dimension: `3072`。
 - tokenizer: `tiktoken` `cl100k_base`。
 - chunk: 700 token、100 token overlap。
 - chunk 作成: `tiktoken.decode_with_offsets()` を使い、Unicode 文字境界で切る。
 
 SAT 漢文の準備では、T2608 は 1644 SAT lines、27246 compact chars、T2646 は 4215 SAT lines、76030 compact chars だった。品質チェックでは `U+FFFD`、HTML tag/entity、画像プレースホルダ、ボタン文字列、SAT line ref の本文混入はいずれも 0 とした。
 
-先行 `Okyou` の固定 token slice をそのまま `encoder.decode()` する方法は、chunk 端で `U+FFFD` を作ることが分かった。これは 64-bit の問題ではなく、token boundary と Unicode 文字境界のズレである。比較実験では、古い方法は 260 chunks 中 148 chunks に `U+FFFD` が入ったが、新しい Unicode-safe 方法では 0 だった。一方で old/new centroid cosine は法然 `0.999352`、親鸞 `0.999443` で、大局的な地図は大きくは動かなかった。
+前稿と同型の固定 token slice をそのまま `encoder.decode()` する方法は、chunk 端で `U+FFFD` を作る場合がある。これは 64-bit の問題ではなく、token boundary と Unicode 文字境界のズレである。比較実験では、古い方法は 260 chunks 中 148 chunks に `U+FFFD` が入ったが、新しい Unicode-safe 方法では 0 だった。一方で old/new centroid cosine は法然 `0.999352`、親鸞 `0.999443` で、大局的な地図は大きくは動かなかった。
 
-したがって、先行プロジェクトの図は広域の見取り図としては致命的ではなさそうだが、Okyou2 では出版・報告用の根拠として unsafe chunk は使わない。
+したがって、前稿や旧試行の図は広域の見取り図としては参考にできる。ただし、今後の出版・報告用の基準処理としては、本文品質、再現性、line range との対応を優先し、Unicode-safe chunk を使う。
 
 詳細:
 
@@ -215,7 +216,11 @@ anchor chunks:
 - 善導: 23 chunks。
 - 源信: 73 chunks。
 
-PCA は法然・親鸞の focus chunks だけで fit し、高僧アンカーは後から同じ面へ投影した。PC1+PC2 は約 11.6% の分散を説明する。2D 上の親鸞重心への距離は、道綽、善導、源信、曇鸞、天親、龍樹の順で近かった。
+PCA は法然・親鸞の focus chunks だけで fit し、高僧アンカーは後から同じ面へ投影した。元の embedding は 3072 次元で、PC1+PC2 は約 11.6% の分散を説明する。2D 上の親鸞重心への距離は、道綽、善導、源信、曇鸞、天親、龍樹の順で近かった。
+
+2D 投影法は PCA だけではない。UMAP、t-SNE、MDS などを使うと局所近傍やクラスタの見え方は変わり得る。今回は、線形で安定しており、高僧アンカーを同じ fit 面へ投影しやすい PCA を基準表示とした。別投影で同じ方向性が出るかは今後の方法検証に回す。
+
+法然/親鸞の二群が最も重なるような投影にも意味はある。ただし、それは共通核を強調する目的付き図であり、中立な地図ではない。無制約に重なりを最大化すると差異方向を捨てるだけになりうるので、主図とは分けて「共通核強調図」として扱うのがよい。逆に差異強調図も別途作れる。
 
 高次元 cosine の近傍集計では、親鸞 chunks の最近傍アンカーは、源信 58、道綽 58、曇鸞 27、善導 24、天親 22、龍樹 2 だった。法然も比較対象に含めると、親鸞の最近傍非自己は法然 48、道綽 45、源信 36、曇鸞 23、天親 21、善導 17、龍樹 1 となる。
 
@@ -318,11 +323,13 @@ SAT safe map を、本文を出さずに読める分析表へ変換した。API 
 - `data/outputs/readable_map_analysis_2026-06-04_text-embedding-3-large_700_100.json`
 - `data/outputs/honen_protrusion_table_2026-06-04.csv`
 - `data/outputs/shinran_volume_affinity_table_2026-06-04.csv`
+- `data/outputs/shinran_protrusion_table_2026-06-04.csv`
 
 内容:
 
 - 法然『選択集』のはみ出し chunks を、SAT line range、章/位置、最近傍親鸞・最近傍高僧、語群、典拠マーカーで表にした。
 - 親鸞『教行信証』191 chunks に巻別ラベルを付け、法然近接、道綽近接、源信近接、曇鸞近接、親鸞独自候補などの affinity zone を付けた。
+- 親鸞側も法然と同じ形で protrusion score を出し、本文なしの親鸞はみ出し表を作った。
 - 三層分析の最小版として、意味層、文体語彙層、典拠マーカー層を同じ chunk row に持たせた。
 
 主要結果:
@@ -331,13 +338,15 @@ SAT safe map を、本文を出さずに読める分析表へ変換した。API 
 - 親鸞 chunks の最近傍非自己は、法然 48、道綽 45、源信 36、曇鸞 23、天親 21、善導 17、龍樹 1。
 - 法然はみ出しの上位は、正雑二行、三輩・一向専念、本願念仏、付属・証誠・選択総結に集中する。
 - 親鸞は法然近接領域を持ちつつ、信巻、化身土巻、真仏土巻などで別方向へ広がる。
+- 親鸞はみ出し上位24件は、信巻 13、化身土巻 8、真仏土巻 2、証巻 1。内容ゾーンでは、信巻の信/三心・罪救済 13、化身土巻の護法・鬼神・宇宙秩序 4、真仏土巻の名号・本願・真実 2、外教批判 1、方便・真仮整理 1 が出た。
+- 比較すると、法然側は念仏を諸行から選び出す論証としてはみ出し、親鸞側は信巻・化身土巻を中心に、救済可能性、方便/真仮、外教批判、護法秩序へ広がる。
 
 現時点の作業仮説:
 
 - 法然は、念仏を諸行の中から選び出す論証を構成する。
 - 親鸞は、その念仏を本願・信・証・真仏土/化身土の典拠的体系へ展開する。
 
-ただし、これは意味層と辞書ベース語群の初回整理である。典拠マーカー層では、引用された文献の立場と法然/親鸞自身の立場をまだ分けていない。巻別・章別ラベルも line_start 基準なので、overlap chunk が境界をまたぐ場合がある。
+ただし、これは意味層と辞書ベース語群の初回整理であり、埋め込み手法等の結果からの探索的推測である。既存の歴史研究成果を参照して裏づけたものではない。歴史研究・引用研究との比較は、この方法の信頼性や限界を検証する次段階の課題として扱う。典拠マーカー層では、引用された文献の立場と法然/親鸞自身の立場をまだ分けていない。巻別・章別ラベルも line_start 基準なので、overlap chunk が境界をまたぐ場合がある。
 
 ## 2026-06-04 更新: 論文草稿PDF
 
@@ -347,8 +356,14 @@ SAT safe map を、本文を出さずに読める分析表へ変換した。API 
 
 - `docs/paper/okyou2-honen-shinran-draft.tex`
 - `docs/paper/okyou2-honen-shinran-draft.pdf`
+- `docs/figures/sat-safe-honen-shinran-focus-map.png`
 - `docs/figures/sat-safe-honen-shinran-high-priest-anchor-map.png`
+- `docs/figures/honen-three-layer-sequence-heatmap.png`
+- `docs/figures/shinran-three-layer-sequence-heatmap.png`
 - `docs/figures/sat-chunking-strategy-comparison.png`
+- `docs/pca-direction-interpretation-2026-06-04.md`
+- `docs/honen-three-layer-sequence-2026-06-04.md`
+- `docs/shinran-three-layer-sequence-2026-06-04.md`
 
 ビルド:
 
@@ -356,4 +371,10 @@ SAT safe map を、本文を出さずに読める分析表へ変換した。API 
 - `uplatex -interaction=nonstopmode okyou2-honen-shinran-draft.tex`
 - `dvipdfmx okyou2-honen-shinran-draft.dvi`
 
-草稿は「法然は念仏選択の論証、親鸞は本願・信・証・真仏土/化身土の典拠的体系化」という作業仮説を中心にまとめた。本文は転載せず、図、集計、SAT line range、近傍表のみを用いた。
+草稿は「法然は念仏選択の論証、親鸞は本願・信・証・真仏土/化身土の典拠的体系化」という作業仮説を中心にまとめた。本文は転載せず、図、集計、SAT line range、近傍表のみを用いた。図の順序は、まず法然/親鸞のみのフォーカス図を出し、その後に同じ PCA 座標系へ高僧アンカーを重ねた図を置く構成にした。
+
+2D PCA の方向解釈も、本文なしで端の chunk 群を集計して追加した。PCA 軸は本来的に教義ラベルを持たず、符号も任意なので、方向名はこの fit に限る後付けラベルである。現在の図では、PC1+ は親鸞の信巻・化身土巻、罪救済・廃立/取捨方向、PC1- は法然を多く含む選択論証・共有核方向、PC2+ は阿弥陀・光明・名号・願回向方向、PC2- は信/三心・罪救済・方便/外教方向として読める。
+
+法然『選択集』について、横軸を chunk 順にした三層ヒートマップを作った。意味層は各法然 chunk から親鸞/高僧群への 3072 次元 max cosine、文体語彙層は語群カウント、典拠マーカー層は経名・論釈名・高僧名・引用導入句などの明示マーカー。法然は多くの chunk で親鸞に近いが、道綽・善導・源信へ寄る箇所も章ごとに分かれる。文体語彙層では、正雑二行、本願念仏、三輩・一向専念、付属・証誠・選択総結に、選択/本願、正雑/諸行、念仏/称名、往生/浄土のまとまりが出る。
+
+親鸞『教行信証』についても、横軸を chunk 順にした三層ヒートマップを作った。意味層は各親鸞 chunk から法然/高僧群への 3072 次元 max cosine、文体語彙層は語群カウント、典拠マーカー層は同じ明示マーカー。信巻では意味層が法然・源信・道綽に分かれる一方、文体語彙層では信/三心と罪救済が強い。化身土巻では道綽・法然・源信が混在し、文体語彙層も信/三心、願/回向、往生/浄土、方便/化身土、廃立/取捨に分散する。典拠マーカー層は引用導入句が強く、最小辞書では精密な典拠構造よりも引用密度が先に見える。

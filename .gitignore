@@ -20,6 +20,7 @@ data/
 *.out
 *.synctex.gz
 *.toc
+tmp/
 
 # Do not re-import the completed predecessor project's private/local folders.
 お経/

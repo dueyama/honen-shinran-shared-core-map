@@ -178,3 +178,51 @@
 - Interpretation:
   - A better first hypothesis is not "Honen has a different nembutsu meaning" but "Honen compresses the classification and selection of nembutsu against other practices."
 - Commit: pending.
+
+## 2026-06-04 JST: Honen/Shinran Draft and Three-Layer Sequences
+
+- Summary: Extended the SAT safe Honen/Shinran/high-priest analysis into a TeX paper draft and added minimal three-layer Honen and Shinran sequence views.
+- Method:
+  - Corpus baseline remained SAT kanbun, Unicode-safe near-700-token chunks, overlap 100, `text-embedding-3-large`.
+  - Embedding vectors are 3072-dimensional; 2D figures use PCA fit on Honen/Shinran focus chunks, with anchor texts projected into the same plane.
+  - Semantic-layer nearest-neighbor checks use original 3072-dimensional cosine similarities.
+  - Three-layer Honen view uses semantic affinity to Shinran/high-priest groups, style/lexical dictionary counts, and explicit source-marker dictionary counts.
+  - Three-layer Shinran view uses semantic affinity to Honen/high-priest groups, style/lexical dictionary counts, and explicit source-marker dictionary counts.
+- Outputs:
+  - `docs/paper/okyou2-honen-shinran-draft.tex`
+  - `docs/paper/okyou2-honen-shinran-draft.pdf`
+  - `docs/figures/sat-safe-honen-shinran-focus-map.png`
+  - `docs/figures/honen-three-layer-sequence-heatmap.png`
+  - `docs/figures/shinran-three-layer-sequence-heatmap.png`
+  - `docs/pca-direction-interpretation-2026-06-04.md`
+  - `docs/honen-three-layer-sequence-2026-06-04.md`
+  - `docs/shinran-three-layer-sequence-2026-06-04.md`
+  - `scripts/make_sat_safe_honen_shinran_focus_figure.py`
+  - `scripts/analyze_pca_direction_interpretation.py`
+  - `scripts/make_honen_three_layer_heatmap.py`
+  - `scripts/make_shinran_three_layer_heatmap.py`
+  - `data/outputs/sat_safe_honen_shinran_focus_map_text-embedding-3-large_700_100.json`
+  - `data/outputs/pca_direction_interpretation_2026-06-04_text-embedding-3-large_700_100.json`
+  - `data/outputs/pca_direction_representative_chunks_2026-06-04.csv`
+  - `data/outputs/honen_three_layer_sequence_2026-06-04_text-embedding-3-large_700_100.json`
+  - `data/outputs/honen_three_layer_sequence_2026-06-04.csv`
+  - `data/outputs/shinran_three_layer_sequence_2026-06-04_text-embedding-3-large_700_100.json`
+  - `data/outputs/shinran_three_layer_sequence_2026-06-04.csv`
+- Findings:
+  - Focus-only map shows Honen and Shinran overlapping strongly, with Shinran spreading farther into right/down zones.
+  - PCA direction labels are post-hoc: PC1+ is mostly Shinran 信巻/化身土巻, PC1- is Honen/shared selection-argument core, PC2+ is 行巻/真仏土巻 with 願・回向/名号/阿弥陀 direction, and PC2- is 信/三心・罪救済・方便/外教 direction.
+  - Shinran protrusions concentrate in 信巻 and 化身土巻; Honen protrusions concentrate in selection, 正雑二行, 本願念仏, 三心, 付属・証誠.
+  - Three-layer Honen heatmap shows strong semantic proximity to Shinran while style features cluster around selection/本願, 正雑/諸行, 念仏/称名, and 往生/浄土 across argument sections.
+  - Three-layer Shinran heatmap shows that semantic affinity, lexical/style groups, and explicit source markers do not move identically; the source-marker layer is still a coarse proxy dominated by citation-introduction markers.
+- Public boundary:
+  - Figure, docs, TeX, and CSV/JSON outputs intentionally omit raw chunk text and embeddings.
+  - Local `data/cache` and processed SAT body texts remain non-public.
+- Verification:
+  - `python -m py_compile scripts/make_honen_three_layer_heatmap.py scripts/make_shinran_three_layer_heatmap.py`
+  - `python scripts/make_honen_three_layer_heatmap.py`
+  - `python scripts/make_shinran_three_layer_heatmap.py`
+  - Checked generated three-layer JSON/CSV/Markdown for `U+FFFD` and raw fields such as `text`, `body`, `embedding`.
+  - `uplatex` was run twice and `dvipdfmx` regenerated the paper draft PDF.
+  - Rendered the PDF to PNG via PyMuPDF and visually checked the Honen and Shinran three-layer figure pages.
+  - `git diff --check` passed, and predecessor `/Users/daishin/Documents/Codex/Okyou` remained unchanged.
+- Commit: pending.

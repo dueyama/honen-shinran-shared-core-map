@@ -34,6 +34,7 @@ MAP_PATH = ROOT / "data/outputs/sat_safe_honen_shinran_high_priest_anchor_map_te
 OUT_JSON = ROOT / "data/outputs/readable_map_analysis_2026-06-04_text-embedding-3-large_700_100.json"
 HONEN_CSV = ROOT / "data/outputs/honen_protrusion_table_2026-06-04.csv"
 SHINRAN_CSV = ROOT / "data/outputs/shinran_volume_affinity_table_2026-06-04.csv"
+SHINRAN_PROTRUSION_CSV = ROOT / "data/outputs/shinran_protrusion_table_2026-06-04.csv"
 DOC_PATH = ROOT / "docs/readable-map-analysis-2026-06-04.md"
 
 
@@ -191,6 +192,31 @@ def public_chunk_row(
     }
 
 
+def shinran_protrusion_zone(row: dict[str, Any], text: str) -> str:
+    volume = row.get("volume_label", "")
+    style = row.get("style_top_group", "")
+    marker_hits = row.get("source_marker_hits", {})
+
+    if volume == "信巻" and (
+        style in {"信・三心", "罪・救済", "願・回向"}
+        or any(term in text for term in ["阿闍世", "提婆", "五逆", "慚愧", "地獄", "涅槃經"])
+    ):
+        return "信巻: 信/三心・罪救済"
+    if volume == "化身土巻" and any(term in text for term in ["大集", "日藏", "月藏", "鬼神", "星宿"]):
+        return "化身土巻: 護法・鬼神・宇宙秩序"
+    if volume == "化身土巻" and any(term in text for term in ["老子", "孔子", "史記", "論語", "外道", "道士"]):
+        return "化身土巻: 外教批判"
+    if volume == "化身土巻" and style in {"方便・化身土", "廃立・取捨", "正雑・諸行"}:
+        return "化身土巻: 方便・真仮整理"
+    if volume in {"行巻", "真仏土巻"} and style in {"名号・真実", "選択・本願", "願・回向", "念仏・称名"}:
+        return f"{volume}: 名号・本願・真実"
+    if marker_hits.get("祖師名"):
+        return f"{volume}: 祖師引用密度"
+    if marker_hits.get("経名"):
+        return f"{volume}: 経典引用密度"
+    return f"{volume}: その他親鸞独自候補"
+
+
 def count_by(rows: list[dict[str, Any]], *keys: str) -> list[dict[str, Any]]:
     counter: Counter[tuple[Any, ...]] = Counter(tuple(row.get(key, "") for key in keys) for row in rows)
     out = []
@@ -309,6 +335,7 @@ def main() -> None:
     for row in shinran_rows:
         point = np.array([row["x"], row["y"]], dtype=float)
         row["nearest_non_shinran_2d_distance"] = rounded(float(np.linalg.norm(non_shinran_points - point, axis=1).min()))
+        row["protrusion_score"] = rounded(row["nearest_non_shinran_2d_distance"] * (1.0 - row["nearest_nonself_cosine"]))
         if row["nearest_nonself_author"] == "法然":
             row["affinity_zone"] = "法然近接"
         elif row["nearest_nonself_author"] in {"源信", "道綽", "曇鸞", "善導", "天親", "龍樹"}:
@@ -319,21 +346,43 @@ def main() -> None:
     for row in shinran_rows:
         if row["nearest_non_shinran_2d_distance"] >= iso_threshold:
             row["affinity_zone"] = "親鸞独自候補"
+        chunk = next(item for item in chunks if item.chunk_id == row["chunk_id"])
+        row["protrusion_zone_label"] = shinran_protrusion_zone(row, chunk.text)
     shinran_table = sorted(
         shinran_rows,
         key=lambda row: (row["volume_label"], row["affinity_zone"], -row["nearest_non_shinran_2d_distance"]),
     )
+    shinran_protrusion_table = sorted(
+        shinran_rows,
+        key=lambda row: (row["affinity_zone"] != "親鸞独自候補", -row["protrusion_score"]),
+    )[:24]
 
     volume_summary = count_by(shinran_rows, "volume_label", "affinity_zone")
     volume_nearest_summary = count_by(shinran_rows, "volume_label", "nearest_nonself_author")
     honen_section_summary = count_by(honen_rows, "section_label", "style_top_group", "nearest_nonself_author")
+    honen_protrusion_summary = {
+        "by_section": count_by(honen_table, "section_label"),
+        "by_style": count_by(honen_table, "style_top_group"),
+        "by_nearest": count_by(honen_table, "nearest_nonself_author"),
+    }
+    shinran_protrusion_summary = {
+        "by_volume": count_by(shinran_protrusion_table, "volume_label"),
+        "by_zone": count_by(shinran_protrusion_table, "protrusion_zone_label"),
+        "by_style": count_by(shinran_protrusion_table, "style_top_group"),
+        "by_nearest": count_by(shinran_protrusion_table, "nearest_nonself_author"),
+    }
     layer_summary = {
         "semantic_layer": {
             "honen_nearest_nonself": count_by(honen_rows, "nearest_nonself_author"),
             "shinran_nearest_nonself": count_by(shinran_rows, "nearest_nonself_author"),
             "shinran_volume_affinity": volume_summary,
             "honen_protrusion_score_distribution": distribution([row["protrusion_score"] for row in honen_rows]),
+            "shinran_protrusion_score_distribution": distribution([row["protrusion_score"] for row in shinran_rows]),
             "shinran_isolation_2d_p90_threshold": rounded(iso_threshold),
+            "protrusion_comparison": {
+                "honen": honen_protrusion_summary,
+                "shinran": shinran_protrusion_summary,
+            },
         },
         "style_layer": {
             "honen": count_by(honen_rows, "style_top_group"),
@@ -361,6 +410,7 @@ def main() -> None:
         "chunk_counts": dict(Counter(row["author"] for row in all_rows)),
         "layer_summary": layer_summary,
         "honen_protrusion_table": honen_table,
+        "shinran_protrusion_table": shinran_protrusion_table,
         "shinran_volume_affinity_table": shinran_table,
         "shinran_volume_nearest_summary": volume_nearest_summary,
         "honen_section_summary": honen_section_summary,
@@ -393,12 +443,26 @@ def main() -> None:
             "top_terms", "text_sha256", "text_char_count", "replacement_chars",
         ],
     )
+    write_csv(
+        SHINRAN_PROTRUSION_CSV,
+        shinran_protrusion_table,
+        [
+            "chunk_index", "volume_label", "affinity_zone", "protrusion_zone_label",
+            "line_start", "line_end", "nearest_nonself_author", "nearest_nonself_work",
+            "nearest_nonself_chunk_index", "nearest_nonself_cosine", "nearest_honen_cosine",
+            "nearest_anchor_author", "nearest_anchor_work", "nearest_anchor_cosine",
+            "nearest_non_shinran_2d_distance", "protrusion_score", "style_top_group",
+            "style_hits", "source_marker_top_group", "source_marker_hits", "top_terms",
+            "text_sha256", "text_char_count", "replacement_chars",
+        ],
+    )
 
     doc = render_doc(output)
     DOC_PATH.write_text(doc, encoding="utf-8")
     print(f"wrote {OUT_JSON.relative_to(ROOT)}")
     print(f"wrote {HONEN_CSV.relative_to(ROOT)}")
     print(f"wrote {SHINRAN_CSV.relative_to(ROOT)}")
+    print(f"wrote {SHINRAN_PROTRUSION_CSV.relative_to(ROOT)}")
     print(f"wrote {DOC_PATH.relative_to(ROOT)}")
 
 
@@ -423,6 +487,7 @@ def md_table(rows: list[dict[str, Any]], fields: list[tuple[str, str]], limit: i
 
 def render_doc(output: dict[str, Any]) -> str:
     semantic = output["layer_summary"]["semantic_layer"]
+    comparison = semantic["protrusion_comparison"]
     lines: list[str] = [
         "# Readable Map Analysis 2026-06-04",
         "",
@@ -431,7 +496,7 @@ def render_doc(output: dict[str, Any]) -> str:
         "## 結論メモ",
         "",
         "- 法然『選択集』のはみ出しは、念仏の意味そのものの差というより、`正雑二行`、`諸行との取捨`、`本願`、`付属/証誠` などを使って念仏を選び出す論証のまとまりとして見える。",
-        "- 親鸞『教行信証』は、法然に近い領域を持ちながら、巻別には `信`、`願/回向`、`名号/真実`、`方便/化身土`、罪・救済・外教批判の方向へ広がる。",
+        "- 親鸞『教行信証』のはみ出しは、法然と同じ念仏選択論ではなく、`信/三心・罪救済`、`化身土の方便/真仮整理`、`護法・鬼神・宇宙秩序`、`外教批判` などへ分岐する。",
         "- したがって現段階では、「法然は念仏選択の論証、親鸞は本願・信・証の典拠的体系化」という作業仮説は map と語群集計で支えられる。ただし、歴史的影響の証明には典拠マーカー層の精査が必要である。",
         "",
         "## 意味層",
@@ -464,6 +529,37 @@ def render_doc(output: dict[str, Any]) -> str:
             limit=12,
         ),
         "",
+        "## 親鸞はみ出し表 上位",
+        "",
+        *md_table(
+            output["shinran_protrusion_table"],
+            [
+                ("idx", "chunk_index"),
+                ("巻", "volume_label"),
+                ("zone", "protrusion_zone_label"),
+                ("line", "line_start"),
+                ("近傍", "nearest_nonself_author"),
+                ("anchor", "nearest_anchor_author"),
+                ("style", "style_top_group"),
+                ("score", "protrusion_score"),
+            ],
+            limit=12,
+        ),
+        "",
+        "## 法然/親鸞はみ出し比較",
+        "",
+        "法然はみ出し上位の位置:",
+        "",
+        *md_table(comparison["honen"]["by_section"], [("位置", "section_label"), ("chunks", "chunk_count")]),
+        "",
+        "親鸞はみ出し上位の巻:",
+        "",
+        *md_table(comparison["shinran"]["by_volume"], [("巻", "volume_label"), ("chunks", "chunk_count")]),
+        "",
+        "親鸞はみ出し上位の内容ゾーン:",
+        "",
+        *md_table(comparison["shinran"]["by_zone"], [("zone", "protrusion_zone_label"), ("chunks", "chunk_count")]),
+        "",
         "## 三層分析の最小版",
         "",
         "- 意味層: cached embedding の高次元 cosine と、既存 2D map の距離を併用した。",
@@ -482,6 +578,7 @@ def render_doc(output: dict[str, Any]) -> str:
         f"- `{OUT_JSON.relative_to(ROOT)}`",
         f"- `{HONEN_CSV.relative_to(ROOT)}`",
         f"- `{SHINRAN_CSV.relative_to(ROOT)}`",
+        f"- `{SHINRAN_PROTRUSION_CSV.relative_to(ROOT)}`",
         "",
     ]
     return "\n".join(lines)
