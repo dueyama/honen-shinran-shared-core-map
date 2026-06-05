@@ -1043,6 +1043,7 @@ Repository: `https://github.com/dueyama/honen-shinran-shared-core-map`
 
 ## リリース後の運用
 
+- 初回固定版は git tag `v1.0.0` を参照点とする。
 - リリース後の公開版PDF/HTMLは固定版として扱う。
 - 誤記、リンク切れ、図表ラベル、数値、補足説明、解釈変更が見つかった場合は、公開済み本文を黙って差し替えず、`docs/ERRATA.md` と `docs/errata/` に記録する。
 - 本文更新が必要な場合は、新しい版として明示し、旧版との差分と理由をErrataに残す。

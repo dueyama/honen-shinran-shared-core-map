@@ -61,7 +61,7 @@ The Japanese paper PDF is the authoritative print/book edition. The English pape
 
 ## Publication Integrity / 公開版の固定
 
-The public PDF and TeX files use stable filenames without version numbers. Their SHA-256 checksums are recorded in `docs/checksums.txt`:
+The public PDF and TeX files use stable filenames without version numbers. They are fixed at release tag `v1.0.0`, and their SHA-256 checksums are recorded in `docs/checksums.txt`:
 
 ```text
 886dd089af33a17f4a983795d6d1d38730f309fc5c1ebc49e36a1dbc6b7c1b34  docs/paper/honen-shinran-shared-core-paper.pdf
@@ -70,9 +70,13 @@ ed5880e1d25a8c4c87bca53203cbed3000bb856484e062078acd06a69ceb1e6a  docs/paper/hon
 02ecbc972ab00ad7daf8b7e1aab7ff3bfbfd227b15f736c2607dab5757044c9f  docs/paper/honen-shinran-shared-core-paper-en.tex
 ```
 
-After public release, later corrections should be published as supplements or Errata rather than silent rewrites of the fixed public artifacts. If a revised edition is necessary, it should be released as a new explicit version with a reason and difference record.
+The checksums above match the PDF/TeX files stored at git tag `v1.0.0`. After public release, later corrections should be published as supplements or Errata rather than silent rewrites of the fixed public artifacts. If a revised edition is necessary, it should be released as a new explicit version with a reason and difference record.
 
-公開後の訂正は、固定公開物を黙って差し替えるのではなく、追補または Errata として公開します。本文更新が必要な場合は、新しい版として明示し、旧版との差分と理由を残します。
+公開PDF/TeXは、安定したファイル名のまま git tag `v1.0.0` で固定します。上記のSHA-256ハッシュは、`v1.0.0` に含まれるPDF/TeXと一致します。公開後の訂正は、固定公開物を黙って差し替えるのではなく、追補または Errata として公開します。本文更新が必要な場合は、新しい版として明示し、旧版との差分と理由を残します。
+
+This repository also treats the publication method itself as an experiment: a humanities data-analysis paper is published through GitHub Pages and GitHub Releases, while git history, release tags, checksums, and process notes make the public artifact and later supplements traceable.
+
+本リポジトリでは、この公開方法そのものも試行対象としています。人文系データ解析論文を GitHub Pages と GitHub Releases で公開し、git履歴、release tag、checksum、制作記録によって、公開版と後続の追補を追跡できる形にします。
 
 ## Repository Layout
 
