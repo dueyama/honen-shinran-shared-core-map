@@ -21,6 +21,7 @@ PUBLIC_PAPER_PDF = "honen-shinran-shared-core-paper.pdf"
 PUBLIC_PAPER_TEX = "honen-shinran-shared-core-paper.tex"
 PUBLIC_PAPER_EN_PDF = "honen-shinran-shared-core-paper-en.pdf"
 PUBLIC_PAPER_EN_TEX = "honen-shinran-shared-core-paper-en.tex"
+REPOSITORY_URL = "https://github.com/dueyama/honen-shinran-shared-core-map"
 
 
 STYLE = r"""
@@ -178,6 +179,7 @@ def nav(lang: str, current: str) -> str:
       <a href="{ja_href}"{aria_true(True)}>日本語</a>
       <a href="{en_top}">English</a>
     </span>
+    <a class="nav-link pdf-link" href="{REPOSITORY_URL}">GitHub</a>
     <a class="nav-link pdf-link" href="{pdf_href}">PDF JP</a>
   </div>
 </nav>"""
@@ -222,6 +224,7 @@ def nav(lang: str, current: str) -> str:
       <a href="{ja}">日本語</a>
       <a href="./"{aria_true(True)}>English</a>
     </span>
+    <a class="nav-link pdf-link" href="{REPOSITORY_URL}">GitHub</a>
     <a class="nav-link pdf-link" href="{pdf_ja}">PDF JP</a>
     <a class="nav-link pdf-link" href="{pdf_en}">PDF EN</a>
   </div>
@@ -260,7 +263,7 @@ def home_ja() -> str:
     </article>
     <article class="card">
       <h2>コード</h2>
-      <p>GitHub Pages生成、TeX整合、図表生成、検証用スクリプトを公開します。APIキーとキャッシュは含めません。</p>
+      <p><a href="{REPOSITORY_URL}">GitHubリポジトリ</a>で、GitHub Pages生成、TeX整合、図表生成、検証用スクリプトを公開します。APIキーとキャッシュは含めません。</p>
     </article>
     <article class="card">
       <h2>出典・検証</h2>
@@ -330,7 +333,7 @@ def home_en() -> str:
     </article>
     <article class="card">
       <h2>Code</h2>
-      <p>Generation, alignment, figure, and validation scripts are published without API keys or local caches.</p>
+      <p>The <a href="{REPOSITORY_URL}">GitHub repository</a> publishes generation, alignment, figure, and validation scripts without API keys or local caches.</p>
     </article>
     <article class="card">
       <h2>Provenance</h2>
