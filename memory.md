@@ -507,3 +507,52 @@
   - Searched the V3 TeX log for overfull boxes, unresolved references, fatal
     errors, and LaTeX errors; no matches.
 - Commit: pending.
+
+## 2026-06-05 JST: GitHub Pages Publication Prep
+
+- Summary: Prepared the Okyou2 paper for GitHub Pages publication in the same
+  general shape as the predecessor public paper, while keeping Okyou2 as a
+  separate successor repository.
+- Files:
+  - Added `scripts/build_public_pages.py`.
+  - Generated `docs/.nojekyll`.
+  - Generated `docs/index.html` and `docs/en/index.html`.
+  - Generated `docs/paper/index.html` and `docs/paper/en/index.html`.
+  - Generated `docs/source-provenance.html`.
+  - Generated `docs/PUBLICATION.md`.
+  - Generated `docs/errata.html` and `docs/ERRATA.md`.
+  - Updated `README.md` with the Pages entry points and release policy.
+- Publication shape:
+  - Japanese PDF/TeX v3 remains the citation and close-reading base.
+  - Japanese HTML is a linked web reading version with figures, tables,
+    references, source/provenance links, and publication boundary notes.
+  - English HTML is an access version using the fixed terminology memo; English
+    PDF/TeX can be prepared as a later release step.
+- Release policy:
+  - Once released, public PDF/HTML are treated as fixed release artifacts.
+  - Later corrections, additions, link fixes, figure-label fixes, and
+    interpretive changes should be recorded as errata, not silently rewritten
+    into the released text.
+  - If the paper body must be updated, create a clearly versioned release and
+    keep the old-version difference and reason in the errata record.
+- Source and API boundary:
+  - No OpenAI API calls.
+  - No new source-text fetches.
+  - No raw/processed text, chunk previews, embedding caches, or embedding
+    vectors were added to the public HTML.
+- Verification:
+  - `/Users/daishin/.pyenv/shims/python -m py_compile scripts/build_public_pages.py`
+  - `/Users/daishin/.pyenv/shims/python scripts/build_public_pages.py`
+  - Checked generated HTML relative links and page anchors.
+  - Checked generated public files for API keys, local absolute paths, old SAT
+    URL tokens, and forbidden raw-data indicators. Matches were only negative
+    publication-boundary statements.
+  - Served `docs/` locally at `http://127.0.0.1:8765/` and confirmed HTTP 200
+    for `/`, `/en/`, `/paper/`, `/paper/en/`, `/source-provenance.html`, and
+    `/paper/okyou2-honen-shinran-paper-v3.pdf`.
+  - After adding the release errata policy, also confirmed HTTP 200 for
+    `/errata.html` and `/ERRATA.md`.
+  - Playwright screenshot verification was attempted, but the local Node
+    environment did not have the `playwright` package installed.
+  - Predecessor `/Users/daishin/Documents/Codex/Okyou` remained unchanged.
+- Commit: pending.

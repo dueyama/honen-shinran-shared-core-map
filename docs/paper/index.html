@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>法然・親鸞の共有核とはみ出し領域: 三層探索地図による『選択集』・『教行信証』比較</title>
+  <style>
+:root {
+  color-scheme: light;
+  --bg: #f5f7f4;
+  --paper: #ffffff;
+  --ink: #1f2723;
+  --muted: #657069;
+  --line: #d8ded6;
+  --accent: #2f6f73;
+  --accent-2: #7f5d2e;
+  --soft: #eef4f1;
+  --warn: #9a5b3f;
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Noto Sans JP", "Noto Sans", sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--ink); line-height: 1.78; }
+a { color: var(--accent); text-underline-offset: 3px; }
+header { background: var(--paper); border-bottom: 1px solid var(--line); }
+.page { width: min(1040px, calc(100% - 32px)); margin: 0 auto; }
+.hero { padding: 34px 0 28px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 0.72fr); gap: 28px; align-items: center; }
+.paper-header { padding: 34px 0 20px; }
+h1 { margin: 0 0 12px; font-size: clamp(28px, 4.8vw, 48px); line-height: 1.18; letter-spacing: 0; }
+.subtitle { margin: 0 0 12px; color: var(--muted); font-size: clamp(17px, 2.2vw, 22px); line-height: 1.45; }
+.meta { color: var(--muted); font-size: 14px; }
+.site-nav { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 18px; }
+.nav-link { display: inline-flex; min-height: 36px; align-items: center; justify-content: center; padding: 0 13px; border: 1px solid var(--line); border-radius: 6px; color: var(--ink); background: #fff; font-size: 14px; text-decoration: none; }
+.nav-link[aria-current="page"] { border-color: #bccbc8; background: #f4f7f5; color: var(--accent); font-weight: 700; }
+.lang-switch { display: inline-flex; min-height: 36px; overflow: hidden; border: 1px solid var(--line); border-radius: 999px; background: #fff; }
+.lang-switch a { display: inline-flex; align-items: center; padding: 0 12px; color: var(--muted); text-decoration: none; font-size: 14px; }
+.lang-switch a + a { border-left: 1px solid var(--line); }
+.lang-switch a[aria-current="true"] { background: var(--accent); color: #fff; font-weight: 700; }
+main.paper { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; margin: 22px auto 44px; padding: 34px 44px; }
+main.home { padding: 28px 0 44px; }
+h2 { margin: 34px 0 12px; font-size: 25px; line-height: 1.35; letter-spacing: 0; }
+h3 { margin: 26px 0 10px; font-size: 19px; line-height: 1.4; letter-spacing: 0; }
+p { margin: 0 0 1em; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92em; background: #f3f5f2; padding: 0 3px; border-radius: 3px; }
+.abstract, .notice { border-left: 5px solid var(--accent); background: #f4f7f5; padding: 18px; margin: 0 0 24px; }
+.notice { border-left-color: var(--warn); }
+.toc { border: 1px solid var(--line); background: #fbfcfa; border-radius: 7px; padding: 16px; margin: 22px 0; }
+.toc h2 { margin-top: 0; font-size: 18px; }
+.toc ol { columns: 2; gap: 28px; margin-bottom: 0; }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.card { border: 1px solid var(--line); border-radius: 8px; background: var(--paper); padding: 16px; }
+.card h2, .card h3 { margin-top: 0; font-size: 18px; }
+.card p { color: var(--muted); font-size: 14px; }
+.figure-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 20px 0; }
+figure { margin: 26px 0; }
+figure img, .figure-grid img, .hero img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 7px; background: #fff; }
+.figure-grid img { aspect-ratio: 4 / 3; object-fit: contain; }
+figcaption, caption { color: var(--muted); font-size: 13px; line-height: 1.6; }
+figcaption { margin-top: 8px; }
+.table-wrap { overflow-x: auto; margin: 24px 0; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; line-height: 1.55; }
+th, td { border: 1px solid var(--line); padding: 7px 8px; vertical-align: top; }
+th { background: #f5f7f4; font-weight: 700; }
+caption { caption-side: top; text-align: left; margin-bottom: 8px; font-weight: 700; }
+.ref-list { font-size: 13px; line-height: 1.6; }
+.ref-list li { margin-bottom: 0.75em; }
+.pill-list { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 12px 0 0; list-style: none; }
+.pill-list li { border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; background: #fff; color: var(--muted); font-size: 13px; }
+.source-link { font-weight: 650; }
+footer { border-top: 1px solid var(--line); background: var(--paper); padding: 18px 0; color: var(--muted); font-size: 12px; }
+@media (max-width: 760px) {
+  .hero, .grid, .figure-grid { grid-template-columns: 1fr; }
+  main.paper { padding: 22px 18px; }
+  .toc ol { columns: 1; }
+  table { font-size: 13px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="page paper-header">
+    <h1>法然・親鸞の共有核とはみ出し領域</h1>
+    <p class="subtitle">三層探索地図による『選択集』・『教行信証』比較</p>
+    <p class="meta">上山大信 / 2026年6月5日</p>
+
+<nav class="site-nav" aria-label="サイト内ナビゲーション">
+  <a class="nav-link" href="../">トップ</a>
+  <a class="nav-link" href="./" aria-current="page">論文HTML</a>
+  <a class="nav-link" href="okyou2-honen-shinran-paper-v3.pdf">PDF</a>
+  <a class="nav-link" href="../source-provenance.html">出典・検証記録</a>
+  <a class="nav-link" href="../errata.html">エラッタ</a>
+  <span class="lang-switch" aria-label="言語切替">
+    <a href="./" aria-current="true">日本語</a>
+    <a href="en/">English</a>
+  </span>
+</nav>
+  </div>
+</header>
+<main class="paper page">
+  <section class="abstract" id="abstract">
+    <h2>要旨</h2>
+    <p>本稿は、法然『選擇本願念佛集』と親鸞『顯淨土眞實教行證文類』が、意味空間上でどのように重なり、また共有核から相対的に離れて現れる「はみ出し領域」（相対的突出領域）がどの方向に現れるかを、意味層・文体語彙層・典拠マーカー層の三層から検討する探索的研究である。文体語彙層は厳密な文体計量ではなく、辞書ベースの語彙・主題濃淡として扱う。</p>
+    <p>結果として、法然チャンク69件の最近傍非自己は親鸞50件、道綽11件、源信4件、善導3件、曇鸞1件であり、法然チャンクの多くは親鸞文献チャンクと意味空間上で強く重なる。一方、親鸞チャンク191件の最近傍非自己は法然48件、道綽45件、源信36件、曇鸞23件、天親21件、善導17件、龍樹1件に分かれた。</p>
+    <p>共有核からのはみ出し領域を比較すると、法然側では正雑二行、諸行との取捨、本願、付属・証誠など、念仏を諸行から選び出す論証が現れた。これに対し親鸞側では、信巻の信・三心・罪救済、化身土巻の護法・鬼神・宇宙秩序、外教批判、方便・真仮整理が目立った。</p>
+  </section>
+  <p><strong>キーワード:</strong> 法然、親鸞、選択本願念仏集、教行信証、共有核、はみ出し領域、意味埋め込み、三層分析、SAT、典拠マーカー</p>
+  <section class="toc">
+    <h2>目次</h2>
+    <ol>
+      <li><a href="#intro">はじめに</a></li>
+      <li><a href="#data">データ</a></li>
+      <li><a href="#method">方法</a></li>
+      <li><a href="#results">結果</a></li>
+      <li><a href="#discussion">考察</a></li>
+      <li><a href="#limitations">限界</a></li>
+      <li><a href="#conclusion">結論</a></li>
+      <li><a href="#references">参考文献</a></li>
+    </ol>
+  </section>
+  <section id="intro">
+    <h2>1 はじめに</h2>
+    <p>本稿は、拙稿「意味・文体・典拠マーカーの三層地図による仏教文献探索」を受け、対象を浄土教文献に狭めて再検討する探索的研究である。前稿では、意味的に近いこと、文体的に近いこと、典拠・引用経路として近いことは同一ではない、という点を中心命題とした。</p>
+    <p>本稿では、法然の代表的著作として『選擇本願念佛集』を、親鸞の代表的著作として『顯淨土眞實教行證文類』を中心対象に据える。両者は浄土教の中心問題を共有するため、意味空間上でも大きく重なることが予想される。したがって、本稿で重要なのは「重なるかどうか」ではなく、重なった上で、どの方向に差異が出るかである。</p>
+    <p>ここでいう「はみ出し領域」とは、共有核から相対的に離れて現れる本文領域、すなわち相対的突出領域を指す探索的な作業概念である。</p>
+  </section>
+  <section id="data">
+    <h2>2 データ</h2>
+    <p>分析本文はいずれもSAT大正新脩大藏經テキストデータベースから取得した漢文本文を用いた。比較アンカーとして、浄土教祖師文献から龍樹、天親、曇鸞、道綽、善導、源信のテキストを加えた。</p>
+    <div class="table-wrap"><table><caption>表1. 対象文献とチャンク数</caption><thead><tr><th>分類</th><th>著者</th><th>文献</th><th>SAT ID・範囲</th><th>扱い</th><th>チャンク数</th></tr></thead><tbody><tr><td>中心</td><td>法然</td><td>選擇本願念佛集</td><td>T2608</td><td>全体</td><td>69</td></tr>
+<tr><td>中心</td><td>親鸞</td><td>顯淨土眞實教行證文類</td><td>T2646</td><td>全体</td><td>191</td></tr>
+<tr><td>アンカー</td><td>龍樹</td><td>十住毘婆沙論 易行品</td><td>T1521, 0038a25--0040a22</td><td>抜粋</td><td>6</td></tr>
+<tr><td>アンカー</td><td>天親</td><td>無量寿経優波提舎願生偈</td><td>T1524</td><td>全体</td><td>9</td></tr>
+<tr><td>アンカー</td><td>曇鸞</td><td>往生論註</td><td>T1819</td><td>全体</td><td>31</td></tr>
+<tr><td>アンカー</td><td>道綽</td><td>安楽集</td><td>T1958</td><td>全体</td><td>42</td></tr>
+<tr><td>アンカー</td><td>善導</td><td>観無量寿仏経疏</td><td>T1753</td><td>全体</td><td>23</td></tr>
+<tr><td>アンカー</td><td>源信</td><td>往生要集</td><td>T2682</td><td>全体</td><td>73</td></tr></tbody></table></div>
+    <p>本文取得では、SAT HTMLから本文行を抽出し、UI部品、HTMLタグ、画像プレースホルダ、SAT行番号の本文混入を除去した。公開版にはraw本文、processed text、chunk preview、embedding vectorを含めない。</p>
+  </section>
+  <section id="method">
+    <h2>3 方法</h2>
+    <p>本文は <code>tiktoken</code> の <code>cl100k_base</code> でトークン化し、700トークン、100トークン重なりでチャンク化した。チャンク本文はUnicode文字境界に合わせて作成し、各チャンクにSAT行範囲、チャンク番号、SHA-256 hashを付した。</p>
+    <p>埋め込みにはOpenAI <code>text-embedding-3-large</code> を用いた。本稿で分析した各チャンクベクトルは3072次元である。法然・親鸞チャンクでPCAを適合し、祖師文献アンカーは同じPCA面へ投影した。PCA 2軸合計の寄与率は約11.6%であり、2次元図は探索用の投影である。</p>
+    <ol>
+      <li>意味層: 3072次元コサイン類似度、2次元PCA上の距離、最近傍非自己、最近傍アンカー。</li>
+      <li>文体語彙層: 辞書ベースの語群カウント。厳密な文体計量ではなく、語彙・主題の局所的濃淡を示す代替指標である。</li>
+      <li>典拠マーカー層: 経名、論釈名、祖師名、引用導入句の辞書カウント。引用検出そのものではない。</li>
+    </ol>
+    <p>はみ出し候補は、2次元PCA上の最近傍非自己距離 <span class="math-inline">d<sub>i</sub></span> と、3072次元空間での最近傍非自己コサイン類似度 <span class="math-inline">s<sub>i</sub></span> から、<span class="math-inline">p<sub>i</sub> = d<sub>i</sub>(1 - s<sub>i</sub>)</span> として抽出した。</p>
+  </section>
+  <section id="results">
+    <h2>4 結果</h2>
+    <figure id="fig-focus"><a href="../figures/sat-safe-honen-shinran-focus-map.png"><img src="../figures/sat-safe-honen-shinran-focus-map.png" alt="法然・親鸞の意味地図"></a><figcaption>図1. SAT漢文・Unicode-safeチャンクによる法然・親鸞の意味地図。</figcaption></figure>
+    <figure id="fig-anchor"><a href="../figures/sat-safe-honen-shinran-high-priest-anchor-map.png"><img src="../figures/sat-safe-honen-shinran-high-priest-anchor-map.png" alt="法然・親鸞・祖師文献アンカー地図"></a><figcaption>図2. 法然・親鸞・祖師文献アンカー地図。</figcaption></figure>
+    <div class="table-wrap"><table><caption>表2. 共有核とはみ出し領域の要約</caption><thead><tr><th>領域</th><th>計算上のサイン</th><th>主な語群・巻/章</th><th>解釈</th></tr></thead><tbody><tr><td>共有核</td><td>法然・親鸞チャンクが相互に近接し、道綽・善導などのアンカーも重なる</td><td>念仏・称名、往生・浄土、信・三心</td><td>専修念仏・浄土教的共通問題圏</td></tr>
+<tr><td>法然はみ出し</td><td>非法然点から相対的に離れ、選択論証部に集中</td><td>正雑二行、三輩・一向専念、本願念仏、付属・証誠</td><td>念仏を諸行から選び出す論証</td></tr>
+<tr><td>親鸞はみ出し</td><td>非親鸞点から相対的に離れ、信巻・化身土巻に集中</td><td>信巻、化身土巻、罪・救済、方便・化身土、廃立・取捨</td><td>本願・信・証・真仏土/化身土の典拠的体系</td></tr></tbody></table></div>
+    <div class="table-wrap"><table><caption>表3. 最近傍非自己の主要結果</caption><thead><tr><th>対象</th><th>最近傍グループ</th><th>チャンク数</th><th>比率</th></tr></thead><tbody><tr><td>法然</td><td>親鸞</td><td>50</td><td>72.5%</td></tr>
+<tr><td>法然</td><td>道綽</td><td>11</td><td>15.9%</td></tr>
+<tr><td>法然</td><td>源信</td><td>4</td><td>5.8%</td></tr>
+<tr><td>親鸞</td><td>法然</td><td>48</td><td>25.1%</td></tr>
+<tr><td>親鸞</td><td>道綽</td><td>45</td><td>23.6%</td></tr>
+<tr><td>親鸞</td><td>源信</td><td>36</td><td>18.8%</td></tr>
+<tr><td>親鸞</td><td>曇鸞</td><td>23</td><td>12.0%</td></tr>
+<tr><td>親鸞</td><td>天親</td><td>21</td><td>11.0%</td></tr></tbody></table></div>
+    <figure id="fig-bars"><a href="../figures/shared-core-protrusion-nearest-bars.png"><img src="../figures/shared-core-protrusion-nearest-bars.png" alt="共有核とはみ出し領域と最近傍非自己の可視化"></a><figcaption>図3. 共有核とはみ出し領域と最近傍非自己の可視化。上段は定性的要約、下段は最近傍非自己数を示す。</figcaption></figure>
+    <figure id="fig-honen-seq"><a href="../figures/honen-three-layer-sequence-heatmap.png"><img src="../figures/honen-three-layer-sequence-heatmap.png" alt="法然三層チャンク列"></a><figcaption>図4. 法然『選択集』三層チャンク列。文体語彙層は語群カウントの代替指標であり、典拠マーカー層は引用検出そのものではない。</figcaption></figure>
+    <figure id="fig-shinran-seq"><a href="../figures/shinran-three-layer-sequence-heatmap.png"><img src="../figures/shinran-three-layer-sequence-heatmap.png" alt="親鸞三層チャンク列"></a><figcaption>図5. 親鸞『教行信証』三層チャンク列。</figcaption></figure>
+    <p>法然側のはみ出し上位24件は、付属・証誠・選択総結10件、三輩・一向専念4件、本願念仏4件、三心・信心3件、正雑二行3件であった。親鸞側では、信巻13件、化身土巻8件を中心に広がる。</p>
+    <div class="table-wrap"><table><caption>表4. 代表箇所の確認</caption><thead><tr><th>対象</th><th>箇所</th><th>SAT行範囲</th><th>近傍・語群</th><th>読解上の確認点</th></tr></thead><tbody><tr><td>法然</td><td>chunk 7, 正雑二行</td><td>T2608, 83.0003a04--0003b04</td><td>最近傍は親鸞、近傍祖師は善導、語群は正雑・諸行</td><td>正行・雑行の分類を通じて、念仏を諸行から選び出す論証として読める。</td></tr>
+<tr><td>親鸞</td><td>chunk 84, 信巻</td><td>T2646, 83.0614a08--0614b05</td><td>最近傍は源信、語群は罪・救済</td><td>信巻の罪・救済問題が、源信方向の主題圏と接しながら現れる。</td></tr>
+<tr><td>親鸞</td><td>chunk 182, 化身土巻</td><td>T2646, 83.0640b28--0640c27</td><td>最近傍は道綽、語群は廃立・取捨</td><td>化身土巻の外教批判・真仮整理が、道綽方向の問題圏と接しつつ現れる。</td></tr></tbody></table></div>
+  </section>
+  <section id="discussion">
+    <h2>5 考察</h2>
+    <p>以下の考察は、埋め込み空間上の配置、高次元コサイン類似度、2次元PCA上のはみ出し、辞書ベースの語群、典拠マーカーから得た探索的所見である。本稿の結果は、既存研究を置き換える結論ではなく、既存研究と照合すべき精査候補を抽出する探索地図である。</p>
+    <h3>法然は「念仏を選ぶ論理」を構成する</h3>
+    <p>法然『選択集』の特徴は、念仏を諸行から選び出す論証にある。本分析で抽出したはみ出し領域でも、正雑二行、諸行との取捨、本願、三輩・一向専念、付属・証誠が強く現れた。</p>
+    <h3>親鸞は「本願・信・証の典拠的体系」へ展開する</h3>
+    <p>親鸞『教行信証』は、法然に近い領域を持ちながら、道綽、源信、曇鸞、天親、善導へ広がった。とくに信巻や化身土巻では、法然近接と親鸞側突出候補、祖師近接が混在する。</p>
+    <h3>三層分析の意義</h3>
+    <p>意味層だけでは解釈が混ざる。意味層、文体語彙層、典拠マーカー層を分けることで、意味的近接をただちに影響関係や教義的一致として読んでしまう危険を抑えることができる。</p>
+  </section>
+  <section id="limitations">
+    <h2>6 限界</h2>
+    <ol>
+      <li>2次元PCAは全分散の約11.6%のみを示すため、図上の距離は高次元空間の近傍関係と必ずしも一致しない。</li>
+      <li>チャンクは700トークン・100トークン重なりであり、巻・章・引用単位などの自然境界とは一致しない。</li>
+      <li>語群カウントは辞書ベースの限定的な実装であり、否定、引用者、文脈、語義の違いを見ていない。</li>
+      <li>典拠マーカー層は引用検出そのものではない。</li>
+      <li>古写経本、異本、写本系資料はまだ直接分析に組み込んでいない。</li>
+    </ol>
+  </section>
+  <section id="conclusion">
+    <h2>7 結論</h2>
+    <p>法然と親鸞は意味空間上で強く重なる。しかし、本稿で重要なのは、重なるかどうかではなく、共有核から何がどの方向へはみ出すかである。</p>
+    <p>法然側のはみ出し領域は、念仏理解の単純な差というより、念仏を諸行から選び出す論証、すなわち正雑二行、取捨、選択、本願、付属・証誠のまとまりとして現れる。親鸞側のはみ出し領域は、信巻の罪と救済、化身土巻の方便・真仮整理、護法・鬼神・宇宙秩序、外教批判として現れ、法然側とは異なる広がり方を示した。</p>
+    <p>これは既存研究を置き換える結論ではなく、歴史研究・引用研究との比較によって検証すべき精査候補である。</p>
+  </section>
+  <section id="references" class="references">
+    <h2>参考文献</h2>
+    <ol class="ref-list"><li>上山大信「意味・文体・典拠マーカーの三層地図による仏教文献探索：宗派別参照群・阿弥陀経二訳・親鸞文献の予備的分析」2026. <a href="https://dueyama.github.io/buddhist-text-embedding-map/paper/">前論文HTML</a>（2026年6月5日閲覧）</li>
+<li>SAT大正新脩大藏經テキストデータベース. <a href="https://21dzk.l.u-tokyo.ac.jp/SAT/">https://21dzk.l.u-tokyo.ac.jp/SAT/</a>（2026年6月5日閲覧）</li>
+<li>森脇一掬「選択集と教行信証に関する一考察」『龍谷論叢』1, 48--72, 1953. INBUDS ID: IB00020630A. <a href="https://tripitaka.l.u-tokyo.ac.jp/INBUDS/">INBUDS</a>（2026年6月5日閲覧）</li>
+<li>稲葉秀賢「『教行信証』と『選択集』」『親鸞教学』21, 33--50, 1972. <a href="https://otani.repo.nii.ac.jp/records/10720">大谷大学リポジトリ</a>（2026年6月5日閲覧）</li>
+<li>梅原隆章「選択集と教行信証」『日本文化と浄土教論攷：井川定慶博士喜寿記念』362--371, 1974. INBUDS ID: IB00046839A. <a href="https://tripitaka.l.u-tokyo.ac.jp/INBUDS/">INBUDS</a>（2026年6月5日閲覧）</li>
+<li>浅井成海「『選択集』と『教行信証』――基本的問題の継承と展開――」『行信学報』18, 2004. <a href="https://www.gyousin.com/institute/journal/">行信教校</a>（2026年6月5日閲覧）</li>
+<li>根津茂『日本仏教を変えた親鸞の独自性：『教行信証』と『選択集』の比較から見えてきた、念仏の真価』法藏館, 2024. <a href="https://ndlsearch.ndl.go.jp/books/R100000001-I2711B17026510">NDL Search</a>（2026年6月5日閲覧）</li>
+<li>新纂浄土宗大辞典「選択本願念仏集」. <a href="https://jodoshuzensho.jp/daijiten/index.php/%E9%81%B8%E6%8A%9E%E6%9C%AC%E9%A1%98%E5%BF%B5%E4%BB%8F%E9%9B%86">jodoshuzensho.jp</a>（2026年6月5日閲覧）</li>
+<li>新纂浄土宗大辞典「黒谷上人語灯録」. <a href="https://jodoshuzensho.jp/daijiten/index.php/%E9%BB%92%E8%B0%B7%E4%B8%8A%E4%BA%BA%E8%AA%9E%E7%81%AF%E9%8C%B2">jodoshuzensho.jp</a>（2026年6月5日閲覧）</li>
+<li>浄土宗公式サイト「法然上人のご生涯と浄土宗の教え 選択集」. <a href="https://jodo.or.jp/newspaper/special/6226/">jodo.or.jp</a>（2026年6月5日閲覧）</li>
+<li>藤原智「『教行信証』における引用文について：古写経本による再検討」『近現代『教行信証』研究検証プロジェクト研究紀要』3, 63--107, 2020. <a href="https://www.jstage.jst.go.jp/article/kyogyoshinsho/3/0/3_63/_article/-char/ja/">J-STAGE</a>（2026年6月5日閲覧）</li>
+<li>OpenAI, Embeddings documentation. <a href="https://platform.openai.com/docs/guides/embeddings">platform.openai.com</a>（2026年6月5日閲覧）</li>
+<li>OpenAI, <code>tiktoken</code>. <a href="https://github.com/openai/tiktoken">GitHub</a>（2026年6月5日閲覧）</li></ol>
+  </section>
+</main>
+<footer><div class="page">HTML版はWeb閲覧用の整理版です。引用時はPDF版と照合してください。</div></footer>
+
+</body>
+</html>

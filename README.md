@@ -10,7 +10,21 @@
 - 先行 `Okyou` の tracked ファイルは引き継いでいません。
 - 先行 `Okyou` は読み取り専用の参照元として扱います。
 - `.env`、raw/processed 本文、embedding cache、生成 outputs は持ち込んでいません。
-- まずは調査メモと発展ブリーフだけを置いた準備段階です。
+- 法然・親鸞比較論文の公開準備として、`docs/` 配下に GitHub Pages 用HTML、PDF、英語HTML access version、出典・検証記録、エラッタ運用ページを置いています。
+
+## 公開準備
+
+GitHub Pages では `docs/` を公開ルートとして使います。repository 名を `Okyou2` のまま公開する場合の想定URLは `https://dueyama.github.io/Okyou2/` です。repository 名や公開先を変える場合は、公開後にこのURLを確定値へ更新します。
+
+- `docs/index.html`: 日本語トップ。
+- `docs/en/index.html`: English top。
+- `docs/paper/index.html`: 日本語HTML論文。
+- `docs/paper/en/index.html`: English HTML access version。
+- `docs/paper/okyou2-honen-shinran-paper-v3.pdf`: 日本語PDF。
+- `docs/source-provenance.html`: 公開用の出典・検証記録。
+- `docs/errata.html` / `docs/ERRATA.md`: リリース後エラッタ。
+
+リリース後の公開版PDF/HTMLは固定版として扱います。誤記、リンク切れ、図表ラベル、数値、補足説明、解釈変更が見つかった場合は、公開済み本文を黙って差し替えず、エラッタとして記録します。本文更新が必要な場合は、新しい版として明示し、旧版との差分と理由をエラッタに残します。
 
 ## 最初に読むファイル
 

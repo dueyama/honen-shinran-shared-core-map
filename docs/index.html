@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>法然・親鸞の共有核とはみ出し領域</title>
+  <style>
+:root {
+  color-scheme: light;
+  --bg: #f5f7f4;
+  --paper: #ffffff;
+  --ink: #1f2723;
+  --muted: #657069;
+  --line: #d8ded6;
+  --accent: #2f6f73;
+  --accent-2: #7f5d2e;
+  --soft: #eef4f1;
+  --warn: #9a5b3f;
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Noto Sans JP", "Noto Sans", sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--ink); line-height: 1.78; }
+a { color: var(--accent); text-underline-offset: 3px; }
+header { background: var(--paper); border-bottom: 1px solid var(--line); }
+.page { width: min(1040px, calc(100% - 32px)); margin: 0 auto; }
+.hero { padding: 34px 0 28px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 0.72fr); gap: 28px; align-items: center; }
+.paper-header { padding: 34px 0 20px; }
+h1 { margin: 0 0 12px; font-size: clamp(28px, 4.8vw, 48px); line-height: 1.18; letter-spacing: 0; }
+.subtitle { margin: 0 0 12px; color: var(--muted); font-size: clamp(17px, 2.2vw, 22px); line-height: 1.45; }
+.meta { color: var(--muted); font-size: 14px; }
+.site-nav { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 18px; }
+.nav-link { display: inline-flex; min-height: 36px; align-items: center; justify-content: center; padding: 0 13px; border: 1px solid var(--line); border-radius: 6px; color: var(--ink); background: #fff; font-size: 14px; text-decoration: none; }
+.nav-link[aria-current="page"] { border-color: #bccbc8; background: #f4f7f5; color: var(--accent); font-weight: 700; }
+.lang-switch { display: inline-flex; min-height: 36px; overflow: hidden; border: 1px solid var(--line); border-radius: 999px; background: #fff; }
+.lang-switch a { display: inline-flex; align-items: center; padding: 0 12px; color: var(--muted); text-decoration: none; font-size: 14px; }
+.lang-switch a + a { border-left: 1px solid var(--line); }
+.lang-switch a[aria-current="true"] { background: var(--accent); color: #fff; font-weight: 700; }
+main.paper { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; margin: 22px auto 44px; padding: 34px 44px; }
+main.home { padding: 28px 0 44px; }
+h2 { margin: 34px 0 12px; font-size: 25px; line-height: 1.35; letter-spacing: 0; }
+h3 { margin: 26px 0 10px; font-size: 19px; line-height: 1.4; letter-spacing: 0; }
+p { margin: 0 0 1em; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92em; background: #f3f5f2; padding: 0 3px; border-radius: 3px; }
+.abstract, .notice { border-left: 5px solid var(--accent); background: #f4f7f5; padding: 18px; margin: 0 0 24px; }
+.notice { border-left-color: var(--warn); }
+.toc { border: 1px solid var(--line); background: #fbfcfa; border-radius: 7px; padding: 16px; margin: 22px 0; }
+.toc h2 { margin-top: 0; font-size: 18px; }
+.toc ol { columns: 2; gap: 28px; margin-bottom: 0; }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.card { border: 1px solid var(--line); border-radius: 8px; background: var(--paper); padding: 16px; }
+.card h2, .card h3 { margin-top: 0; font-size: 18px; }
+.card p { color: var(--muted); font-size: 14px; }
+.figure-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 20px 0; }
+figure { margin: 26px 0; }
+figure img, .figure-grid img, .hero img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 7px; background: #fff; }
+.figure-grid img { aspect-ratio: 4 / 3; object-fit: contain; }
+figcaption, caption { color: var(--muted); font-size: 13px; line-height: 1.6; }
+figcaption { margin-top: 8px; }
+.table-wrap { overflow-x: auto; margin: 24px 0; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; line-height: 1.55; }
+th, td { border: 1px solid var(--line); padding: 7px 8px; vertical-align: top; }
+th { background: #f5f7f4; font-weight: 700; }
+caption { caption-side: top; text-align: left; margin-bottom: 8px; font-weight: 700; }
+.ref-list { font-size: 13px; line-height: 1.6; }
+.ref-list li { margin-bottom: 0.75em; }
+.pill-list { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 12px 0 0; list-style: none; }
+.pill-list li { border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; background: #fff; color: var(--muted); font-size: 13px; }
+.source-link { font-weight: 650; }
+footer { border-top: 1px solid var(--line); background: var(--paper); padding: 18px 0; color: var(--muted); font-size: 12px; }
+@media (max-width: 760px) {
+  .hero, .grid, .figure-grid { grid-template-columns: 1fr; }
+  main.paper { padding: 22px 18px; }
+  .toc ol { columns: 1; }
+  table { font-size: 13px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="page hero">
+    <div>
+      <h1>法然・親鸞の共有核とはみ出し領域</h1>
+      <p class="subtitle">三層探索地図による『選択集』・『教行信証』比較</p>
+      <p class="meta">上山大信 / 2026年6月5日</p>
+
+<nav class="site-nav" aria-label="サイト内ナビゲーション">
+  <a class="nav-link" href="./" aria-current="page">トップ</a>
+  <a class="nav-link" href="paper/">論文HTML</a>
+  <a class="nav-link" href="paper/okyou2-honen-shinran-paper-v3.pdf">PDF</a>
+  <a class="nav-link" href="source-provenance.html">出典・検証記録</a>
+  <a class="nav-link" href="errata.html">エラッタ</a>
+  <span class="lang-switch" aria-label="言語切替">
+    <a href="./" aria-current="true">日本語</a>
+    <a href="en/">English</a>
+  </span>
+</nav>
+    </div>
+    <figure>
+      <a href="figures/sat-safe-honen-shinran-focus-map.png"><img src="figures/sat-safe-honen-shinran-focus-map.png" alt="法然・親鸞の意味地図"></a>
+      <figcaption>法然・親鸞の共有核とはみ出し領域を読むための中心図。</figcaption>
+    </figure>
+  </div>
+</header>
+<main class="home page">
+  <section class="grid">
+    <article class="card">
+      <h2>論文HTML</h2>
+      <p>図表・参考資料・用語メモへ直接移動できるWeb版です。</p>
+      <p><a href="paper/">日本語HTMLを読む</a></p>
+    </article>
+    <article class="card">
+      <h2>PDF</h2>
+      <p>ページ固定の引用・印刷用PDFです。</p>
+      <p><a href="paper/okyou2-honen-shinran-paper-v3.pdf">PDFを開く</a></p>
+    </article>
+    <article class="card">
+      <h2>English</h2>
+      <p>英語読者向けHTML版と訳語メモです。</p>
+      <p><a href="paper/en/">English HTML</a></p>
+    </article>
+  </section>
+  <section class="notice">
+    <h2>公開境界</h2>
+    <p>この公開版は本文そのもの、processed text、chunk preview、embedding cache、embedding vectorを含みません。図表・集計・SAT行範囲・検証メモなど、本文を含まない派生情報のみを公開対象にします。</p>
+    <p>リリース後は公開版本文を直接書き換えず、訂正・補足・変更履歴は<a href="errata.html">エラッタ</a>として公開する。</p>
+  </section>
+  <section>
+    <h2>主要図</h2>
+    <div class="figure-grid">
+      <a href="figures/sat-safe-honen-shinran-high-priest-anchor-map.png"><img src="figures/sat-safe-honen-shinran-high-priest-anchor-map.png" alt="法然・親鸞・祖師文献アンカー地図"></a>
+      <a href="figures/shared-core-protrusion-nearest-bars.png"><img src="figures/shared-core-protrusion-nearest-bars.png" alt="共有核とはみ出し領域と最近傍非自己の可視化"></a>
+      <a href="figures/shinran-three-layer-sequence-heatmap.png"><img src="figures/shinran-three-layer-sequence-heatmap.png" alt="親鸞三層チャンク列"></a>
+    </div>
+  </section>
+</main>
+<footer><div class="page">Okyou2 / GitHub Pages publication draft. Source texts remain subject to each provider's terms.</div></footer>
+
+</body>
+</html>

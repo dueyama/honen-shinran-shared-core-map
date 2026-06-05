@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Okyou2 エラッタ</title>
+  <style>
+:root {
+  color-scheme: light;
+  --bg: #f5f7f4;
+  --paper: #ffffff;
+  --ink: #1f2723;
+  --muted: #657069;
+  --line: #d8ded6;
+  --accent: #2f6f73;
+  --accent-2: #7f5d2e;
+  --soft: #eef4f1;
+  --warn: #9a5b3f;
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Noto Sans JP", "Noto Sans", sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--ink); line-height: 1.78; }
+a { color: var(--accent); text-underline-offset: 3px; }
+header { background: var(--paper); border-bottom: 1px solid var(--line); }
+.page { width: min(1040px, calc(100% - 32px)); margin: 0 auto; }
+.hero { padding: 34px 0 28px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 0.72fr); gap: 28px; align-items: center; }
+.paper-header { padding: 34px 0 20px; }
+h1 { margin: 0 0 12px; font-size: clamp(28px, 4.8vw, 48px); line-height: 1.18; letter-spacing: 0; }
+.subtitle { margin: 0 0 12px; color: var(--muted); font-size: clamp(17px, 2.2vw, 22px); line-height: 1.45; }
+.meta { color: var(--muted); font-size: 14px; }
+.site-nav { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 18px; }
+.nav-link { display: inline-flex; min-height: 36px; align-items: center; justify-content: center; padding: 0 13px; border: 1px solid var(--line); border-radius: 6px; color: var(--ink); background: #fff; font-size: 14px; text-decoration: none; }
+.nav-link[aria-current="page"] { border-color: #bccbc8; background: #f4f7f5; color: var(--accent); font-weight: 700; }
+.lang-switch { display: inline-flex; min-height: 36px; overflow: hidden; border: 1px solid var(--line); border-radius: 999px; background: #fff; }
+.lang-switch a { display: inline-flex; align-items: center; padding: 0 12px; color: var(--muted); text-decoration: none; font-size: 14px; }
+.lang-switch a + a { border-left: 1px solid var(--line); }
+.lang-switch a[aria-current="true"] { background: var(--accent); color: #fff; font-weight: 700; }
+main.paper { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; margin: 22px auto 44px; padding: 34px 44px; }
+main.home { padding: 28px 0 44px; }
+h2 { margin: 34px 0 12px; font-size: 25px; line-height: 1.35; letter-spacing: 0; }
+h3 { margin: 26px 0 10px; font-size: 19px; line-height: 1.4; letter-spacing: 0; }
+p { margin: 0 0 1em; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92em; background: #f3f5f2; padding: 0 3px; border-radius: 3px; }
+.abstract, .notice { border-left: 5px solid var(--accent); background: #f4f7f5; padding: 18px; margin: 0 0 24px; }
+.notice { border-left-color: var(--warn); }
+.toc { border: 1px solid var(--line); background: #fbfcfa; border-radius: 7px; padding: 16px; margin: 22px 0; }
+.toc h2 { margin-top: 0; font-size: 18px; }
+.toc ol { columns: 2; gap: 28px; margin-bottom: 0; }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.card { border: 1px solid var(--line); border-radius: 8px; background: var(--paper); padding: 16px; }
+.card h2, .card h3 { margin-top: 0; font-size: 18px; }
+.card p { color: var(--muted); font-size: 14px; }
+.figure-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 20px 0; }
+figure { margin: 26px 0; }
+figure img, .figure-grid img, .hero img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 7px; background: #fff; }
+.figure-grid img { aspect-ratio: 4 / 3; object-fit: contain; }
+figcaption, caption { color: var(--muted); font-size: 13px; line-height: 1.6; }
+figcaption { margin-top: 8px; }
+.table-wrap { overflow-x: auto; margin: 24px 0; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; line-height: 1.55; }
+th, td { border: 1px solid var(--line); padding: 7px 8px; vertical-align: top; }
+th { background: #f5f7f4; font-weight: 700; }
+caption { caption-side: top; text-align: left; margin-bottom: 8px; font-weight: 700; }
+.ref-list { font-size: 13px; line-height: 1.6; }
+.ref-list li { margin-bottom: 0.75em; }
+.pill-list { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 12px 0 0; list-style: none; }
+.pill-list li { border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; background: #fff; color: var(--muted); font-size: 13px; }
+.source-link { font-weight: 650; }
+footer { border-top: 1px solid var(--line); background: var(--paper); padding: 18px 0; color: var(--muted); font-size: 12px; }
+@media (max-width: 760px) {
+  .hero, .grid, .figure-grid { grid-template-columns: 1fr; }
+  main.paper { padding: 22px 18px; }
+  .toc ol { columns: 1; }
+  table { font-size: 13px; }
+}
+</style>
+</head>
+<body>
+
+<header><div class="page paper-header"><h1>エラッタ</h1><p class="subtitle">Okyou2 release errata</p>
+<nav class="site-nav" aria-label="サイト内ナビゲーション">
+  <a class="nav-link" href="./">トップ</a>
+  <a class="nav-link" href="paper/">論文HTML</a>
+  <a class="nav-link" href="paper/okyou2-honen-shinran-paper-v3.pdf">PDF</a>
+  <a class="nav-link" href="source-provenance.html">出典・検証記録</a>
+  <a class="nav-link" href="errata.html" aria-current="page">エラッタ</a>
+  <span class="lang-switch" aria-label="言語切替">
+    <a href="errata.html" aria-current="true">日本語</a>
+    <a href="en/">English</a>
+  </span>
+</nav></div></header>
+<main class="paper page">
+  <section class="notice">
+    <h2>運用方針</h2>
+    <p>リリース後の公開版は固定版として扱う。誤記、リンク切れ、図表の修正、補足説明、解釈の変更が必要になった場合は、公開済み本文を黙って差し替えず、このページと <code>docs/ERRATA.md</code> に記録する。</p>
+  </section>
+  <h2>記録形式</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>日付</th><th>対象</th><th>種別</th><th>内容</th><th>対応</th></tr></thead>
+      <tbody>
+        <tr><td>未登録</td><td>v3公開版</td><td>-</td><td>現時点でリリース後エラッタはない。</td><td>-</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h2>種別</h2>
+  <ul>
+    <li><strong>訂正:</strong> 誤記、数値、リンク、図表ラベルなどの明確な誤り。</li>
+    <li><strong>補足:</strong> 本文の結論を変えない説明追加。</li>
+    <li><strong>改訂候補:</strong> 解釈や方法上の変更が必要だが、固定版本文には直接反映しないもの。</li>
+  </ul>
+</main>
+<footer><div class="page">Released paper changes are tracked as errata.</div></footer>
+
+</body>
+</html>

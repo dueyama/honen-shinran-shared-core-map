@@ -1055,3 +1055,50 @@ Verification:
   notation, `U+FFFD`, and `親鸞独自候補`; no matches.
 - Searched the V3 TeX log for overfull boxes, unresolved references, fatal
   errors, and LaTeX errors; no matches.
+
+## 2026-06-05 GitHub Pages Publication Prep
+
+Scope:
+
+- Added a static GitHub Pages publication surface under `docs/`.
+- Added Japanese and English top pages.
+- Added Japanese paper HTML and English access-version paper HTML.
+- Added public source/provenance HTML.
+- Added release errata tracking:
+  - `docs/errata.html`
+  - `docs/ERRATA.md`
+
+Release policy:
+
+- Once released, public PDF/HTML are fixed release artifacts.
+- Later corrections, additions, link fixes, figure-label fixes, and
+  interpretive changes should be recorded as errata, not silently rewritten
+  into the released text.
+- If the paper body must be updated, create a clearly versioned release and
+  record the old-version difference and reason in the errata record.
+
+Source and API boundary:
+
+- No OpenAI API calls were made.
+- No new SAT, J-SOKEN, Jodoshuzensho, or other source text fetches were made.
+- Existing paper text, existing analysis outputs, and existing figure assets
+  were reused.
+- The generated public HTML does not include raw source text, processed source
+  text, chunk previews, embedding caches, or embedding vectors.
+
+Verification:
+
+- `/Users/daishin/.pyenv/shims/python -m py_compile scripts/build_public_pages.py`
+- `/Users/daishin/.pyenv/shims/python scripts/build_public_pages.py`
+- Checked generated HTML relative links and page anchors.
+- Checked generated public files for API keys, local absolute paths, old SAT
+  URL tokens, and forbidden raw-data indicators. Matches were only negative
+  publication-boundary statements.
+- Served `docs/` locally at `http://127.0.0.1:8765/` and confirmed HTTP 200
+  for `/`, `/en/`, `/paper/`, `/paper/en/`, `/source-provenance.html`, and
+  `/paper/okyou2-honen-shinran-paper-v3.pdf`.
+- After adding the release errata policy, also confirmed HTTP 200 for
+  `/errata.html` and `/ERRATA.md`.
+- Playwright screenshot verification was attempted, but the local Node
+  environment did not have the `playwright` package installed.
+- Predecessor `/Users/daishin/Documents/Codex/Okyou` remained unchanged.
