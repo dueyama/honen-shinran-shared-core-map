@@ -21,6 +21,8 @@ from urllib.parse import unquote, urlparse
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
 MAX_PUBLIC_FILE_SIZE = 20 * 1024 * 1024
+PUBLIC_PAPER_PDF = "honen-shinran-shared-core-paper.pdf"
+PUBLIC_PAPER_EN_PDF = "honen-shinran-shared-core-paper-en.pdf"
 
 FORBIDDEN_PREFIXES = (
     "data/",
@@ -106,6 +108,32 @@ class LinkParser(HTMLParser):
                 self.ids.add(value)
 
 
+class NavLinkParser(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self.nav_depth = 0
+        self.current_link: dict[str, str] | None = None
+        self.links: list[dict[str, str]] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        attr_map = dict(attrs)
+        if tag == "nav":
+            self.nav_depth += 1
+        elif self.nav_depth and tag == "a":
+            self.current_link = {"href": attr_map.get("href") or "", "text": ""}
+            self.links.append(self.current_link)
+
+    def handle_data(self, data: str) -> None:
+        if self.current_link is not None:
+            self.current_link["text"] += data
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "a":
+            self.current_link = None
+        elif tag == "nav" and self.nav_depth:
+            self.nav_depth -= 1
+
+
 def run_git(args: list[str]) -> bytes:
     return subprocess.check_output(["git", *args], cwd=ROOT)
 
@@ -184,6 +212,29 @@ def check_html_links() -> list[str]:
     return errors
 
 
+def check_nav_links() -> list[str]:
+    errors: list[str] = []
+    expected_targets = {
+        "GitHub": lambda href: href == "https://github.com/dueyama/honen-shinran-shared-core-map",
+        "PDF JP": lambda href: href.endswith(PUBLIC_PAPER_PDF),
+        "PDF EN": lambda href: href.endswith(PUBLIC_PAPER_EN_PDF),
+    }
+    for html_path in sorted(DOCS.rglob("*.html")):
+        parser = NavLinkParser()
+        parser.feed(html_path.read_text(encoding="utf-8"))
+        if not parser.links:
+            continue
+        rel = html_path.relative_to(ROOT)
+        by_text = {link["text"].strip(): link["href"] for link in parser.links}
+        for text, matcher in expected_targets.items():
+            href = by_text.get(text)
+            if href is None:
+                errors.append(f"{rel}: missing nav link {text}")
+            elif not matcher(href):
+                errors.append(f"{rel}: unexpected nav link {text} -> {href}")
+    return errors
+
+
 def is_public_text_file(path: Path) -> bool:
     return path.suffix.lower() in {".html", ".md", ".tex", ".txt", ".css", ".js"}
 
@@ -242,6 +293,7 @@ def main() -> int:
         errors.append("docs/checksums.txt is missing")
 
     errors.extend(check_html_links())
+    errors.extend(check_nav_links())
 
     predecessor = ROOT.parent / "Okyou"
     if predecessor.exists():

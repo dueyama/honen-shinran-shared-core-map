@@ -155,6 +155,7 @@ def nav(lang: str, current: str) -> str:
         top = "../" if nested else "./"
         paper_href = "./" if current == "paper" else ("../paper/" if nested else "paper/")
         pdf_href = PUBLIC_PAPER_PDF if current == "paper" else (f"../paper/{PUBLIC_PAPER_PDF}" if nested else f"paper/{PUBLIC_PAPER_PDF}")
+        pdf_en_href = PUBLIC_PAPER_EN_PDF if current == "paper" else (f"../paper/{PUBLIC_PAPER_EN_PDF}" if nested else f"paper/{PUBLIC_PAPER_EN_PDF}")
         source_href = "../source-provenance.html" if nested else "source-provenance.html"
         errata_href = "./" if current == "errata" else ("../errata/" if current == "paper" else "errata/")
         license_href = "../license.html" if nested else "license.html"
@@ -181,6 +182,7 @@ def nav(lang: str, current: str) -> str:
     </span>
     <a class="nav-link pdf-link" href="{REPOSITORY_URL}">GitHub</a>
     <a class="nav-link pdf-link" href="{pdf_href}">PDF JP</a>
+    <a class="nav-link pdf-link" href="{pdf_en_href}">PDF EN</a>
   </div>
 </nav>"""
     if current == "home":
