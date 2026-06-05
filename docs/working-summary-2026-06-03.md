@@ -354,8 +354,8 @@ SAT safe map を、本文を出さずに読める分析表へ変換した。API 
 
 出力:
 
-- `docs/paper/okyou2-honen-shinran-draft.tex`
-- `docs/paper/okyou2-honen-shinran-draft.pdf`
+- `docs/paper/okyou2-honen-shinran-paper-v0.tex`
+- `docs/paper/okyou2-honen-shinran-paper-v0.pdf`
 - `docs/figures/sat-safe-honen-shinran-focus-map.png`
 - `docs/figures/sat-safe-honen-shinran-high-priest-anchor-map.png`
 - `docs/figures/honen-three-layer-sequence-heatmap.png`
@@ -367,9 +367,9 @@ SAT safe map を、本文を出さずに読める分析表へ変換した。API 
 
 ビルド:
 
-- `uplatex -interaction=nonstopmode okyou2-honen-shinran-draft.tex`
-- `uplatex -interaction=nonstopmode okyou2-honen-shinran-draft.tex`
-- `dvipdfmx okyou2-honen-shinran-draft.dvi`
+- `uplatex -interaction=nonstopmode okyou2-honen-shinran-paper-v0.tex`
+- `uplatex -interaction=nonstopmode okyou2-honen-shinran-paper-v0.tex`
+- `dvipdfmx okyou2-honen-shinran-paper-v0.dvi`
 
 草稿は「法然は念仏選択の論証、親鸞は本願・信・証・真仏土/化身土の典拠的体系化」という作業仮説を中心にまとめた。本文は転載せず、図、集計、SAT line range、近傍表のみを用いた。図の順序は、まず法然/親鸞のみのフォーカス図を出し、その後に同じ PCA 座標系へ高僧アンカーを重ねた図を置く構成にした。
 

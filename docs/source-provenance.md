@@ -744,9 +744,9 @@ Interpretive boundary:
 
 Scope:
 
-- Revised `docs/paper/okyou2-honen-shinran-draft.tex` toward a paper-facing
+- Revised `docs/paper/okyou2-honen-shinran-paper-v0.tex` toward a paper-facing
   manuscript tone.
-- Regenerated `docs/paper/okyou2-honen-shinran-draft.pdf`.
+- Regenerated `docs/paper/okyou2-honen-shinran-paper-v0.pdf`.
 - Regenerated `docs/figures/sat-safe-honen-shinran-high-priest-anchor-map.png`
   from the existing anchor-map metadata using the shared PNG renderer.
 
@@ -823,3 +823,73 @@ Verification:
   the title/abstract, new prior-research section, new table, and references.
 - `git diff --check` passed.
 - Predecessor `/Users/daishin/Documents/Codex/Okyou` remained unchanged.
+
+## 2026-06-05 Final-Draft Review Polish
+
+External input:
+
+- `/Users/daishin/Downloads/okyou2-honen-shinran-final-draft-review.md`
+
+Scope:
+
+- Revised `docs/paper/okyou2-honen-shinran-paper-v0.tex`.
+- Regenerated `docs/paper/okyou2-honen-shinran-paper-v0.pdf`.
+
+Source and API boundary:
+
+- No OpenAI API calls.
+- No new SAT, J-SOKEN, Jodoshuzensho, or other source text fetches.
+- Existing text-free analysis outputs, figure assets, and bibliography notes
+  were reused.
+- Raw/processed text and embedding caches remain local-only under ignored
+  `data/` paths and were not added to the paper.
+
+Paper updates:
+
+- Changed the paper title and PDF metadata to use `三層探索地図`.
+- Defined `はみ出し領域` as an exploratory working concept for relative
+  protrusion from the shared core.
+- Replaced code-facing method names in the prose with paper-facing descriptions
+  of token-boundary-safe chunking and SAT line references.
+- Kept `意味層`, `文体語彙層`, and `典拠マーカー層`, while clarifying that
+  the current `文体語彙層` implementation is a dictionary-based proxy.
+- Expanded Table 2 with SAT identifiers/ranges and whether each source is full
+  text or excerpt in this analysis.
+- Reworded Table 7 as an upper-20 subsampling sensitivity analysis, not a full
+  bias correction.
+- Clarified that Tables 9 and 10 print the top 10 protrusion rows while the
+  prose summarizes the top 24 rows.
+- Added or used citations for Jodoshu/Jodoshuzensho reference entries,
+  Fujiwara 2020, OpenAI embeddings documentation, and `tiktoken`.
+
+Verification:
+
+- `uplatex` was run twice and `dvipdfmx` once.
+- The rebuilt PDF was rendered to PNG with PyMuPDF and visually checked on
+  selected pages covering the title, prior-research section, data table, map
+  figures, shared-core/bar figure, subsampling table, protrusion table,
+  conclusion, and references.
+- The TeX source was searched for rejected internal/draft terms including code
+  API names, English internal labels, old correction wording, and overstrong
+  caveat phrasing; no matches remained.
+
+## 2026-06-05 Paper Versioned Filename
+
+Scope:
+
+- Renamed the current manuscript files from the old `draft` filename to a
+  versioned paper filename:
+  - `docs/paper/okyou2-honen-shinran-paper-v0.tex`
+  - `docs/paper/okyou2-honen-shinran-paper-v0.pdf`
+
+Versioning convention:
+
+- The current manuscript is `v0`.
+- Future manuscript snapshots should use `paper-v1`, `paper-v2`, and so on.
+- Avoid `draft` in paper filenames intended for repository tracking.
+
+Verification:
+
+- Rebuilt `okyou2-honen-shinran-paper-v0.tex` with `uplatex` twice and
+  `dvipdfmx` once.
+- Searched repository docs/scripts for the old manuscript filename.

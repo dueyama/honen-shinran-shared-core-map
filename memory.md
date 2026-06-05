@@ -24,7 +24,7 @@
 
 ## 2026-06-04 JST: Paper Finalization Pass
 
-- Summary: Moved `docs/paper/okyou2-honen-shinran-draft.tex` closer to a submission-style manuscript by removing work-list and internal-note tone from the paper body.
+- Summary: Moved `docs/paper/okyou2-honen-shinran-paper-v0.tex` closer to a submission-style manuscript by removing work-list and internal-note tone from the paper body.
 - Text changes:
   - Replaced draft-like phrases such as `最小構成`, `今回`, `現段階`, and `ズレ` with paper-facing wording such as `基本構成`, `本分析`, `現行の処理`, and `対応しない箇所`.
   - Kept the core caveat that the argument is an embedding-based exploratory inference, not a conclusion verified through historical or citation studies.
@@ -34,7 +34,7 @@
   - Reused existing caches only; no OpenAI API calls and no new source fetches.
 - Verification:
   - `python -m py_compile scripts/analyze_nearest_neighbor_subsampling.py scripts/analyze_high_dim_isolation.py scripts/make_shared_core_bar_figure.py scripts/make_sat_safe_honen_shinran_focus_figure.py scripts/make_sat_safe_high_priest_anchor_map.py scripts/make_honen_three_layer_heatmap.py scripts/make_shinran_three_layer_heatmap.py`
-  - `uplatex` twice and `dvipdfmx` once regenerated `docs/paper/okyou2-honen-shinran-draft.pdf`.
+  - `uplatex` twice and `dvipdfmx` once regenerated `docs/paper/okyou2-honen-shinran-paper-v0.pdf`.
   - Rendered the PDF to PNG with PyMuPDF and visually checked title, focus map, high-priest anchor map, shared-core/bar figure, three-layer figures, and conclusion/reference pages.
   - Checked generated JSON/CSV/Markdown outputs for forbidden raw fields (`text`, `body`, `embedding`, `preview`, `chunk_text`, `raw_text`) and `U+FFFD`.
   - `git diff --check` passed, and predecessor `/Users/daishin/Documents/Codex/Okyou` had empty `git status --short`.
@@ -234,8 +234,8 @@
   - Three-layer Honen view uses semantic affinity to Shinran/high-priest groups, style/lexical dictionary counts, and explicit source-marker dictionary counts.
   - Three-layer Shinran view uses semantic affinity to Honen/high-priest groups, style/lexical dictionary counts, and explicit source-marker dictionary counts.
 - Outputs:
-  - `docs/paper/okyou2-honen-shinran-draft.tex`
-  - `docs/paper/okyou2-honen-shinran-draft.pdf`
+  - `docs/paper/okyou2-honen-shinran-paper-v0.tex`
+  - `docs/paper/okyou2-honen-shinran-paper-v0.pdf`
   - `docs/figures/sat-safe-honen-shinran-focus-map.png`
   - `docs/figures/honen-three-layer-sequence-heatmap.png`
   - `docs/figures/shinran-three-layer-sequence-heatmap.png`
@@ -292,7 +292,7 @@
   - `data/outputs/nearest_neighbor_subsampling_2026-06-04_text-embedding-3-large_700_100.json`
   - `data/outputs/nearest_neighbor_subsampling_2026-06-04_text-embedding-3-large_700_100.csv`
   - `data/outputs/high_dim_isolation_ranking_2026-06-04.csv`
-  - updated `docs/paper/okyou2-honen-shinran-draft.tex`
+  - updated `docs/paper/okyou2-honen-shinran-paper-v0.tex`
 - Findings:
   - Honen-to-Shinran simple nearest-neighbor ratio is `0.724638`, but capped subsampling mean is `0.339275` with 95% range `0.115942`--`0.550725`.
   - Honen-to-Daochuo capped subsampling mean is `0.272`, and Honen-to-Shandao is `0.182464`.
@@ -322,7 +322,7 @@
   - Added `scripts/sat_safe_map_renderer.py`.
   - Regenerated `docs/figures/sat-safe-honen-shinran-focus-map.png` and `docs/figures/sat-safe-honen-shinran-high-priest-anchor-map.png` through `render_sat_safe_map_png`.
   - Stopped emitting the older SVG path from `scripts/make_sat_safe_high_priest_anchor_map.py` for the paper figure.
-  - Clarified in `docs/paper/okyou2-honen-shinran-draft.tex` that the two paper figures use the same coordinate values, display extent, covariance ellipse calculation, and PNG drawing procedure for 法然 and 親鸞.
+  - Clarified in `docs/paper/okyou2-honen-shinran-paper-v0.tex` that the two paper figures use the same coordinate values, display extent, covariance ellipse calculation, and PNG drawing procedure for 法然 and 親鸞.
 - Verification:
   - `python -m py_compile scripts/sat_safe_map_renderer.py scripts/make_sat_safe_honen_shinran_focus_figure.py scripts/make_sat_safe_high_priest_anchor_map.py`
   - `python scripts/make_sat_safe_high_priest_anchor_map.py`
@@ -331,4 +331,55 @@
   - Rebuilt the paper with `uplatex` twice and `dvipdfmx` once.
   - Rendered PDF pages 5--7 to PNG via PyMuPDF and visually checked Figure 1 and Figure 2.
   - No OpenAI API calls and no new source-text fetches.
+- Commit: pending.
+
+## 2026-06-05 JST: Final-Draft Review Polish
+
+- Summary: Incorporated the external final-draft review memo
+  `/Users/daishin/Downloads/okyou2-honen-shinran-final-draft-review.md`
+  into the Honen/Shinran paper draft.
+- Text changes:
+  - Retitled the paper to
+    `法然・親鸞の共有核とはみ出し領域：三層探索地図による『選択集』・『教行信証』比較`.
+  - Softened the abstract and discussion caveat so the paper says the results
+    are exploratory findings not fully checked against historical and citation
+    studies, rather than implying those studies are absent.
+  - Removed implementation-facing terms from the paper body, including direct
+    code API names and internal labels such as fixed decode calls, line-start
+    fields, compact-character wording, and PNG procedure wording.
+  - Kept the predecessor three-layer names, while explicitly stating that
+    `文体語彙層` is a dictionary-based doctrinal word-group proxy rather than
+    strict stylometry.
+  - Reframed the capped nearest-neighbor table as `上限20サンプリング`
+    sensitivity analysis rather than a full bias correction.
+  - Clarified that protrusion scores are ranking indicators, and that the
+    protrusion tables show top 10 rows while the prose summarizes top 24 rows.
+  - Added citations for the Jodoshu/Jodoshuzensho reference entries, Fujiwara
+    2020, OpenAI embeddings, and `tiktoken` where they are used.
+- Verification:
+  - `uplatex` twice and `dvipdfmx` once regenerated
+    `docs/paper/okyou2-honen-shinran-paper-v0.pdf`.
+  - Rendered selected PDF pages to PNG with PyMuPDF and visually checked the
+    title/abstract, prior-research table, data table, focus/anchor maps,
+    shared-core bar figure, subsampling table, protrusion table, conclusion,
+    and references.
+  - Searched the TeX source for rejected draft/internal phrases; no matches
+    remained.
+  - No OpenAI API calls and no new source-text fetches.
+- Commit: pending.
+
+## 2026-06-05 JST: Paper Versioned Filename
+
+- Summary: Renamed the current Honen/Shinran manuscript files from `draft` to
+  explicit versioned names.
+- Current version:
+  - `docs/paper/okyou2-honen-shinran-paper-v0.tex`
+  - `docs/paper/okyou2-honen-shinran-paper-v0.pdf`
+- Versioning convention:
+  - Use `paper-v0`, `paper-v1`, `paper-v2`, ... for subsequent manuscript
+    versions.
+  - Avoid `draft` in committed paper filenames.
+- Verification:
+  - Rebuilt the renamed TeX file with `uplatex` twice and `dvipdfmx` once.
+  - Searched repository docs/scripts for the old draft filename.
 - Commit: pending.
