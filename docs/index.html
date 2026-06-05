@@ -7,32 +7,39 @@
   <style>
 :root {
   color-scheme: light;
-  --bg: #f5f7f4;
+  --bg: #f6f7f2;
   --paper: #ffffff;
+  --panel: #ffffff;
   --ink: #1f2723;
   --muted: #657069;
   --line: #d8ded6;
   --accent: #2f6f73;
   --accent-2: #7f5d2e;
   --soft: #eef4f1;
+  --warm: #9a5b3f;
   --warn: #9a5b3f;
+  --gold: #a7832d;
   font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Noto Sans JP", "Noto Sans", sans-serif;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; background: var(--bg); color: var(--ink); line-height: 1.78; }
+body { margin: 0; background: var(--bg); color: var(--ink); line-height: 1.7; }
 a { color: var(--accent); text-underline-offset: 3px; }
 header { background: var(--paper); border-bottom: 1px solid var(--line); }
-.page { width: min(1040px, calc(100% - 32px)); margin: 0 auto; }
-.hero { padding: 34px 0 28px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 0.72fr); gap: 28px; align-items: center; }
+.page, .wrap { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+.hero { padding: 38px 0 34px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 0.92fr); gap: 28px; align-items: center; }
 .paper-header { padding: 34px 0 20px; }
-h1 { margin: 0 0 12px; font-size: clamp(28px, 4.8vw, 48px); line-height: 1.18; letter-spacing: 0; }
+h1 { margin: 0 0 12px; font-size: clamp(28px, 4.2vw, 48px); line-height: 1.16; letter-spacing: 0; }
 .subtitle { margin: 0 0 12px; color: var(--muted); font-size: clamp(17px, 2.2vw, 22px); line-height: 1.45; }
+.lead { margin: 0; color: var(--muted); font-size: 16px; }
 .meta { color: var(--muted); font-size: 14px; }
-.site-nav { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 18px; }
-.nav-link { display: inline-flex; min-height: 36px; align-items: center; justify-content: center; padding: 0 13px; border: 1px solid var(--line); border-radius: 6px; color: var(--ink); background: #fff; font-size: 14px; text-decoration: none; }
+.site-nav { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 22px; }
+.nav-primary, .nav-tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.nav-tools { margin-left: 0; }
+.nav-link { display: inline-flex; min-height: 38px; align-items: center; justify-content: center; padding: 0 14px; border: 1px solid var(--line); border-radius: 6px; color: var(--ink); background: #fff; font-size: 14px; text-decoration: none; }
 .nav-link[aria-current="page"] { border-color: #bccbc8; background: #f4f7f5; color: var(--accent); font-weight: 700; }
-.lang-switch { display: inline-flex; min-height: 36px; overflow: hidden; border: 1px solid var(--line); border-radius: 999px; background: #fff; }
+.pdf-link { color: var(--muted); }
+.lang-switch { display: inline-flex; min-height: 38px; overflow: hidden; border: 1px solid var(--line); border-radius: 999px; background: #fff; }
 .lang-switch a { display: inline-flex; align-items: center; padding: 0 12px; color: var(--muted); text-decoration: none; font-size: 14px; }
 .lang-switch a + a { border-left: 1px solid var(--line); }
 .lang-switch a[aria-current="true"] { background: var(--accent); color: #fff; font-weight: 700; }
@@ -48,10 +55,16 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fo
 .toc h2 { margin-top: 0; font-size: 18px; }
 .toc ol { columns: 2; gap: 28px; margin-bottom: 0; }
 .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
-.card { border: 1px solid var(--line); border-radius: 8px; background: var(--paper); padding: 16px; }
+.card, .notice, .figure-row { border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+.card { padding: 16px; }
 .card h2, .card h3 { margin-top: 0; font-size: 18px; }
 .card p { color: var(--muted); font-size: 14px; }
 .figure-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 20px 0; }
+.figure-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; overflow: hidden; margin-top: 18px; }
+.figure-row a { display: block; min-width: 0; border-right: 1px solid var(--line); background: #fff; color: var(--ink); text-decoration: none; }
+.figure-row a:last-child { border-right: 0; }
+.figure-row img { width: 100%; aspect-ratio: 4 / 3; object-fit: contain; display: block; background: #fbfcfa; border-bottom: 1px solid var(--line); }
+.figure-row span { display: block; padding: 10px 12px; color: var(--muted); font-size: 13px; }
 figure { margin: 26px 0; }
 figure img, .figure-grid img, .hero img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 7px; background: #fff; }
 .figure-grid img { aspect-ratio: 4 / 3; object-fit: contain; }
@@ -62,6 +75,19 @@ table { width: 100%; border-collapse: collapse; font-size: 14px; line-height: 1.
 th, td { border: 1px solid var(--line); padding: 7px 8px; vertical-align: top; }
 th { background: #f5f7f4; font-weight: 700; }
 caption { caption-side: top; text-align: left; margin-bottom: 8px; font-weight: 700; }
+.latex-paper h2 .secno, .latex-paper h3 .secno { color: var(--muted); margin-right: 0.45em; }
+.latex-paper { width: min(860px, calc(100% - 32px)); font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif; font-size: 16px; line-height: 1.9; }
+.latex-paper h2 { font-size: 22px; margin-top: 36px; }
+.latex-paper h3 { font-size: 17px; margin-top: 24px; }
+.latex-paper .abstract { border-left: 0; background: transparent; padding: 0; margin-bottom: 20px; }
+.latex-paper .abstract h2 { text-align: center; font-size: 18px; margin-top: 0; }
+.latex-paper .keywords { font-weight: 650; }
+.latex-paper .display-math { text-align: center; margin: 18px 0; font-family: "Times New Roman", serif; font-size: 1.08em; }
+.latex-paper .math-inline { font-family: "Times New Roman", serif; }
+.latex-paper .table-wrap table { min-width: 720px; }
+.latex-paper figure img { max-height: none; object-fit: contain; border-radius: 0; }
+.english-paper { font-family: Georgia, "Times New Roman", "Noto Serif", serif; }
+.english-paper .abstract h2 { text-align: left; }
 .ref-list { font-size: 13px; line-height: 1.6; }
 .ref-list li { margin-bottom: 0.75em; }
 .pill-list { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 12px 0 0; list-style: none; }
@@ -69,7 +95,9 @@ caption { caption-side: top; text-align: left; margin-bottom: 8px; font-weight: 
 .source-link { font-weight: 650; }
 footer { border-top: 1px solid var(--line); background: var(--paper); padding: 18px 0; color: var(--muted); font-size: 12px; }
 @media (max-width: 760px) {
-  .hero, .grid, .figure-grid { grid-template-columns: 1fr; }
+  .hero, .grid, .figure-grid, .figure-row { grid-template-columns: 1fr; }
+  .figure-row a { border-right: 0; border-bottom: 1px solid var(--line); }
+  .figure-row a:last-child { border-bottom: 0; }
   main.paper { padding: 22px 18px; }
   .toc ol { columns: 1; }
   table { font-size: 13px; }
@@ -86,15 +114,20 @@ footer { border-top: 1px solid var(--line); background: var(--paper); padding: 1
       <p class="meta">上山大信 / 2026年6月5日</p>
 
 <nav class="site-nav" aria-label="サイト内ナビゲーション">
-  <a class="nav-link" href="./" aria-current="page">トップ</a>
-  <a class="nav-link" href="paper/">論文HTML</a>
-  <a class="nav-link" href="paper/honen-shinran-shared-core-paper.pdf">PDF</a>
-  <a class="nav-link" href="source-provenance.html">出典・検証記録</a>
-  <a class="nav-link" href="errata.html">エラッタ</a>
-  <span class="lang-switch" aria-label="言語切替">
-    <a href="./" aria-current="true">日本語</a>
-    <a href="en/">English</a>
-  </span>
+  <div class="nav-primary">
+    <a class="nav-link" href="./" aria-current="page">トップ</a>
+    <a class="nav-link" href="paper/">論文</a>
+    <a class="nav-link" href="errata/">Errata</a>
+    <a class="nav-link" href="source-provenance.html">出典・検証記録</a>
+    <a class="nav-link" href="license.html">ライセンス</a>
+  </div>
+  <div class="nav-tools">
+    <span class="lang-switch" aria-label="言語切替">
+      <a href="./" aria-current="true">日本語</a>
+      <a href="en/">English</a>
+    </span>
+    <a class="nav-link pdf-link" href="paper/honen-shinran-shared-core-paper.pdf">PDF JP</a>
+  </div>
 </nav>
     </div>
     <figure>
@@ -106,37 +139,53 @@ footer { border-top: 1px solid var(--line); background: var(--paper); padding: 1
 <main class="home page">
   <section class="grid">
     <article class="card">
-      <h2>論文HTML</h2>
-      <p>図表・参考資料・用語メモへ直接移動できるWeb版です。</p>
-      <p><a href="paper/">日本語HTMLを読む</a></p>
+      <h2>論文</h2>
+      <p>日本語PDFを正式な製本版とし、HTML・PDF・TeXソースを公開します。英語版はAI支援翻訳版として別ページに置きます。</p>
     </article>
     <article class="card">
-      <h2>PDF</h2>
-      <p>ページ固定の引用・印刷用PDFです。</p>
-      <p><a href="paper/honen-shinran-shared-core-paper.pdf">PDFを開く</a></p>
+      <h2>Errata</h2>
+      <p>リリース後の訂正・補足は<a href="errata/">Errata</a>として公開し、公開済み本文を黙って差し替えません。</p>
     </article>
     <article class="card">
       <h2>English</h2>
-      <p>英語読者向けHTML版と訳語メモです。</p>
-      <p><a href="paper/en/">English HTML</a></p>
+      <p>英語読者向けに、前稿と同じくAI支援翻訳版のHTML・PDFを公開します。</p>
+    </article>
+    <article class="card">
+      <h2>コード</h2>
+      <p>GitHub Pages生成、TeX整合、図表生成、検証用スクリプトを公開します。APIキーとキャッシュは含めません。</p>
+    </article>
+    <article class="card">
+      <h2>出典・検証</h2>
+      <p><a href="source-provenance.html">出典・検証記録</a>で、本文再配布の境界、生成手順、公開前チェックを確認できます。</p>
+    </article>
+    <article class="card">
+      <h2>公開版の固定</h2>
+      <p>公開PDF/TeXのSHA-256を<a href="checksums.txt">checksums.txt</a>に記録し、以後の補足はErrataとして重ねます。</p>
     </article>
   </section>
   <section class="notice">
     <h2>公開境界</h2>
     <p>この公開版は本文そのもの、processed text、chunk preview、embedding cache、embedding vectorを含みません。図表・集計・SAT行範囲・検証メモなど、本文を含まない派生情報のみを公開対象にします。</p>
-    <p>リリース後は公開版本文を直接書き換えず、訂正・補足・変更履歴は<a href="errata.html">エラッタ</a>として公開する。</p>
+    <p>コードはMIT License、論文・図表・公開文書・公開用派生データはCC BY 4.0で公開します。元本文は再配布せず、各提供元の利用条件に従います。詳細は<a href="license.html">ライセンス</a>を参照してください。</p>
+    <p>リリース後は公開版本文を直接書き換えず、訂正・補足・変更履歴は<a href="errata/">Errata</a>として公開する。</p>
     <p>固定公開物のSHA-256は <a href="checksums.txt">checksums.txt</a> に記録する。</p>
   </section>
-  <section>
-    <h2>主要図</h2>
-    <div class="figure-grid">
-      <a href="figures/sat-safe-honen-shinran-high-priest-anchor-map.png"><img src="figures/sat-safe-honen-shinran-high-priest-anchor-map.png" alt="法然・親鸞・祖師文献アンカー地図"></a>
-      <a href="figures/shared-core-protrusion-nearest-bars.png"><img src="figures/shared-core-protrusion-nearest-bars.png" alt="共有核とはみ出し領域と最近傍非自己の可視化"></a>
-      <a href="figures/shinran-three-layer-sequence-heatmap.png"><img src="figures/shinran-three-layer-sequence-heatmap.png" alt="親鸞三層チャンク列"></a>
-    </div>
+  <section class="figure-row" aria-label="主要図">
+    <a href="figures/sat-safe-honen-shinran-high-priest-anchor-map.png">
+      <img src="figures/sat-safe-honen-shinran-high-priest-anchor-map.png" alt="法然・親鸞・祖師文献アンカー地図">
+      <span>祖師文献アンカー地図</span>
+    </a>
+    <a href="figures/shared-core-protrusion-nearest-bars.png">
+      <img src="figures/shared-core-protrusion-nearest-bars.png" alt="共有核とはみ出し領域と最近傍非自己の可視化">
+      <span>共有核とはみ出し領域</span>
+    </a>
+    <a href="figures/shinran-three-layer-sequence-heatmap.png">
+      <img src="figures/shinran-three-layer-sequence-heatmap.png" alt="親鸞三層チャンク列">
+      <span>親鸞三層チャンク列</span>
+    </a>
   </section>
 </main>
-<footer><div class="page">Okyou2 / GitHub Pages publication draft. Source texts remain subject to each provider's terms.</div></footer>
+<footer><div class="page">Honen-Shinran Shared Core Map / GitHub Pages publication. Source texts remain subject to each provider's terms.</div></footer>
 
 </body>
 </html>

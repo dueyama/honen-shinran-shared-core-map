@@ -1,0 +1,16 @@
+Split License Notice
+
+Copyright (c) 2026 Daishin Ueyama
+
+This repository uses a split license.
+
+Code is licensed under the MIT License. See LICENSE-CODE.
+
+Non-code research outputs, including the paper, figures, documentation,
+process reports, citation metadata, and public derived data, are licensed under
+Creative Commons Attribution 4.0 International (CC BY 4.0). See
+LICENSE-CONTENT.
+
+Source texts retrieved from SAT, J-SOKEN, 84000, or other text providers are
+not redistributed in this repository and are not covered by this repository's
+licenses. Use of those source texts is governed by each provider's terms.

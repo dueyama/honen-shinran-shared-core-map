@@ -16,7 +16,7 @@
 - 親鸞/浄土系への集中: 『教行信証』巻別、浄土三部経、異訳、引用研究と照合する。
 - 公開 viewer 強化: filter、近傍表、巻別表示、層別表示を入れる。
 
-このうち、すぐに動かす筋としては「意味マップに法然・親鸞・高僧文献を重ね、あとで三層分析へ展開する」が良い。
+このうち、すぐに動かす筋としては「意味マップに法然・親鸞・高僧文献を重ね、後続で三層分析へ展開する」が良い。
 
 ## 阿弥陀経・異訳・写本について
 
@@ -271,7 +271,7 @@ PCA は法然・親鸞の focus chunks だけで fit し、高僧アンカーは
 - 新纂浄土宗大辞典「黒谷上人語灯録」: `https://jodoshuzensho.jp/daijiten/index.php/%E9%BB%92%E8%B0%B7%E4%B8%8A%E4%BA%BA%E8%AA%9E%E7%81%AF%E9%8C%B2`
 - 新纂浄土宗大辞典「無量寿経釈」: `https://jodoshuzensho.jp/daijiten/index.php/%E7%84%A1%E9%87%8F%E5%AF%BF%E7%B5%8C%E9%87%88`
 
-## 明日以降の再開メモ
+## 次段階の検討課題
 
 次は、いきなり corpus を広げすぎず、まず次を行うのがよい。
 
@@ -281,7 +281,7 @@ PCA は法然・親鸞の focus chunks だけで fit し、高僧アンカーは
 4. 三層分析の最小版を作る。意味層は embedding、文体語彙層は分類語・廃立語・信/願/回向語、典拠マーカー層は経名・祖師名・引用導入句。
 5. 法然側 corpus 拡張は、『黒谷上人語灯録』と『三部経釈』の機械可読性・本文品質・公開境界を確認してから行う。
 
-明日最初に確認するファイル:
+再開時に確認するファイル:
 
 - `docs/working-summary-2026-06-03.md`
 - `docs/source-provenance.md`
@@ -304,7 +304,7 @@ PCA は法然・親鸞の focus chunks だけで fit し、高僧アンカーは
 
 出典と処理条件の詳細は `docs/source-provenance.md` に記録した。
 
-## 参照メモ
+## 参照資料
 
 - 藤原智「『教行信証』における引用文について：古写経本による再検討」J-STAGE: `https://www.jstage.jst.go.jp/article/kyogyoshinsho/3/0/3_63/_article/-char/ja/`
 - CiNii Research 同論文書誌: `https://cir.nii.ac.jp/crid/1390003825185444608`

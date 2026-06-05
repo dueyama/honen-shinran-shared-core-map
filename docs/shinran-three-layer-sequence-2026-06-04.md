@@ -11,7 +11,7 @@
 
 ## 出力図
 
-![親鸞三層ヒートマップ](/Users/daishin/Documents/Codex/Okyou2/docs/figures/shinran-three-layer-sequence-heatmap.png)
+![親鸞三層ヒートマップ](figures/shinran-three-layer-sequence-heatmap.png)
 
 ## 意味層: 巻別トップ近傍
 

@@ -392,6 +392,9 @@ def md_table(rows: list[dict[str, Any]], fields: list[tuple[str, str]], limit: i
 
 
 def render_doc(summary: dict[str, Any]) -> str:
+    figure_path = str(summary["figure"])
+    if figure_path.startswith("docs/"):
+        figure_path = figure_path.removeprefix("docs/")
     lines: list[str] = [
         "# Honen Three-Layer Sequence 2026-06-04",
         "",
@@ -406,7 +409,7 @@ def render_doc(summary: dict[str, Any]) -> str:
         "",
         "## 出力図",
         "",
-        f"![法然三層ヒートマップ](/Users/daishin/Documents/Codex/Okyou2/{summary['figure']})",
+        f"![法然三層ヒートマップ]({figure_path})",
         "",
         "## 意味層: 章別トップ近傍",
         "",
@@ -420,7 +423,7 @@ def render_doc(summary: dict[str, Any]) -> str:
         "",
         *md_table(summary["summaries"]["source_marker_top_by_section"], [("位置", "section_label"), ("top", "source_marker_top_group"), ("chunks", "chunk_count")]),
         "",
-        "## 初期メモ",
+        "## 補足所見",
         "",
         "- 意味層では多くの法然 chunk が親鸞に近いが、章ごとに道綽・善導・源信へ寄る箇所が分かれる。",
         "- 文体語彙層では、正雑二行、本願念仏、三輩・一向専念、付属・証誠・選択総結に、選択・正雑・念仏・往生の語群が濃く出る。",

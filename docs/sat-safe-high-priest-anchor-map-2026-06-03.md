@@ -100,11 +100,11 @@ Centroid distances in the displayed PCA plane:
 validation only:
 
 ```bash
-/Users/daishin/.pyenv/shims/python scripts/make_sat_safe_high_priest_anchor_map.py --validate-only
+python3 scripts/make_sat_safe_high_priest_anchor_map.py --validate-only
 ```
 
 embedding and map:
 
 ```bash
-/Users/daishin/.pyenv/shims/python scripts/make_sat_safe_high_priest_anchor_map.py
+python3 scripts/make_sat_safe_high_priest_anchor_map.py
 ```

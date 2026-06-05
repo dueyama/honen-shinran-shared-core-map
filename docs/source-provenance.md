@@ -14,8 +14,8 @@ Purpose:
 
 Audited predecessor paths:
 
-- `/Users/daishin/Documents/Codex/Okyou/experiments/sect_sutra_map`
-- `/Users/daishin/Documents/Codex/Okyou/experiments/multilingual_sutra_map`
+- `../Okyou/experiments/sect_sutra_map`
+- `../Okyou/experiments/multilingual_sutra_map`
 
 Method:
 
@@ -784,13 +784,13 @@ Verification:
   (`text`, `body`, `embedding`, `preview`, `chunk_text`, `raw_text`) and
   `U+FFFD`; no matches were found.
 - `git diff --check` passed.
-- Predecessor `/Users/daishin/Documents/Codex/Okyou` remained unchanged.
+- Predecessor `../Okyou` remained unchanged.
 
 ## 2026-06-04 Prior-Research Positioning Memo
 
 External input:
 
-- `/Users/daishin/Downloads/okyou2-honen-shinran-prior-research-positioning.md`
+- `okyou2-honen-shinran-prior-research-positioning.md`
 
 Purpose:
 
@@ -822,13 +822,13 @@ Verification:
 - The rebuilt PDF was rendered to PNG with PyMuPDF and visually checked on
   the title/abstract, new prior-research section, new table, and references.
 - `git diff --check` passed.
-- Predecessor `/Users/daishin/Documents/Codex/Okyou` remained unchanged.
+- Predecessor `../Okyou` remained unchanged.
 
 ## 2026-06-05 Final-Draft Review Polish
 
 External input:
 
-- `/Users/daishin/Downloads/okyou2-honen-shinran-final-draft-review.md`
+- `okyou2-honen-shinran-final-draft-review.md`
 
 Scope:
 
@@ -898,7 +898,7 @@ Verification:
 
 External input:
 
-- `/Users/daishin/Downloads/okyou2-honen-shinran-peer-review-report.md`
+- `okyou2-honen-shinran-peer-review-report.md`
 
 Scope:
 
@@ -950,8 +950,8 @@ High-dimensional isolation check:
 
 Verification:
 
-- `/Users/daishin/.pyenv/shims/python -m py_compile scripts/analyze_high_dim_isolation.py`
-- `/Users/daishin/.pyenv/shims/python scripts/analyze_high_dim_isolation.py`
+- `python3 -m py_compile scripts/analyze_high_dim_isolation.py`
+- `python3 scripts/analyze_high_dim_isolation.py`
 - `uplatex -interaction=nonstopmode okyou2-honen-shinran-paper-v1.tex`
 - `dvipdfmx okyou2-honen-shinran-paper-v1.dvi`
 - Rendered selected V1 PDF pages to PNG with PyMuPDF and visually checked the
@@ -968,7 +968,7 @@ Verification:
 
 External input:
 
-- `/Users/daishin/Downloads/okyou2-honen-shinran-peer-review-report-v1.md`
+- `okyou2-honen-shinran-peer-review-report-v1.md`
 
 Scope:
 
@@ -1015,7 +1015,7 @@ Verification:
 
 External input:
 
-- `/tmp/codex-remote-attachments/019e8ca1-3204-7170-9150-32a368a08ba1/678697D5-730F-4B48-B178-D35286DA47DA/1-okyou2-honen-shinran-final-public-check.md`
+- provided review memo
 
 Scope:
 
@@ -1065,7 +1065,8 @@ Scope:
 - Added Japanese paper HTML and English access-version paper HTML.
 - Added public source/provenance HTML.
 - Added release errata tracking:
-  - `docs/errata.html`
+  - `docs/errata/`
+  - `docs/errata/en/`
   - `docs/ERRATA.md`
 
 Release policy:
@@ -1088,20 +1089,21 @@ Source and API boundary:
 
 Verification:
 
-- `/Users/daishin/.pyenv/shims/python -m py_compile scripts/build_public_pages.py`
-- `/Users/daishin/.pyenv/shims/python scripts/build_public_pages.py`
+- `python -m py_compile scripts/build_public_pages.py` using the project
+  Python environment.
+- `python scripts/build_public_pages.py` using the project Python environment.
 - Checked generated HTML relative links and page anchors.
 - Checked generated public files for API keys, local absolute paths, old SAT
   URL tokens, and forbidden raw-data indicators. Matches were only negative
   publication-boundary statements.
-- Served `docs/` locally at `http://127.0.0.1:8765/` and confirmed HTTP 200
+- Served `docs/` locally at `local HTTP preview` and confirmed HTTP 200
   for `/`, `/en/`, `/paper/`, `/paper/en/`, `/source-provenance.html`, and
   `/paper/okyou2-honen-shinran-paper-v3.pdf`.
 - After adding the release errata policy, also confirmed HTTP 200 for
-  `/errata.html` and `/ERRATA.md`.
+  `/errata/`, `/errata/en/`, and `/ERRATA.md`.
 - Playwright screenshot verification was attempted, but the local Node
   environment did not have the `playwright` package installed.
-- Predecessor `/Users/daishin/Documents/Codex/Okyou` remained unchanged.
+- Predecessor `../Okyou` remained unchanged.
 
 ## 2026-06-05 Public Filename and Checksum Final Check
 
@@ -1147,4 +1149,378 @@ Verification:
 - Checked generated HTML relative links and page anchors.
 - Checked public files for API keys, local absolute paths, old SAT URL tokens,
   `U+FFFD`, and stale public links to the v3 PDF name.
-- Predecessor `/Users/daishin/Documents/Codex/Okyou` remained unchanged.
+- Predecessor `../Okyou` remained unchanged.
+
+## 2026-06-05 Japanese HTML Paper TeX Alignment
+
+Reason:
+
+- The Japanese HTML paper previously functioned as a web summary and could look
+  like a different document from the PDF.
+- The public Japanese HTML paper should instead follow the same public TeX
+  source as the PDF.
+
+Change:
+
+- `docs/paper/index.html` is generated from
+  `docs/paper/honen-shinran-shared-core-paper.tex`.
+- The generated HTML follows the TeX/PDF order from abstract through
+  references.
+- The generated structure contains 7 numbered sections plus abstract and
+  references, 25 subsections, 14 tables, 5 figures, and 13 bibliography
+  entries.
+- Figure/table/citation references are converted to in-page links.
+- The Japanese HTML paper uses a paper-like body width and Mincho-style body
+  text to reduce the visual gap from the PDF, while remaining an HTML access
+  version.
+
+Public boundary:
+
+- No OpenAI API calls were made.
+- No new source-text fetches were made.
+- No raw source text, processed source text, chunk previews, embedding caches,
+  or embedding vectors were added.
+
+Verification:
+
+- `python -m py_compile scripts/build_public_pages.py` using the project
+  Python environment.
+- `python scripts/build_public_pages.py` using the project Python environment.
+- Checked generated structure counts in `docs/paper/index.html`.
+- Checked for actual replacement characters; count was 0.
+- Checked for leaked raw TeX commands in `docs/paper/index.html`; no matches.
+- Checked generated HTML relative links and page anchors; broken count was 0.
+- Confirmed HTTP 200 for local `/paper/`, local PDF, and Tailscale `/paper/`.
+- Browser-rendered page reported the TeX-derived structure and paper-like
+  Japanese body styling.
+- `git diff --check`
+- Predecessor `../Okyou` remained unchanged.
+
+## 2026-06-05 English HTML Paper Full-Structure Alignment
+
+Reason:
+
+- The English HTML paper was still a short access summary after the Japanese
+  HTML paper was aligned with the PDF/TeX.
+- The English HTML should not look like a different document from the Japanese
+  PDF/HTML.
+
+Change:
+
+- `docs/paper/en/index.html` now follows the same paper structure as the
+  Japanese PDF/TeX/HTML.
+- The English page contains an abstract, 7 numbered sections, 25 subsections,
+  14 tables, 5 figures, and 13 bibliography entries.
+- Figure, table, and reference links use in-page anchors.
+- This interim step kept the Japanese PDF as the formal citation base while the
+  English HTML served as a full-structure access version rather than a short
+  summary.
+- This was later superseded by the English TeX/PDF pipeline recorded below.
+
+Public boundary:
+
+- No OpenAI API calls were made.
+- No new source-text fetches were made.
+- No raw source text, processed source text, chunk previews, embedding caches,
+  or embedding vectors were added.
+
+Verification:
+
+- `python -m py_compile scripts/build_public_pages.py` using the project
+  Python environment.
+- `python scripts/build_public_pages.py` using the project Python environment.
+- Checked generated structure counts in `docs/paper/en/index.html`.
+- Checked for actual replacement characters; count was 0.
+- Checked for leaked raw TeX commands in `docs/paper/en/index.html`; no
+  matches.
+- Checked generated HTML relative links and page anchors; broken count was 0.
+- Browser-rendered English page reported the full paper structure, paper-like
+  English body styling, no replacement characters, and no old short-access
+  note.
+- Confirmed HTTP 200 for local and Tailscale `/paper/en/`.
+- Predecessor `../Okyou` remained unchanged.
+
+## 2026-06-05 English TeX/PDF Canonical Pipeline Alignment
+
+Reason:
+
+- The English HTML must not be the source for the English PDF.
+- To avoid drift between Japanese and English editions, the Japanese TeX should
+  remain the structural source for the English TeX.
+
+Change:
+
+- Removed the abandoned HTML-to-TeX direction.
+- Added `scripts/build_english_tex_from_ja_tex.py`.
+- The script reads `docs/paper/honen-shinran-shared-core-paper.tex` as the
+  structural source and `docs/paper/honen-shinran-shared-core-paper-en.template.tex`
+  as the English wording source.
+- The script refuses to write the public English TeX unless the section,
+  subsection, table, figure, label, figure filename, and `bibitem` sequences
+  match the Japanese TeX structure. English figure paths may point to
+  `docs/figures/en/`.
+- Generated `docs/paper/honen-shinran-shared-core-paper-en.tex`.
+- Built `docs/paper/honen-shinran-shared-core-paper-en.pdf` from that English
+  TeX with `uplatex` and `dvipdfmx`.
+- Regenerated `docs/paper/en/index.html` from the English TeX, not from a
+  hand-written HTML summary.
+- Added English PDF/TeX links and SHA-256 records.
+
+Public boundary:
+
+- No OpenAI API calls were made.
+- No new source-text fetches were made.
+- No raw source text, processed source text, chunk previews, embedding caches,
+  or embedding vectors were added.
+
+Verification:
+
+- `python3 -m py_compile scripts/build_english_tex_from_ja_tex.py scripts/build_public_pages.py`
+- `python3 scripts/build_english_tex_from_ja_tex.py`
+- `uplatex -interaction=nonstopmode honen-shinran-shared-core-paper-en.tex`
+  twice.
+- `dvipdfmx honen-shinran-shared-core-paper-en.dvi`
+- `python3 scripts/build_public_pages.py`
+- Checked generated Japanese and English HTML structure counts: both have 7
+  numbered sections plus abstract and references, 25 subsections, 14 tables, 5
+  figures, and 13 bibliography entries.
+- Checked generated HTML relative links and page anchors; broken count was 0.
+- Checked English HTML for actual replacement characters and old
+  HTML-version wording; count was 0.
+- Browser-verified local preview at `local HTTP preview`: 9 h2,
+  25 h3, 5 figures, 14 tables, 14 captions, 13 references, English PDF link
+  present, no replacement characters, no stale HTML-version wording.
+- Confirmed HTTP 200 for `local HTTP preview`,
+  `local HTTP preview`,
+  `http://100.125.135.37:8893/paper/en/`, and
+  `http://100.125.135.37:8893/paper/honen-shinran-shared-core-paper-en.pdf`.
+- English PDF/TeX SHA-256:
+  `28291b93d8496096d67cce85f1dea2b3c53db4b314c93ea50ccdc1ee8d8831a8`
+  for `docs/paper/honen-shinran-shared-core-paper-en.pdf`, and
+  `02ecbc972ab00ad7daf8b7e1aab7ff3bfbfd227b15f736c2607dab5757044c9f`
+  for `docs/paper/honen-shinran-shared-core-paper-en.tex`.
+
+## 2026-06-05 License, English Translation Note, Errata, and Page Style Alignment
+
+Scope:
+
+- Added split repository licenses following the predecessor publication
+  pattern:
+  - `LICENSE`
+  - `LICENSE-CODE`
+  - `LICENSE-CONTENT`
+- Added license notices to the Japanese and English paper TeX sources and to
+  the public Pages surface.
+- Added the predecessor-style English translation note to the English TeX,
+  English PDF, English paper HTML, and English top page.
+- Kept the Japanese paper free of an edition-status note; the README records
+  that the Japanese PDF is the authoritative Japanese print/book edition and
+  that English PDF/HTML are AI-assisted translations.
+- Changed public correction terminology to `Errata` and moved the main public
+  errata pages to:
+  - `docs/errata/index.html`
+  - `docs/errata/en/index.html`
+  - `docs/ERRATA.md`
+  - `docs/errata.html` remains only as a redirect.
+- Adjusted the GitHub Pages top-page styling toward the predecessor Okyou
+  pages: pale background, white header, six-card grid, figure row, compact nav,
+  and `Errata` navigation labels.
+- Removed stale HTML-version wording from the English TeX template and
+  regenerated the English TeX/PDF/HTML from the Japanese-TeX aligned pipeline.
+
+Public boundary:
+
+- No OpenAI API calls were made.
+- No new source-text fetches were made.
+- No raw source text, processed source text, chunk previews, embedding caches,
+  or embedding vectors were added.
+
+Verification:
+
+- `python3 -m py_compile scripts/build_public_pages.py`
+- `python3 -m py_compile scripts/build_english_tex_from_ja_tex.py`
+- `python3 scripts/build_english_tex_from_ja_tex.py`
+- `uplatex -interaction=nonstopmode honen-shinran-shared-core-paper-en.tex`
+  twice.
+- `dvipdfmx honen-shinran-shared-core-paper-en.dvi`
+- `python3 scripts/build_public_pages.py`
+- Checked all generated HTML relative links and same-page/target fragments;
+  broken count was 0.
+- Browser-verified `local HTTP preview`: six cards, three figure-row
+  items, pale predecessor-style background, `Errata` links to `errata/`, and no
+  Japanese katakana errata label.
+- Browser-verified `local HTTP preview`: 10 h2, 25 h3, 5
+  figures, 14 tables, 13 references, English PDF link present, translation
+  note present, and no stale HTML-version wording.
+- Confirmed translation-note placement against the predecessor pattern:
+  English TeX/PDF place it immediately after `\maketitle` and before
+  `abstract`; English HTML places it after the abstract and before keywords.
+- Extracted Japanese and English PDF text with PyMuPDF: Japanese PDF has no
+  translation note or Japanese edition-status note; English PDF has the
+  translation note and no stale HTML-version wording.
+- Searched TeX logs for fatal errors, LaTeX errors, overfull boxes, unresolved
+  references, and rerun warnings; no matches.
+- `git diff --check`
+- Predecessor `../Okyou` remained unchanged.
+
+Current public SHA-256 checksums:
+
+- `886dd089af33a17f4a983795d6d1d38730f309fc5c1ebc49e36a1dbc6b7c1b34`
+  for `docs/paper/honen-shinran-shared-core-paper.pdf`
+- `ed5880e1d25a8c4c87bca53203cbed3000bb856484e062078acd06a69ceb1e6a`
+  for `docs/paper/honen-shinran-shared-core-paper.tex`
+- `28291b93d8496096d67cce85f1dea2b3c53db4b314c93ea50ccdc1ee8d8831a8`
+  for `docs/paper/honen-shinran-shared-core-paper-en.pdf`
+- `02ecbc972ab00ad7daf8b7e1aab7ff3bfbfd227b15f736c2607dab5757044c9f`
+  for `docs/paper/honen-shinran-shared-core-paper-en.tex`
+
+## 2026-06-05 English Figure Localization
+
+Scope:
+
+- Added English-labeled public figure PNGs under `docs/figures/en/`:
+  - `sat-safe-honen-shinran-focus-map.png`
+  - `sat-safe-honen-shinran-high-priest-anchor-map.png`
+  - `shared-core-protrusion-nearest-bars.png`
+  - `honen-three-layer-sequence-heatmap.png`
+  - `shinran-three-layer-sequence-heatmap.png`
+- Added `scripts/make_english_public_figures.py`, which renders the English
+  PNGs from existing text-free CSV/JSON analysis outputs.
+- Updated the shared SAT-safe map renderer so the English figures use the same
+  coordinates and covariance ellipses as the Japanese figures, with translated
+  titles, centroid labels, legends, and notes.
+- Updated the English TeX template, generated English TeX, English PDF,
+  English paper HTML, and English top page to reference `docs/figures/en/`.
+- Updated the English TeX alignment check to compare figure filenames rather
+  than requiring the Japanese and English figure directory paths to be
+  identical.
+
+Public boundary:
+
+- No OpenAI API calls were made.
+- No new source-text fetches were made.
+- No raw source text, processed source text, chunk previews, embedding caches,
+  or embedding vectors were added.
+- The English figure script reads only existing public-boundary CSV/JSON
+  outputs and writes PNG figures.
+
+Verification:
+
+- `python3 -m py_compile scripts/sat_safe_map_renderer.py scripts/make_english_public_figures.py scripts/build_english_tex_from_ja_tex.py scripts/build_public_pages.py`
+- `python3 scripts/make_english_public_figures.py`
+- Visually checked all five English PNGs.
+- `python3 scripts/build_english_tex_from_ja_tex.py`
+- `uplatex -interaction=nonstopmode honen-shinran-shared-core-paper-en.tex`
+  twice.
+- `dvipdfmx honen-shinran-shared-core-paper-en.dvi`
+- `python3 scripts/build_public_pages.py`
+- Confirmed English TeX, English paper HTML, and English top page use
+  `figures/en/` for the public figures and do not reference the Japanese PNGs.
+- Rendered English PDF pages 7-13 with PyMuPDF and visually confirmed that
+  Figures 1-5 are English-labeled.
+- Browser-verified over `local HTTP preview`: English top loaded four
+  English figures from `../figures/en/`, and English paper loaded five English
+  figures from `../../figures/en/`; all image natural sizes were non-zero.
+- Predecessor `../Okyou` remained unchanged.
+
+Current English public SHA-256 checksums:
+
+- `28291b93d8496096d67cce85f1dea2b3c53db4b314c93ea50ccdc1ee8d8831a8`
+  for `docs/paper/honen-shinran-shared-core-paper-en.pdf`
+- `02ecbc972ab00ad7daf8b7e1aab7ff3bfbfd227b15f736c2607dab5757044c9f`
+  for `docs/paper/honen-shinran-shared-core-paper-en.tex`
+
+## 2026-06-05 Publication Safety and Push Preparation
+
+Scope:
+
+- Added `scripts/check_publication_safety.py` as a repeatable pre-push safety
+  check for Git candidates.
+- The check examines tracked files plus untracked files that are not excluded
+  by `.gitignore`.
+- The check fails on forbidden publication paths, secret-like tokens, long
+  float vector-like arrays, oversized files, checksum mismatches, broken local
+  HTML links, and local absolute path markers in public docs.
+- Updated public preparation notes so the safety check is part of the
+  GitHub Pages push procedure.
+- Removed local absolute path markers from public candidate text files.
+
+Public boundary:
+
+- Existing private source files and embedding caches remain under ignored
+  `data/`.
+- `data/`, `.env`, TeX intermediates, `tmp/`, and Python caches are ignored
+  and are not Git publication candidates.
+- No raw source text, processed source text, chunk previews, embedding caches,
+  embedding vectors, API keys, or tokens were added.
+
+Verification:
+
+- `git ls-files --others --exclude-standard` listed only intended public
+  additions such as licenses, English public figures, English TeX/PDF, errata
+  pages, license page, and publication scripts.
+- `git status --ignored=matching --short` confirmed ignored private/local
+  material, including `data/` and TeX intermediate files.
+- A candidate-file scanner checked 89 Git candidates: no forbidden path, no
+  secret-like pattern, no long float vector, and no file over 20 MB.
+- `rg` over Git candidates found no local absolute path markers.
+- `python3 -m py_compile` passed for changed and new publication scripts.
+- `python3 scripts/build_public_pages.py`
+- `python3 scripts/check_publication_safety.py`
+- `git diff --check`
+- Browser-verified local preview at `local HTTP preview`: Japanese top,
+  English top, Japanese paper, English paper, provenance page, Japanese and
+  English errata pages, and license page had no broken images or local absolute
+  path markers. English pages used English figure assets from `figures/en/`.
+- Rendered Japanese and English PDFs with PyMuPDF for page 1 and a figure page;
+  the English PDF keeps the translation note before the abstract and uses
+  English-labeled figure assets.
+- Predecessor sibling repo `../Okyou` remained unchanged.
+
+Push status:
+
+- Before pushing, confirm `origin`, run
+  `python3 scripts/check_publication_safety.py`, then push `main`.
+
+## 2026-06-05 AI Researcher Guide
+
+Scope:
+
+- Added `AI_RESEARCHER_GUIDE.md` for AI-assisted review, reproduction,
+  publication checking, and future extension of this Honen/Shinran report.
+- The guide follows the predecessor project's pattern while updating file
+  paths, public artifacts, interpretation rules, English translation handling,
+  Errata policy, and safety checks for Okyou2.
+- Updated `README.md` and generated `docs/PUBLICATION.md` so the guide is
+  discoverable from the public repository.
+
+Public boundary:
+
+- The guide does not include raw source text, processed source text, chunk
+  previews, embedding caches, embedding vectors, API keys, or local absolute
+  paths.
+
+Verification:
+
+- `python3 scripts/build_public_pages.py`
+- `python3 -m py_compile scripts/build_public_pages.py scripts/check_publication_safety.py`
+
+## 2026-06-05 GitHub Repository Naming
+
+Scope:
+
+- Set the local `origin` remote to
+  `https://github.com/dueyama/honen-shinran-shared-core-map.git`.
+- Updated public repository and GitHub Pages references to
+  `dueyama/honen-shinran-shared-core-map`.
+- Updated `docs/checksums.txt` public URLs to
+  `https://dueyama.github.io/honen-shinran-shared-core-map/`.
+- Replaced public-facing `Okyou2` labels in generated pages with
+  `Honen-Shinran Shared Core Map`, while leaving historical development notes
+  that use `Okyou2` as the local successor-project label.
+
+Verification:
+
+- `git remote -v`
+- `python3 scripts/build_public_pages.py`
+- `python3 -m py_compile scripts/build_public_pages.py scripts/check_publication_safety.py`

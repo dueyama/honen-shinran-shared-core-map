@@ -37,7 +37,7 @@ embedding の chunk と実際の本文文字列の対応を失わないように
 必要に応じて、次のスクリプトでローカル専用の本文対応表を生成する。
 
 ```bash
-/Users/daishin/.pyenv/shims/python scripts/export_private_chunk_text_index.py
+python3 scripts/export_private_chunk_text_index.py
 ```
 
 出力:

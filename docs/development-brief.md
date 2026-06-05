@@ -71,7 +71,7 @@ embedding の前に、character n-gram、文字数、文長、固有句頻度な
 - `docs/`: 研究メモ、方針、結果、公開用文書。
 - `experiments/`: 実験コード。raw/processed 本文と outputs は ignore。
 - `scripts/`: repo 運用や検証用スクリプト。
-- `memory.md`: 作業台帳。
+- `memory.md`: 制作・検証記録。
 
 ## 成功条件
 

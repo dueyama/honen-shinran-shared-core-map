@@ -95,11 +95,11 @@ Model:
 文字列品質のみ:
 
 ```bash
-/Users/daishin/.pyenv/shims/python scripts/compare_sat_chunking_strategies.py
+python3 scripts/compare_sat_chunking_strategies.py
 ```
 
 embedding 比較込み:
 
 ```bash
-/Users/daishin/.pyenv/shims/python scripts/compare_sat_chunking_strategies.py --embeddings
+python3 scripts/compare_sat_chunking_strategies.py --embeddings
 ```

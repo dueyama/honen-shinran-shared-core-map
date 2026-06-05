@@ -118,6 +118,14 @@ def render_sat_safe_map_png(
     subtitle: str,
     legend_order: list[str],
     show_anchor_note: bool,
+    label_map: dict[str, str] | None = None,
+    legend_title: str = "凡例",
+    p90_label: str = "p90半径",
+    point_note: str = "点=Unicode-safe",
+    chunk_note: str = "700 token chunk",
+    anchor_note: str = "祖師文献は同じPCA面へ投影",
+    focus_note: str = "表示範囲は2者に合わせて調整",
+    centroid_suffix: str = " 重心",
 ) -> dict[str, Any]:
     width, height = 1620, 1060
     pad_l, pad_r, pad_t, pad_b = 100, 290, 126, 94
@@ -237,34 +245,36 @@ def render_sat_safe_map_png(
             width=4,
         )
         dx, dy = label_offsets.get(author, (12, -12))
-        label = f"{author} 重心" if author in FOCUS_AUTHORS else author
+        display_author = label_map.get(author, author) if label_map else author
+        label = f"{display_author}{centroid_suffix}" if author in FOCUS_AUTHORS else display_author
         draw.text((cx + dx, cy + dy), label, fill=color, font=label_font)
 
     lx = width - pad_r + 38
     ly = pad_t + 10
-    draw.text((lx, ly), "凡例", fill=(37, 34, 29), font=font(19, bold=True))
+    draw.text((lx, ly), legend_title, fill=(37, 34, 29), font=font(19, bold=True))
     y = ly + 42
     for author in legend_order:
         if author not in groups:
             continue
         rows = groups[author]
         color = COLORS[author]
+        display_author = label_map.get(author, author) if label_map else author
         draw.ellipse((lx, y - 12, lx + 16, y + 4), fill=(*color, 190))
-        draw.text((lx + 28, y - 14), f"{author} n={len(rows)}", fill=(37, 34, 29), font=legend_font)
+        draw.text((lx + 28, y - 14), f"{display_author} n={len(rows)}", fill=(37, 34, 29), font=legend_font)
         if author in FOCUS_AUTHORS:
             pts = np.array([[row["x"], row["y"]] for row in rows], dtype=float)
             center = pts.mean(axis=0)
             distances = np.linalg.norm(pts - center, axis=1)
-            draw.text((lx + 28, y + 7), f"p90半径 {np.quantile(distances, 0.9):.3f}", fill=(104, 97, 88), font=small_font)
+            draw.text((lx + 28, y + 7), f"{p90_label} {np.quantile(distances, 0.9):.3f}", fill=(104, 97, 88), font=small_font)
             y += 58
         else:
             y += 31
-    draw.text((lx, y + 16), "点=Unicode-safe", fill=(104, 97, 88), font=small_font)
-    draw.text((lx, y + 36), "700 token chunk", fill=(104, 97, 88), font=small_font)
+    draw.text((lx, y + 16), point_note, fill=(104, 97, 88), font=small_font)
+    draw.text((lx, y + 36), chunk_note, fill=(104, 97, 88), font=small_font)
     if show_anchor_note:
-        draw.text((lx, y + 56), "祖師文献は同じPCA面へ投影", fill=(104, 97, 88), font=small_font)
+        draw.text((lx, y + 56), anchor_note, fill=(104, 97, 88), font=small_font)
     else:
-        draw.text((lx, y + 56), "表示範囲は2者に合わせて調整", fill=(104, 97, 88), font=small_font)
+        draw.text((lx, y + 56), focus_note, fill=(104, 97, 88), font=small_font)
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     image.convert("RGB").save(output_path, quality=95)

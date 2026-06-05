@@ -1,67 +1,144 @@
-# Okyou2
+# 法然・親鸞の共有核とはみ出し領域
 
-`Okyou2` は、完了済みの先行プロジェクト `Okyou` を参照点にした、別個の後継研究プロジェクトです。
+三層探索地図による『選択集』・『教行信証』比較の論文・図表・再現用コードをまとめた公開準備リポジトリです。意味埋め込み、語群カウント、典拠マーカーを重ね、法然『選択本願念仏集』と親鸞『教行信証』が共有する念仏圏と、そこからのはみ出し領域を探索的に可視化します。
 
-先行 `Okyou` は、仏教文献の意味埋め込み分析、論文HTML/PDF、公開ビューア、GitHub Pages 公開までを終えたリリース済み成果物として扱います。このリポジトリはその Git 履歴や公開成果物をそのまま伸ばす継続作業場ではありません。先行 `Okyou` は参考資料として読むだけで、変更しません。ここでは、先行成果から得た設計・限界・公開安全策を踏まえて、新しい問い、データ構造、分析レイヤー、表示方法を作ります。
+This repository contains the paper, figures, publication pages, and reproducibility scripts for an exploratory three-layer comparison of Honen's *Senchaku Hongan Nembutsu Shu* and Shinran's *Ken Jodo Shinjitsu Kyo Gyo Sho Monrui* (*Kyogyoshinsho*). It uses semantic embeddings, lexical-thematic counts, and source-marker features to examine their shared core and divergence zones.
 
-## 現在の状態
+## Project Position / プロジェクトの位置づけ
 
-- 新規 Git リポジトリとして初期化済み。
-- 先行 `Okyou` の tracked ファイルは引き継いでいません。
-- 先行 `Okyou` は読み取り専用の参照元として扱います。
-- `.env`、raw/processed 本文、embedding cache、生成 outputs は持ち込んでいません。
-- 法然・親鸞比較論文の公開準備として、`docs/` 配下に GitHub Pages 用HTML、PDF、英語HTML access version、出典・検証記録、エラッタ運用ページを置いています。
+This work is a follow-up to the previous public project, [意味埋め込みによる仏教文献の探索地図](https://dueyama.github.io/buddhist-text-embedding-map/). The previous project is treated as a completed and released publication, not as a working branch of this repository. This repository narrows the question to Honen and Shinran and develops the three-layer reading of semantic, lexical-thematic, and source-marker evidence.
 
-## 公開準備
+本研究は、先行公開プロジェクト [意味埋め込みによる仏教文献の探索地図](https://dueyama.github.io/buddhist-text-embedding-map/) の後続研究です。ただし、先行プロジェクトを継続編集するものではなく、別個の公開物として、法然と親鸞の比較に対象を絞っています。先行研究で得られた公開方式、本文非再配布方針、埋め込み地図の限界認識を引き継ぎながら、意味層・文体語彙層・典拠マーカー層を分けて読むことを試みます。
 
-GitHub Pages では `docs/` を公開ルートとして使います。repository 名を `Okyou2` のまま公開する場合の想定URLは `https://dueyama.github.io/Okyou2/` です。repository 名や公開先を変える場合は、公開後にこのURLを確定値へ更新します。
+The research questions, corpus choices, interpretation, and publication direction were guided by Daishin Ueyama. Code, figures, paper drafts, English translation, and publication pages were developed through iterative work with Codex and review-style exchanges with ChatGPT Pro. The repository is therefore also a process record for producing a humanities data-analysis paper with AI assistance.
 
-- `docs/index.html`: 日本語トップ。
-- `docs/en/index.html`: English top。
-- `docs/paper/index.html`: 日本語HTML論文。
-- `docs/paper/en/index.html`: English HTML access version。
-- `docs/paper/honen-shinran-shared-core-paper.pdf`: 日本語PDF。
-- `docs/paper/honen-shinran-shared-core-paper.tex`: 日本語TeX。
-- `docs/source-provenance.html`: 公開用の出典・検証記録。
-- `docs/errata.html` / `docs/ERRATA.md`: リリース後エラッタ。
-- `docs/checksums.txt`: 固定公開物のSHA-256記録。
+研究上の問い、対象文献の選定、解釈、公開方針は上山大信の判断にもとづきます。コード、図表、論文草稿、英語版、公開ページは Codex との反復作業と ChatGPT Pro による査読形式の検討を通じて整えました。その意味で、本リポジトリは、AI支援による人文系データ解析論文制作の過程記録でもあります。
 
-リリース後の公開版PDF/HTMLは固定版として扱います。誤記、リンク切れ、図表ラベル、数値、補足説明、解釈変更が見つかった場合は、公開済み本文を黙って差し替えず、エラッタとして記録します。本文更新が必要な場合は、新しい版として明示し、旧版との差分と理由をエラッタに残します。
+## Methodological Note / 方法上の立場
+
+このプロジェクトは、AI に仏教文献の解釈を任せることを目的としたものではありません。むしろ、本文をチャンク化し、意味埋め込みによる近傍構造を作り、そこに語彙・典拠マーカー・文献単位の情報を重ねることで、人間が読み直すべき箇所を探すための探索地図を作る試みです。
+
+人文学的な解釈には、問いの立て方、対象文献の選び方、先行研究の系譜、研究者ごとの重みづけが必ず入ります。本プロジェクトが期待しているのは、それらを消すことではなく、解釈が分岐する前に、本文側にどのような意味的地形があるのかを、できるだけ再現可能な形で見てみることです。
+
+もちろん、現在の埋め込みモデルにはモデルごとの癖があります。チャンク化、前処理、対象文献、投影法によっても結果は変わります。したがって、本プロジェクトの図や数値は、教義史的結論、影響関係、引用関係を直接証明するものではありません。
+
+ただし、複数のモデルや条件をまたいで安定して現れる近傍構造があるなら、それは単なる可視化上の偶然ではなく、本文読解に戻るための有用な制約条件になるかもしれません。その意味で、埋め込みによる文献比較は、解釈を一意に決める技術ではなく、複数の研究者が同じ地図を前に議論するための共通座標系になりうると考えています。
+
+このリポジトリの図や数値は、結論ではありません。読む場所を探すための地図です。
+
+---
+
+This project does not aim to delegate the interpretation of Buddhist texts to AI. Rather, it divides texts into chunks, represents them in an embedding space, and overlays lexical, source-marker, and bibliographic information in order to build exploratory maps for human readers.
+
+Humanistic interpretation inevitably depends on research questions, corpus selection, scholarly traditions, and the reader's own weighting of passages. The aim of this project is not to remove such interpretation, but to observe, in a reproducible way, some of the semantic terrain of the texts before interpretations begin to diverge.
+
+Of course, current embedding models have their own biases. Results may also change depending on chunking, preprocessing, corpus selection, and projection methods. The figures and statistics in this project therefore do not directly prove doctrinal conclusions, historical influence, or citation relationships.
+
+Still, if certain neighborhood structures remain stable across multiple models and conditions, they may be more than accidental visual patterns. They may serve as useful constraints for returning to close reading. In this sense, embedding-based comparison is not a technology for deciding interpretation once and for all, but may become a shared coordinate system for discussion among human readers.
+
+The figures and numbers in this repository are not conclusions. They are maps for finding where to read next.
+
+## Public Artifacts
+
+- GitHub Pages entry point: `docs/index.html`
+- English GitHub Pages entry point: `docs/en/index.html`
+- Japanese HTML paper: `docs/paper/index.html`
+- Japanese paper PDF: `docs/paper/honen-shinran-shared-core-paper.pdf`
+- Japanese paper TeX: `docs/paper/honen-shinran-shared-core-paper.tex`
+- English AI-assisted translation HTML: `docs/paper/en/index.html`
+- English AI-assisted translation PDF: `docs/paper/honen-shinran-shared-core-paper-en.pdf`
+- English AI-assisted translation TeX: `docs/paper/honen-shinran-shared-core-paper-en.tex`
+- English figure variants: `docs/figures/en/*.png`
+- Source provenance and verification notes: `docs/source-provenance.html`
+- Errata pages: `docs/errata/index.html`, `docs/errata/en/index.html`
+- License page: `docs/license.html`
+- Publication checksum record: `docs/checksums.txt`
+- AI researcher guide: `AI_RESEARCHER_GUIDE.md`
+
+The Japanese paper PDF is the authoritative print/book edition. The English paper is provided as an AI-assisted translation for access by English-language readers; when citing or checking nuance, use the Japanese edition as the primary text.
+
+日本語論文PDFを正式な製本版とし、英語版PDF/HTMLは英語読者のためのAI支援翻訳版として公開します。引用や細かなニュアンス確認では、日本語版を主たる本文として扱ってください。
 
 ## Publication Integrity / 公開版の固定
 
-公開用PDFとTeXは、版番号を含まない安定ファイル名で置きます。SHA-256ハッシュは `docs/checksums.txt` に記録します。
+The public PDF and TeX files use stable filenames without version numbers. Their SHA-256 checksums are recorded in `docs/checksums.txt`:
 
 ```text
-c177fc6c02a5eabbc112999d2fd495ec921dbbb705abaa50dfe2287c87d22098  docs/paper/honen-shinran-shared-core-paper.pdf
-21e5d4af9b0f44912ef8d0d639841f672ba2f36076ac5ded0ebec236db2c7d81  docs/paper/honen-shinran-shared-core-paper.tex
+886dd089af33a17f4a983795d6d1d38730f309fc5c1ebc49e36a1dbc6b7c1b34  docs/paper/honen-shinran-shared-core-paper.pdf
+ed5880e1d25a8c4c87bca53203cbed3000bb856484e062078acd06a69ceb1e6a  docs/paper/honen-shinran-shared-core-paper.tex
+28291b93d8496096d67cce85f1dea2b3c53db4b314c93ea50ccdc1ee8d8831a8  docs/paper/honen-shinran-shared-core-paper-en.pdf
+02ecbc972ab00ad7daf8b7e1aab7ff3bfbfd227b15f736c2607dab5757044c9f  docs/paper/honen-shinran-shared-core-paper-en.tex
 ```
 
-公開tagまたはGitHub Releaseを作成するときは、tag上のファイルがこのハッシュと一致することを確認します。以後の訂正や検証は、公開版を黙って書き換えるのではなく、追補・エラッタとして別に公開します。
+After public release, later corrections should be published as supplements or Errata rather than silent rewrites of the fixed public artifacts. If a revised edition is necessary, it should be released as a new explicit version with a reason and difference record.
 
-## 最初に読むファイル
+公開後の訂正は、固定公開物を黙って差し替えるのではなく、追補または Errata として公開します。本文更新が必要な場合は、新しい版として明示し、旧版との差分と理由を残します。
 
-- `docs/okyou1-reading-notes.md`: 先行 `Okyou` を読んだ要約。
-- `docs/development-brief.md`: `Okyou2` としての初期方針。
-- `docs/working-summary-2026-06-03.md`: 法然・親鸞・高僧文献マップまでの作業まとめ。
-- `docs/shinran-isolated-zones-2026-06-03.md`: 親鸞だけが入り込む意味マップ領域の初回要約。
-- `docs/kanbun-text-preparation-2026-06-03.md`: SAT 漢文系本文の準備と品質検査。
-- `docs/predecessor-text-integrity-audit-2026-06-03.md`: 先行 `Okyou` のチャンク文字列品質監査。
-- `docs/chunking-strategy-comparison-2026-06-03.md`: 旧 token decode chunk と Unicode-safe 700 token chunk の比較。
-- `docs/sat-safe-high-priest-anchor-map-2026-06-03.md`: SAT 漢文系 safe chunk 版の法然・親鸞・高僧文献 map。
-- `docs/honen-distinctive-zones-2026-06-03.md`: 法然側のはみ出し領域の初回内容ラベル。
-- `AGENTS.md`: Codex/AI エージェント向けの作業ルール。
-- `memory.md`: この repo の作業台帳。
+## Repository Layout
 
-## 初期テーマ
+- `docs/`: GitHub Pages site, paper HTML/PDF/TeX, figures, errata, provenance, and license pages
+- `docs/figures/`: Japanese public figures
+- `docs/figures/en/`: English-labeled public figures for the English translation
+- `docs/paper/`: Japanese and English paper artifacts
+- `scripts/`: analysis, figure generation, TeX/HTML generation, and publication safety checks
+- `experiments/`: placeholder for experiment code organization
+- `AI_RESEARCHER_GUIDE.md`: guide for AI-assisted review, reproduction, and extension
+- `memory.md`: project ledger for the Codex-assisted workflow
+- `AGENTS.md`: working rules for AI agents in this repository
 
-`Okyou2` の自然な出発点は、先行 `Okyou` で見えた課題を別プロジェクトとして整理し直すことです。
+## Reproducibility
 
-1. 意味埋め込み、文体特徴、典拠マーカーを別レイヤーとして扱う。
-2. 固定長チャンクだけでなく、巻・品・段落・引用単位の自然チャンクを検討する。
-3. 多言語・異訳比較を、単発パイロットではなくペア集合として評価する。
-4. 研究者が比較軸を切り替えられるビューアまたはレポートを作る。
+The public paper was generated from local SAT-derived text preparation, Unicode-safe 700-token chunking with 100-token overlap, OpenAI `text-embedding-3-large`, PCA projection for 2D visualization, and text-free derived analysis outputs.
 
-## 安全方針
+Private raw/processed source texts, chunk previews, and embedding caches are intentionally not included. Rebuilding the full analysis requires local source acquisition under each provider's terms of use and an OpenAI API key.
 
-本文提供元の利用条件を確認するまで、SAT、J-SOKEN、84000 などから取得した raw/processed 本文は commit しません。公開するのは、再現用コード、manifest、要約統計、本文を含まない派生データ、図表、文書に限定します。
+Publication-page and safety checks can be run with:
+
+```bash
+python3 scripts/build_public_pages.py
+python3 scripts/check_publication_safety.py
+```
+
+The safety check examines tracked files plus untracked files not excluded by `.gitignore`. It fails on forbidden publication paths, secret-like tokens, long vector-like arrays, checksum mismatches, broken local HTML links, oversized files, and local absolute path markers in public docs.
+
+## Publication Policy
+
+This repository is prepared for public GitHub/GitHub Pages use, but it does not redistribute raw source texts from SAT, J-SOKEN, 84000, or other providers. Public artifacts omit raw text, processed text, chunk previews, embedding caches, embedding vectors, and local source paths.
+
+Before the first public push, run:
+
+```bash
+python3 scripts/check_publication_safety.py
+git status --ignored=matching --short
+```
+
+Confirm that `data/`, `.env`, TeX intermediate files, `tmp/`, and Python caches are ignored and that the safety check passes.
+
+See `docs/PUBLICATION.md` for the publication checklist.
+
+## GitHub Pages
+
+Public repository: `https://github.com/dueyama/honen-shinran-shared-core-map`
+
+Planned public site: `https://dueyama.github.io/honen-shinran-shared-core-map/`
+
+Use GitHub Pages with:
+
+- Source: `main` branch
+- Folder: `/docs`
+
+After publication, confirm that the landing page, Japanese/English paper pages, PDF links, figures, provenance page, errata pages, and license page load correctly.
+
+## License
+
+This repository uses a split license.
+
+- Code is licensed under the MIT License. See `LICENSE-CODE`.
+- The paper, figures, documentation, process records, citation metadata, and public derived data are licensed under Creative Commons Attribution 4.0 International (CC BY 4.0). See `LICENSE-CONTENT`.
+- Source texts retrieved from SAT, J-SOKEN, 84000, or other providers are not redistributed here and are not covered by this repository's licenses.
+
+本リポジトリは分割ライセンスを採用しています。
+
+- コードは MIT License です。`LICENSE-CODE` を参照してください。
+- 論文、図表、公開文書、制作プロセス、引用メタデータ、公開用派生データは Creative Commons Attribution 4.0 International (CC BY 4.0) です。`LICENSE-CONTENT` を参照してください。
+- SAT、J-SOKEN、84000 などから取得した元本文は本リポジトリでは再配布しておらず、本リポジトリのライセンス対象外です。

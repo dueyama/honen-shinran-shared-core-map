@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 
-PREDECESSOR_ROOT = Path("/Users/daishin/Documents/Codex/Okyou")
+PREDECESSOR_ROOT = Path(__file__).resolve().parents[2] / "Okyou"
 OUTPUT_PATH = Path("data/outputs/predecessor_text_integrity_audit.json")
 
 

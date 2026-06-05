@@ -11,7 +11,7 @@
 
 ## 出力図
 
-![法然三層ヒートマップ](/Users/daishin/Documents/Codex/Okyou2/docs/figures/honen-three-layer-sequence-heatmap.png)
+![法然三層ヒートマップ](figures/honen-three-layer-sequence-heatmap.png)
 
 ## 意味層: 章別トップ近傍
 
@@ -62,7 +62,7 @@
 | 聖道門・浄土門 | 七高僧名 | 2 |
 | 正雑二行 | 七高僧名 | 1 |
 
-## 初期メモ
+## 補足所見
 
 - 意味層では多くの法然 chunk が親鸞に近いが、章ごとに道綽・善導・源信へ寄る箇所が分かれる。
 - 文体語彙層では、正雑二行、本願念仏、三輩・一向専念、付属・証誠・選択総結に、選択・正雑・念仏・往生の語群が濃く出る。

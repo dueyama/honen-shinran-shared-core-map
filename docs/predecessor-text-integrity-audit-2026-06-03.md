@@ -10,8 +10,8 @@
 
 対象:
 
-- `/Users/daishin/Documents/Codex/Okyou/experiments/sect_sutra_map`
-- `/Users/daishin/Documents/Codex/Okyou/experiments/multilingual_sutra_map`
+- `../Okyou/experiments/sect_sutra_map`
+- `../Okyou/experiments/multilingual_sutra_map`
 
 確認したこと:
 
@@ -91,7 +91,7 @@ Okyou2 では、本文を SAT 行単位で保持して provenance を失わな�
 ## 再実行
 
 ```bash
-/Users/daishin/.pyenv/shims/python scripts/audit_predecessor_text_integrity.py --write
+python3 scripts/audit_predecessor_text_integrity.py --write
 ```
 
 出力:

@@ -7,32 +7,39 @@
   <style>
 :root {
   color-scheme: light;
-  --bg: #f5f7f4;
+  --bg: #f6f7f2;
   --paper: #ffffff;
+  --panel: #ffffff;
   --ink: #1f2723;
   --muted: #657069;
   --line: #d8ded6;
   --accent: #2f6f73;
   --accent-2: #7f5d2e;
   --soft: #eef4f1;
+  --warm: #9a5b3f;
   --warn: #9a5b3f;
+  --gold: #a7832d;
   font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Noto Sans JP", "Noto Sans", sans-serif;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; background: var(--bg); color: var(--ink); line-height: 1.78; }
+body { margin: 0; background: var(--bg); color: var(--ink); line-height: 1.7; }
 a { color: var(--accent); text-underline-offset: 3px; }
 header { background: var(--paper); border-bottom: 1px solid var(--line); }
-.page { width: min(1040px, calc(100% - 32px)); margin: 0 auto; }
-.hero { padding: 34px 0 28px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 0.72fr); gap: 28px; align-items: center; }
+.page, .wrap { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+.hero { padding: 38px 0 34px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 0.92fr); gap: 28px; align-items: center; }
 .paper-header { padding: 34px 0 20px; }
-h1 { margin: 0 0 12px; font-size: clamp(28px, 4.8vw, 48px); line-height: 1.18; letter-spacing: 0; }
+h1 { margin: 0 0 12px; font-size: clamp(28px, 4.2vw, 48px); line-height: 1.16; letter-spacing: 0; }
 .subtitle { margin: 0 0 12px; color: var(--muted); font-size: clamp(17px, 2.2vw, 22px); line-height: 1.45; }
+.lead { margin: 0; color: var(--muted); font-size: 16px; }
 .meta { color: var(--muted); font-size: 14px; }
-.site-nav { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 18px; }
-.nav-link { display: inline-flex; min-height: 36px; align-items: center; justify-content: center; padding: 0 13px; border: 1px solid var(--line); border-radius: 6px; color: var(--ink); background: #fff; font-size: 14px; text-decoration: none; }
+.site-nav { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 22px; }
+.nav-primary, .nav-tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.nav-tools { margin-left: 0; }
+.nav-link { display: inline-flex; min-height: 38px; align-items: center; justify-content: center; padding: 0 14px; border: 1px solid var(--line); border-radius: 6px; color: var(--ink); background: #fff; font-size: 14px; text-decoration: none; }
 .nav-link[aria-current="page"] { border-color: #bccbc8; background: #f4f7f5; color: var(--accent); font-weight: 700; }
-.lang-switch { display: inline-flex; min-height: 36px; overflow: hidden; border: 1px solid var(--line); border-radius: 999px; background: #fff; }
+.pdf-link { color: var(--muted); }
+.lang-switch { display: inline-flex; min-height: 38px; overflow: hidden; border: 1px solid var(--line); border-radius: 999px; background: #fff; }
 .lang-switch a { display: inline-flex; align-items: center; padding: 0 12px; color: var(--muted); text-decoration: none; font-size: 14px; }
 .lang-switch a + a { border-left: 1px solid var(--line); }
 .lang-switch a[aria-current="true"] { background: var(--accent); color: #fff; font-weight: 700; }
@@ -48,10 +55,16 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fo
 .toc h2 { margin-top: 0; font-size: 18px; }
 .toc ol { columns: 2; gap: 28px; margin-bottom: 0; }
 .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
-.card { border: 1px solid var(--line); border-radius: 8px; background: var(--paper); padding: 16px; }
+.card, .notice, .figure-row { border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+.card { padding: 16px; }
 .card h2, .card h3 { margin-top: 0; font-size: 18px; }
 .card p { color: var(--muted); font-size: 14px; }
 .figure-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 20px 0; }
+.figure-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; overflow: hidden; margin-top: 18px; }
+.figure-row a { display: block; min-width: 0; border-right: 1px solid var(--line); background: #fff; color: var(--ink); text-decoration: none; }
+.figure-row a:last-child { border-right: 0; }
+.figure-row img { width: 100%; aspect-ratio: 4 / 3; object-fit: contain; display: block; background: #fbfcfa; border-bottom: 1px solid var(--line); }
+.figure-row span { display: block; padding: 10px 12px; color: var(--muted); font-size: 13px; }
 figure { margin: 26px 0; }
 figure img, .figure-grid img, .hero img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 7px; background: #fff; }
 .figure-grid img { aspect-ratio: 4 / 3; object-fit: contain; }
@@ -62,6 +75,19 @@ table { width: 100%; border-collapse: collapse; font-size: 14px; line-height: 1.
 th, td { border: 1px solid var(--line); padding: 7px 8px; vertical-align: top; }
 th { background: #f5f7f4; font-weight: 700; }
 caption { caption-side: top; text-align: left; margin-bottom: 8px; font-weight: 700; }
+.latex-paper h2 .secno, .latex-paper h3 .secno { color: var(--muted); margin-right: 0.45em; }
+.latex-paper { width: min(860px, calc(100% - 32px)); font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif; font-size: 16px; line-height: 1.9; }
+.latex-paper h2 { font-size: 22px; margin-top: 36px; }
+.latex-paper h3 { font-size: 17px; margin-top: 24px; }
+.latex-paper .abstract { border-left: 0; background: transparent; padding: 0; margin-bottom: 20px; }
+.latex-paper .abstract h2 { text-align: center; font-size: 18px; margin-top: 0; }
+.latex-paper .keywords { font-weight: 650; }
+.latex-paper .display-math { text-align: center; margin: 18px 0; font-family: "Times New Roman", serif; font-size: 1.08em; }
+.latex-paper .math-inline { font-family: "Times New Roman", serif; }
+.latex-paper .table-wrap table { min-width: 720px; }
+.latex-paper figure img { max-height: none; object-fit: contain; border-radius: 0; }
+.english-paper { font-family: Georgia, "Times New Roman", "Noto Serif", serif; }
+.english-paper .abstract h2 { text-align: left; }
 .ref-list { font-size: 13px; line-height: 1.6; }
 .ref-list li { margin-bottom: 0.75em; }
 .pill-list { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 12px 0 0; list-style: none; }
@@ -69,7 +95,9 @@ caption { caption-side: top; text-align: left; margin-bottom: 8px; font-weight: 
 .source-link { font-weight: 650; }
 footer { border-top: 1px solid var(--line); background: var(--paper); padding: 18px 0; color: var(--muted); font-size: 12px; }
 @media (max-width: 760px) {
-  .hero, .grid, .figure-grid { grid-template-columns: 1fr; }
+  .hero, .grid, .figure-grid, .figure-row { grid-template-columns: 1fr; }
+  .figure-row a { border-right: 0; border-bottom: 1px solid var(--line); }
+  .figure-row a:last-child { border-bottom: 0; }
   main.paper { padding: 22px 18px; }
   .toc ol { columns: 1; }
   table { font-size: 13px; }
@@ -85,117 +113,251 @@ footer { border-top: 1px solid var(--line); background: var(--paper); padding: 1
     <p class="meta">Daishin Ueyama / June 5, 2026</p>
 
 <nav class="site-nav" aria-label="Site navigation">
-  <a class="nav-link" href="../../en/">Top</a>
-  <a class="nav-link" href="./" aria-current="page">Paper HTML</a>
-  <a class="nav-link" href="../honen-shinran-shared-core-paper.pdf">PDF JP</a>
-  <a class="nav-link" href="../okyou2-honen-shinran-english-terminology.md">Terminology</a>
-  <a class="nav-link" href="../../errata.html">Errata</a>
-  <span class="lang-switch" aria-label="Language">
-    <a href="../">日本語</a>
-    <a href="./" aria-current="true">English</a>
-  </span>
+  <div class="nav-primary">
+    <a class="nav-link" href="../../en/">Top</a>
+    <a class="nav-link" href="./" aria-current="page">Paper</a>
+    <a class="nav-link" href="../../errata/en/">Errata</a>
+    <a class="nav-link" href="../../source-provenance.html">Provenance</a>
+    <a class="nav-link" href="../../license.html">License</a>
+  </div>
+  <div class="nav-tools">
+    <span class="lang-switch" aria-label="Language">
+      <a href="../">日本語</a>
+      <a href="./" aria-current="true">English</a>
+    </span>
+    <a class="nav-link pdf-link" href="../honen-shinran-shared-core-paper.pdf">PDF JP</a>
+    <a class="nav-link pdf-link" href="../honen-shinran-shared-core-paper-en.pdf">PDF EN</a>
+  </div>
 </nav>
   </div>
 </header>
-<main class="paper page">
-  <section class="notice">
-    <h2>Translation Note</h2>
-    <p>This English HTML version is prepared as an access version for English-language readers. The Japanese v3 PDF remains the authoritative version for citation and close interpretation. The figures are currently shared with the Japanese version; English figure assets can be regenerated in a later publication pass.</p>
-  </section>
-  <section class="abstract" id="abstract">
-    <h2>Abstract</h2>
-    <p>This study examines how Honen's <em>Senchakushu</em> and Shinran's <em>Kyogyoshinsho</em> overlap in semantic space, and where each text diverges from their shared core. It uses a three-layer exploratory map consisting of a semantic layer, a lexical-thematic layer, and a source-marker layer. The lexical-thematic layer is not strict stylometry; it is a dictionary-based measure of local lexical and thematic density.</p>
-    <p>Among 69 Honen chunks, the nearest neighbor outside the same author group is Shinran in 50 cases, Daochuo in 11, Genshin in 4, Shandao in 3, and Tanluan in 1. Among 191 Shinran chunks, the nearest outside group is distributed across Honen, Daochuo, Genshin, Tanluan, Vasubandhu, Shandao, and Nagarjuna. Honen's divergence zones concentrate around the argument for selecting nembutsu from among other practices. Shinran's divergence zones concentrate in the Shin and Keshindo fascicles, extending toward a source-based doctrinal architecture of vow, shinjin, realization, true land, transformed land, sin/salvation, and true/provisional sorting.</p>
-    <p>The result is exploratory. It does not replace doctrinal, historical, or citation-based scholarship, but identifies candidate regions that should be compared with existing research.</p>
-  </section>
-  <p><strong>Keywords:</strong> Honen, Shinran, Senchakushu, Kyogyoshinsho, shared core, divergence zones, semantic embeddings, three-layer analysis, SAT, source-marker layer</p>
-  <section class="toc">
-    <h2>Contents</h2>
-    <ol>
-      <li><a href="#intro">Introduction</a></li>
-      <li><a href="#data">Data</a></li>
-      <li><a href="#method">Method</a></li>
-      <li><a href="#results">Results</a></li>
-      <li><a href="#discussion">Discussion</a></li>
-      <li><a href="#limitations">Limitations</a></li>
-      <li><a href="#conclusion">Conclusion</a></li>
-      <li><a href="#references">References</a></li>
-    </ol>
-  </section>
-  <section id="intro">
-    <h2>1 Introduction</h2>
-    <p>This paper narrows the framework of the preceding three-layer Buddhist text map to Pure Land materials, especially the relation between Honen and Shinran. The central issue is not whether the two authors overlap. Since both treat central Pure Land questions, substantial overlap is expected. The important question is where each text diverges after that overlap appears.</p>
-    <p>Here, "divergence zones" refers to textual regions that move relatively away from the shared core. In the method section these are also called relative protrusion zones.</p>
-  </section>
-  <section id="data">
-    <h2>2 Data</h2>
-    <p>The main targets are Honen's <em>Senchakushu</em> and Shinran's <em>Kyogyoshinsho</em>. Pure Land patriarchal text anchors include Nagarjuna, Vasubandhu, Tanluan, Daochuo, Shandao, and Genshin. The public version does not include source text, processed text, chunk previews, or embedding vectors.</p>
-    <div class="table-wrap"><table><caption>Table 1. Texts and chunk counts</caption><thead><tr><th>Type</th><th>Author</th><th>Work</th><th>SAT ID/range</th><th>Coverage</th><th>Chunks</th></tr></thead><tbody><tr><td>Core</td><td>Honen</td><td>Senchakushu</td><td>T2608</td><td>Complete</td><td>69</td></tr>
-<tr><td>Core</td><td>Shinran</td><td>Kyogyoshinsho</td><td>T2646</td><td>Complete</td><td>191</td></tr>
+<main class="paper page latex-paper english-paper">
+  <section class="abstract" id="abstract"><h2>Abstract</h2><p>This paper is an exploratory study of how Honen&#x27;s <em>Senchaku Hongan Nembutsu Shu</em> and Shinran&#x27;s <em>Ken Jodo Shinjitsu Kyo Gyo Sho Monrui</em> overlap in semantic space, and where relative divergence zones appear after that overlap is established. The analysis uses a three-layer framework: a semantic layer, a lexical-thematic layer, and a source-marker layer. The lexical-thematic layer is not strict stylometry; it is implemented as dictionary-based counts of doctrinal and thematic word groups. This paper narrows the framework of the preceding Buddhist text embedding map [<a href="#ref-ueyama2026three-layer-map">1</a>] to Honen, Shinran, and Pure Land patriarchal anchors. The point is not to ask whether Honen and Shinran overlap, but what branches off after they overlap.</p>
+<p>The nearest non-self neighbors of the 69 Honen chunks are Shinran in 50 cases, Daochuo in 11, Genshin in 4, Shandao in 3, and Tanluan in 1. The nearest non-self neighbors of the 191 Shinran chunks are distributed across Honen in 48 cases, Daochuo in 45, Genshin in 36, Tanluan in 23, Vasubandhu in 21, Shandao in 17, and Nagarjuna in 1. A 1000-iteration capped-20 subsampling check reduces the apparent Honen-to-Shinran concentration, but the broader tendency remains: Honen stays close to Shinran and Daochuo, while Shinran disperses across Daochuo, Honen, Vasubandhu, Tanluan, and other anchors.</p>
+<p>When divergence from the shared core is compared, Honen-side candidates concentrate around right and miscellaneous practices, selection and rejection among practices, the Primal Vow, and entrustment or verification. Shinran-side candidates concentrate in the Shin and Keshindo fascicles, especially around shinjin and the three minds, sin and salvation, protective deities and cosmic order, critique of external teachings, and true / provisional sorting. The resulting hypothesis is that the difference between Honen and Shinran appears less as a difference in the meaning of nembutsu itself than as a difference in how the same nembutsu field is developed into forms of argument and source-based doctrinal architecture. This is a computationally derived exploratory result, not a replacement for historical, doctrinal, or citation-based scholarship.</p></section>
+<p><strong>Translation note.</strong> The authoritative edition of this paper is the Japanese print/book edition. This English version is an AI-assisted translation prepared for access by English-language readers. It preserves Chinese titles, Taisho identifiers, and key Japanese terms where needed, but wording and nuance should be checked against the Japanese edition for citation or scholarly use.</p>
+<p class="keywords"><strong>Keywords:</strong> Honen, Shinran, <em>Senchaku Hongan Nembutsu Shu</em>, <em>Kyogyoshinsho</em>, shared core, divergence zones, semantic embeddings, three-layer analysis, SAT, source markers</p>
+<h2 id="section-1"><span class="secno">1</span>Introduction</h2>
+<h3 id="section-1-1"><span class="secno">1.1</span>Position of This Paper</h3>
+<p>This paper follows the author&#x27;s preceding study on three-layer maps of Buddhist texts [<a href="#ref-ueyama2026three-layer-map">1</a>], but narrows the target to Pure Land materials and especially to the relation between Honen and Shinran. The preceding study separated meaning, style/lexicon, and source markers in order to avoid treating semantic proximity, lexical similarity, and source relations as the same thing.</p>
+<p>The central target texts are Honen&#x27;s <em>Senchaku Hongan Nembutsu Shu</em> and Shinran&#x27;s <em>Ken Jodo Shinjitsu Kyo Gyo Sho Monrui</em>. In this English version, these are also referred to as <em>Senchakushu</em> and <em>Kyogyoshinsho</em>. Since both texts address central Pure Land questions, a strong overlap in semantic space is expected. The important question is therefore not whether they overlap, but in what directions they differ after they overlap.</p>
+<p>In this paper, a &quot;divergence zone&quot; means a textual region that appears relatively away from the shared core. It is a working term for relative protrusion, not a doctrinal or historical conclusion by itself.</p>
+<h3 id="section-1-2"><span class="secno">1.2</span>Prior Research and the Position of This Study</h3>
+<p>The relationship between <em>Senchakushu</em> and <em>Kyogyoshinsho</em> has long been studied from doctrinal, intellectual-historical, and citation-based perspectives. Direct comparative studies include Moriwaki [<a href="#ref-moriwaki1953">3</a>], Inaba [<a href="#ref-inaba1972">4</a>], Umehara [<a href="#ref-umehara1974">5</a>], and Asai [<a href="#ref-asai2004">6</a>]. More recently, Nezu has addressed the boundary between Honen&#x27;s thought and Shinran&#x27;s distinctive development [<a href="#ref-nezu2024">7</a>]. This paper does not claim to discover the comparison itself.</p>
+<p>Those prior studies can roughly be grouped into three concerns: direct comparison of the two texts, doctrinal systematization on the Shinran side, and citation or textual-source research. This paper does not replace those concerns. It asks instead where the full-text distribution and nearest-neighbor structure suggest that closer reading should be directed.</p>
+<p>The purpose is therefore to re-place questions already accumulated in previous scholarship into a map of chunk distributions, nearest non-self neighbors, patriarchal anchors, word groups, and source markers. The expression &quot;Shinran-side development&quot; here is not a value judgment that Shinran completed something lacking in Honen. It refers only to a textual-distribution difference: in <em>Senchakushu</em>, the same nembutsu field appears as an argument for selecting nembutsu from among practices; in <em>Kyogyoshinsho</em>, it appears within a larger monrui structure of Primal Vow, shinjin, realization, true Buddha land, transformed land, patriarchal quotation, and true / provisional sorting.</p>
+<div class="table-wrap" id="tab:prior-research-positioning"><table><caption>Table 1. Prior-research concerns and the perspective visualized here</caption><thead><tr><th>Main concern in prior research</th><th>Typical question</th><th>What this paper visualizes</th></tr></thead><tbody><tr><td>Direct comparison of <em>Senchakushu</em> and <em>Kyogyoshinsho</em></td><td>How did Shinran receive exclusive nembutsu and the selected Primal Vow?</td><td>The shared core and nearest non-self neighbors of Honen and Shinran chunks.</td></tr>
+<tr><td>Inheritance and development</td><td>How are Honen&#x27;s basic problems developed in Shinran?</td><td>Comparison of Honen-side and Shinran-side divergence zones.</td></tr>
+<tr><td>Practice, shinjin, and Primal Vow transfer</td><td>How do the positions of nembutsu, practice, and shinjin change?</td><td>Word-group counts and the proximity zones of the Practice and Shin fascicles.</td></tr>
+<tr><td>Patriarchal sources and quotation</td><td>Which patriarchal texts does Shinran use, and how?</td><td>Proximity to Nagarjuna, Vasubandhu, Tanluan, Daochuo, Shandao, and Genshin anchors.</td></tr>
+<tr><td>True/provisional, expedient means, and transformed land</td><td>Where does Shinran&#x27;s systematization appear?</td><td>The Keshindo fascicle&#x27;s protrusion, Daochuo/Genshin proximity, and external-teaching or expedient-means word groups.</td></tr></tbody></table></div>
+<h3 id="section-1-3"><span class="secno">1.3</span>Research Questions</h3>
+<p>This paper asks three questions.</p>
+<ol>
+<li>How far do Honen&#x27;s <em>Senchakushu</em> and Shinran&#x27;s <em>Kyogyoshinsho</em> overlap in a SAT Chinese-text embedding space, and in what directions do they separate?</li>
+<li>How does Shinran&#x27;s spread relate to Pure Land patriarchal anchors such as Daochuo, Shandao, Genshin, Tanluan, Vasubandhu, and Nagarjuna?</li>
+<li>When divergence from the shared core is compared, does Honen move toward the argument for selecting nembutsu, while Shinran moves toward a source-based architecture centered on the Shin and Keshindo fascicles?</li>
+</ol>
+<p>The conclusion is not a doctrinal-historical claim. It is an exploratory result for extracting regions that should be examined against existing historical, doctrinal, and citation research.</p>
+<h2 id="section-2"><span class="secno">2</span>Data</h2>
+<h3 id="section-2-1"><span class="secno">2.1</span>Target Texts</h3>
+<p>The central texts are Honen&#x27;s <em>Senchaku Hongan Nembutsu Shu</em> and Shinran&#x27;s <em>Ken Jodo Shinjitsu Kyo Gyo Sho Monrui</em>. Basic descriptions of <em>Senchakushu</em> were checked against Jodoshu reference materials [<a href="#ref-jodoshuzensho-senchaku">8</a>], [<a href="#ref-jodoshu-senchaku">10</a>]. The analysis uses Chinese text acquired from the SAT Taisho Shinshu Daizokyo Text Database [<a href="#ref-sat">2</a>]. Pure Land patriarchal text anchors were added for Nagarjuna, Vasubandhu, Tanluan, Daochuo, Shandao, and Genshin.</p>
+<div class="table-wrap" id="tab:corpus"><table><caption>Table 2. Target texts and chunk counts</caption><thead><tr><th>Type</th><th>Author</th><th>Work</th><th>SAT ID/range</th><th>Coverage</th><th>Chunks</th></tr></thead><tbody><tr><td>Core</td><td>Honen</td><td><em>Senchaku Hongan Nembutsu Shu</em></td><td>T2608</td><td>Complete</td><td>69</td></tr>
+<tr><td>Core</td><td>Shinran</td><td><em>Ken Jodo Shinjitsu Kyo Gyo Sho Monrui</em></td><td>T2646</td><td>Complete</td><td>191</td></tr>
 <tr><td>Anchor</td><td>Nagarjuna</td><td>Chapter on Easy Practice</td><td>T1521, 0038a25--0040a22</td><td>Excerpt</td><td>6</td></tr>
-<tr><td>Anchor</td><td>Vasubandhu</td><td>Treatise on the Pure Land</td><td>T1524</td><td>Complete</td><td>9</td></tr>
+<tr><td>Anchor</td><td>Vasubandhu</td><td>Verse on Aspiration for Birth</td><td>T1524</td><td>Complete</td><td>9</td></tr>
 <tr><td>Anchor</td><td>Tanluan</td><td>Commentary on the Treatise on Birth</td><td>T1819</td><td>Complete</td><td>31</td></tr>
-<tr><td>Anchor</td><td>Daochuo</td><td>Anleji</td><td>T1958</td><td>Complete</td><td>42</td></tr>
+<tr><td>Anchor</td><td>Daochuo</td><td><em>Anleji</em></td><td>T1958</td><td>Complete</td><td>42</td></tr>
 <tr><td>Anchor</td><td>Shandao</td><td>Commentary on the Contemplation Sutra</td><td>T1753</td><td>Complete</td><td>23</td></tr>
-<tr><td>Anchor</td><td>Genshin</td><td>Ojoyoshu</td><td>T2682</td><td>Complete</td><td>73</td></tr></tbody></table></div>
-  </section>
-  <section id="method">
-    <h2>3 Method</h2>
-    <p>The text was tokenized with <code>cl100k_base</code>, chunked into 700-token windows with 100-token overlap, and reconstructed at Unicode character boundaries. Embeddings were generated with OpenAI <code>text-embedding-3-large</code>; each vector has 3072 dimensions. PCA is used only as an exploratory two-dimensional projection.</p>
-    <p>The three layers are: semantic similarity in the 3072-dimensional embedding space, lexical-thematic word-group counts, and explicit source-marker counts. The source-marker layer is not citation detection; it is a way of locating candidate regions for closer reading.</p>
-    <p>The protrusion score is defined as <span class="math-inline">p<sub>i</sub> = d<sub>i</sub>(1 - s<sub>i</sub>)</span>, where <span class="math-inline">d<sub>i</sub></span> is the nearest non-self distance in the 2D PCA plane and <span class="math-inline">s<sub>i</sub></span> is the nearest non-self cosine similarity in the original 3072-dimensional space.</p>
-  </section>
-  <section id="results">
-    <h2>4 Results</h2>
-    <figure><a href="../../figures/sat-safe-honen-shinran-focus-map.png"><img src="../../figures/sat-safe-honen-shinran-focus-map.png" alt="Semantic map of Honen and Shinran"></a><figcaption>Figure 1. Semantic map of Honen and Shinran using SAT Chinese text and Unicode-safe chunks.</figcaption></figure>
-    <figure><a href="../../figures/sat-safe-honen-shinran-high-priest-anchor-map.png"><img src="../../figures/sat-safe-honen-shinran-high-priest-anchor-map.png" alt="Honen, Shinran, and Pure Land patriarchal text anchors"></a><figcaption>Figure 2. Honen, Shinran, and Pure Land patriarchal text anchors.</figcaption></figure>
-    <div class="table-wrap"><table><caption>Table 2. Shared core and divergence zones</caption><thead><tr><th>Region</th><th>Computational sign</th><th>Main groups/volumes</th><th>Interpretation</th></tr></thead><tbody><tr><td>Shared core</td><td>Honen and Shinran chunks are mutually close; Daochuo and Shandao anchors also overlap.</td><td>nembutsu/name, birth/Pure Land, shinjin/three minds</td><td>A shared Pure Land problem field.</td></tr>
-<tr><td>Honen divergence</td><td>Honen chunks move away from non-Honen points and concentrate in selection-argument sections.</td><td>right/miscellaneous practices, three grades, original vow, entrustment/verification</td><td>Argument for selecting nembutsu from among other practices.</td></tr>
-<tr><td>Shinran divergence</td><td>Shinran chunks move away from non-Shinran points and concentrate in the Shin and Keshindo fascicles.</td><td>Shin fascicle, Keshindo fascicle, sin/salvation, provisional/true sorting</td><td>A source-based doctrinal architecture of vow, shinjin, realization, true land, and transformed land.</td></tr></tbody></table></div>
-    <figure><a href="../../figures/shared-core-protrusion-nearest-bars.png"><img src="../../figures/shared-core-protrusion-nearest-bars.png" alt="Shared core, divergence zones, and nearest-neighbor counts"></a><figcaption>Figure 3. Shared core, divergence zones, and nearest-neighbor counts.</figcaption></figure>
-    <figure><a href="../../figures/honen-three-layer-sequence-heatmap.png"><img src="../../figures/honen-three-layer-sequence-heatmap.png" alt="Three-layer chunk sequence for Honen"></a><figcaption>Figure 4. Three-layer chunk sequence for Honen's <em>Senchakushu</em>. The lexical-thematic layer is a word-group count proxy, and the source-marker layer is not citation detection.</figcaption></figure>
-    <figure><a href="../../figures/shinran-three-layer-sequence-heatmap.png"><img src="../../figures/shinran-three-layer-sequence-heatmap.png" alt="Three-layer chunk sequence for Shinran"></a><figcaption>Figure 5. Three-layer chunk sequence for Shinran's <em>Kyogyoshinsho</em>.</figcaption></figure>
-    <div class="table-wrap"><table><caption>Table 3. Representative candidate passages</caption><thead><tr><th>Target</th><th>Location</th><th>SAT line range</th><th>Neighbor/word group</th><th>Reading point</th></tr></thead><tbody><tr><td>Honen</td><td>chunk 7, right/miscellaneous practices</td><td>T2608, 83.0003a04--0003b04</td><td>nearest: Shinran; nearest patriarch: Shandao; word group: right/miscellaneous practices</td><td>A candidate for reading Honen's argument as the selection of nembutsu from other practices.</td></tr>
-<tr><td>Shinran</td><td>chunk 84, Shin fascicle</td><td>T2646, 83.0614a08--0614b05</td><td>nearest: Genshin; word group: sin/salvation</td><td>A candidate showing that the Shin fascicle's sin/salvation problem touches a Genshin-like thematic field.</td></tr>
-<tr><td>Shinran</td><td>chunk 182, Keshindo fascicle</td><td>T2646, 83.0640b28--0640c27</td><td>nearest: Daochuo; word group: rejection/selection</td><td>A candidate for external criticism and true/provisional sorting in the Keshindo fascicle.</td></tr></tbody></table></div>
-  </section>
-  <section id="discussion">
-    <h2>5 Discussion</h2>
-    <p>Honen's distinctive region appears less as a difference in the meaning of nembutsu itself than as a dense argument for why nembutsu should be selected from among other practices. Shinran's distribution, by contrast, expands from the shared Pure Land core toward the Shin and Keshindo fascicles and toward several Pure Land patriarchal anchors.</p>
-    <p>The three-layer design matters because semantic proximity mixes quotation, shared topic, vocabulary, and authorial exposition. Separating semantic similarity, lexical-thematic density, and explicit source markers reduces the risk of reading embedding proximity as direct influence or doctrinal identity.</p>
-  </section>
-  <section id="limitations">
-    <h2>6 Limitations</h2>
-    <ol>
-      <li>The two PCA axes explain only about 11.6 percent of the variance.</li>
-      <li>Fixed-length chunks do not match fascicle, chapter, paragraph, or quotation boundaries.</li>
-      <li>The lexical-thematic layer is dictionary-based and not strict stylometry.</li>
-      <li>The source-marker layer does not distinguish quotation from authorial exposition.</li>
-      <li>Manuscript variants and old manuscript sutra research are not yet integrated.</li>
-    </ol>
-  </section>
-  <section id="conclusion">
-    <h2>7 Conclusion</h2>
-    <p>Honen and Shinran strongly overlap in semantic space. The central result is that their difference appears not primarily as a difference in the meaning of nembutsu itself, but as a difference in how the same Pure Land problem field is developed. Honen's divergence zones move toward the argument for selecting nembutsu; Shinran's divergence zones move toward a source-based doctrinal architecture centered on the Shin and Keshindo fascicles.</p>
-    <p>This is not a replacement for existing doctrinal, historical, or citation-based scholarship. It is a map of candidate regions to be returned to those bodies of research.</p>
-  </section>
-  <section id="references" class="references">
-    <h2>References</h2>
-    <ol class="ref-list"><li>Daishin Ueyama, "Exploratory Mapping of Buddhist Texts with a Three-Layer Map of Meaning, Style, and Source Markers," 2026. <a href="https://dueyama.github.io/buddhist-text-embedding-map/paper/">Previous paper</a>. Accessed June 5, 2026.</li>
-<li>SAT Taisho Shinshu Daizokyo Text Database. <a href="https://21dzk.l.u-tokyo.ac.jp/SAT/">https://21dzk.l.u-tokyo.ac.jp/SAT/</a>. Accessed June 5, 2026.</li>
-<li>Moriwaki Ikku, "Senchakushu to Kyogyoshinsho ni kansuru ichi kosatsu," Ryukoku Ronsou 1, 48--72, 1953. INBUDS ID: IB00020630A.</li>
-<li>Inaba Shuken, "'Kyogyoshinsho' to 'Senchakushu'," Shinran Kyogaku 21, 33--50, 1972.</li>
-<li>Umehara Ryusho, "Senchakushu to Kyogyoshinsho," 1974. INBUDS ID: IB00046839A.</li>
-<li>Asai Narumi, "'Senchakushu' to 'Kyogyoshinsho'," Gyoshin Gakuho 18, 2004.</li>
-<li>Nezu Shigeru, Nihon Bukkyo o kaeta Shinran no dokujisei, Hozokan, 2024.</li>
-<li>Jodoshuzensho Dictionary, "Senchaku Hongan Nembutsu Shu." Accessed June 5, 2026.</li>
-<li>Jodoshu official site, "Senchakushu." Accessed June 5, 2026.</li>
-<li>Fujiwara Satoshi, "A Reexamination of Quotations in Kyogyoshinsho Based on Old Manuscript Sutras," 2020.</li>
-<li>OpenAI, Embeddings documentation. Accessed June 5, 2026.</li>
-<li>OpenAI, <code>tiktoken</code>. Accessed June 5, 2026.</li></ol>
-  </section>
+<tr><td>Anchor</td><td>Genshin</td><td><em>Ojoyoshu</em></td><td>T2682</td><td>Complete</td><td>73</td></tr></tbody></table></div>
+<p>These anchors are exploratory, not exhaustive representatives of all seven patriarchs in Shinran&#x27;s doctrinal tradition. Nagarjuna is represented by six chunks from the Chapter on Easy Practice, and Vasubandhu by nine chunks, whereas Genshin has seventy-three chunks. The number of candidate chunks therefore differs sharply across anchor groups.</p>
+<h3 id="section-2-2"><span class="secno">2.2</span>Text Preparation and Quality Check</h3>
+<p>Text preparation extracted textual lines from SAT HTML and removed UI elements, HTML tags, image placeholders, and SAT line numbers embedded as interface material. Quality checks found 1644 SAT lines and 27246 non-space characters for Honen T2608, and 4215 SAT lines and 76030 non-space characters for Shinran T2646. Counts of actual replacement characters, HTML tags, HTML entities, image placeholders, button strings, and line-number contamination were all zero.</p>
+<p>The earlier project used a method that decoded fixed-length token sequences directly. This paper checked that method against a Unicode-safe method. Replacement characters may appear at chunk boundaries in the older method, but embeddings of corresponding chunks remained highly similar and author centroids were nearly unchanged. The broad map in the earlier paper is therefore not rejected by this issue. Nevertheless, this paper uses token offset information and reconstructs chunks at Unicode character boundaries. The main chunking setting remains 700 tokens with 100-token overlap.</p>
+<h2 id="section-3"><span class="secno">3</span>Method</h2>
+<h3 id="section-3-1"><span class="secno">3.1</span>Chunking and Embeddings</h3>
+<p>The text was tokenized with <code>tiktoken</code> and <code>cl100k_base</code>, then chunked into 700-token windows with 100-token overlap [<a href="#ref-tiktoken">13</a>]. Chunk text was reconstructed at Unicode character boundaries, and each chunk was assigned a SAT line range, chunk number, and SHA-256 hash.</p>
+<p>Embeddings were generated with OpenAI <code>text-embedding-3-large</code> [<a href="#ref-openai-embeddings">12</a>]. Each vector analyzed here has 3072 dimensions. PCA was fitted on the Honen and Shinran chunks and used to project that 3072-dimensional space into two dimensions. The patriarchal anchors were then projected into the same fixed PCA plane. The two PCA axes explain approximately 11.6 percent of the variance, so the 2D figures are exploratory projections and must be read together with nearest-neighbor results in the original 3072-dimensional space.</p>
+<p>PCA is not the only possible projection method. UMAP, t-SNE, and MDS could show local neighborhoods or clusters differently. This paper uses PCA as the baseline display because its axes are linear, the same plane can be reused for anchors, and repeated runs are relatively stable. Robustness checks with other projections remain a methodological task.</p>
+<h3 id="section-3-2"><span class="secno">3.2</span>Basic Three-Layer Design</h3>
+<p>The three layers are implemented as follows.</p>
+<ol>
+<li>Semantic layer: cosine similarity in the 3072-dimensional <code>text-embedding-3-large</code> space, 2D PCA distance, author centroids, nearest non-self neighbors, and nearest anchors.</li>
+<li>Lexical-thematic layer: dictionary-based word-group counts, including nembutsu / name, selection / Primal Vow, right / miscellaneous practices, abandoning / establishing, shinjin / three minds, vow / transfer, Name / true reality, birth / Pure Land, expedient means / transformed land, and sin / salvation.</li>
+<li>Source-marker layer: dictionary counts of sutra names, treatise and commentary titles, patriarch names, and quotation-introduction markers.</li>
+</ol>
+<p>The lexical-thematic layer keeps continuity with the preceding paper&#x27;s &quot;style/lexicon&quot; terminology. In this implementation, however, it is not a strict stylometric measurement or translator attribution method. It is a proxy for local doctrinal and thematic density.</p>
+<div class="table-wrap" id="tab:style-lexicon"><table><caption>Table 3. Outline of the word-group dictionary used in the lexical-thematic layer</caption><thead><tr><th>Word group</th><th>Representative terms</th></tr></thead><tbody><tr><td>nembutsu / name</td><td>念佛, 念仏, 稱名, 称名, 專念, 専念, 念佛三昧</td></tr>
+<tr><td>selection / Primal Vow</td><td>選擇, 選択, 撰擇, 本願, 弘誓, 誓願, 第十八願</td></tr>
+<tr><td>right / miscellaneous practices</td><td>正行, 雜行, 雑行, 二行, 諸行, 萬行, 万行, 餘行, 正定業</td></tr>
+<tr><td>abandoning / establishing and selection</td><td>廢, 廃, 立, 捨, 閣, 抛, 傍, 取, 選取</td></tr>
+<tr><td>shinjin / three minds</td><td>信, 信樂, 信楽, 三心, 至誠心, 深心, 眞實心, 一心</td></tr>
+<tr><td>vow / transfer</td><td>願, 回向, 廻向, 往相, 還相, 利他, 欲生</td></tr>
+<tr><td>Name / true reality</td><td>名號, 名号, 眞實, 真実, 金剛, 大利, 無上</td></tr>
+<tr><td>birth / Pure Land</td><td>往生, 淨土, 浄土, 安樂, 安楽, 極樂, 極楽, 報土, 佛土</td></tr>
+<tr><td>expedient means / transformed land</td><td>方便, 化身土, 眞門, 真門, 假, 仮, 邪, 外道</td></tr>
+<tr><td>sin / salvation</td><td>五逆, 謗法, 闡提, 阿闍世, 提婆, 慚愧, 地獄, 煩惱</td></tr></tbody></table></div>
+<div class="table-wrap" id="tab:source-marker-lexicon"><table><caption>Table 4. Outline of explicit marker dictionaries used in the source-marker layer</caption><thead><tr><th>Marker group</th><th>Representative terms</th><th>Counting method and limitation</th></tr></thead><tbody><tr><td>Sutra names</td><td>大經, 觀經, 阿彌陀經, 無量壽經, 涅槃經, 大集經, 日藏經, 月藏經, etc.</td><td>Counts explicit appearances in a chunk. Some variant forms are listed in the dictionary.</td></tr>
+<tr><td>Treatise/commentary names</td><td>往生論, 往生論註, 安樂集, 觀經疏, 法事讃, 般舟讃, 往生要集</td><td>Counts only explicit work titles. Abbreviated or implicit references may be missed.</td></tr>
+<tr><td>Patriarch names</td><td>龍樹, 天親, 曇鸞, 道綽, 善導, 源信, 源空, 法然, 光明寺</td><td>Counts explicit names. It does not distinguish quoted text from authorial exposition.</td></tr>
+<tr><td>Quotation-introduction markers</td><td>云, 曰, 言, 釋, 疏, 論曰, 經言, 問曰, 答曰, 私云</td><td>Counts appearances. Some appearances may be ordinary usage rather than quotation introductions.</td></tr></tbody></table></div>
+<p>All word groups and markers are counted as appearances within a chunk. The method does not distinguish semantic polarity, context, quotation from exposition, or the standpoint of the quoted source.</p>
+<h3 id="section-3-3"><span class="secno">3.3</span>Nearest-Neighbor Counts and Capped-20 Subsampling</h3>
+<p>For each chunk, cosine similarity was computed against all chunks outside the same target author group, and the group with the highest similarity was counted as the nearest non-self group. This simple count may be affected by the number of chunks in each reference group. For that reason, this paper also ran a 1000-iteration sensitivity check in which each reference group was capped at at most twenty sampled chunks, while groups smaller than twenty were used in full. The resulting ratios are shown as means and 95 percent ranges.</p>
+<h3 id="section-3-4"><span class="secno">3.4</span>Protrusion Score</h3>
+<p>Honen-side and Shinran-side divergence candidates were extracted by combining isolation in the 2D PCA plane with weakness of the nearest non-self neighbor in the original space. For chunk <span class="math-inline">i</span>, let <span class="math-inline">d<sub>i</sub></span> be the distance to the nearest non-self chunk in the 2D PCA plane, and let <span class="math-inline">s<sub>i</sub></span> be the cosine similarity to the nearest non-self chunk in the 3072-dimensional space. The protrusion score is:</p>
+<div class="display-math">p<sub>i</sub>= d<sub>i</sub>(1 - s<sub>i</sub>)</div>
+<p>This score is an exploratory ranking index. Its absolute value has no independent meaning, and because it uses 2D PCA distance, it cannot prove high-dimensional structure or historical relations. A supplementary ranking using only high-dimensional isolation, <span class="math-inline">1 - s<sub>i</sub></span>, was also checked.</p>
+<h3 id="section-3-5"><span class="secno">3.5</span>Fascicle and Chapter Labels</h3>
+<p>Shinran chunks were labeled by SAT line range as preface, Teaching, Practice, Shin, Realization, True Buddha Land, or Keshindo fascicle. Honen chunks were labeled approximately as preface, sacred path / Pure Land paths, right / miscellaneous practices, Primal Vow nembutsu, three grades and single-minded nembutsu, three minds and shinjin, entrustment / verification / selection conclusion, and final / colophon material. Because chunks overlap by 100 tokens, these labels are approximate and are based on chunk-start line positions.</p>
+<h2 id="section-4"><span class="secno">4</span>Results</h2>
+<h3 id="section-4-1"><span class="secno">4.1</span>The Shared Core of Honen and Shinran</h3>
+<p>Figure <a href="#fig:sat-safe-focus-map">1</a> shows the semantic map of Honen and Shinran using SAT Chinese text and Unicode-safe chunks. PCA was fitted only on Honen and Shinran chunks, and the display range is adjusted to their distribution.</p>
+<figure id="fig:sat-safe-focus-map"><a href="../../figures/en/sat-safe-honen-shinran-focus-map.png"><img src="../../figures/en/sat-safe-honen-shinran-focus-map.png" alt="Semantic map of Honen and Shinran using SAT Chinese text and Unicode-safe chunks. PCA was fitted on 69 Honen chunks and 191 Shinran chunks. The display range and ellipse definition are the same as the Honen/Shinran ellipses in Figure 2."></a><figcaption>Figure 1. Semantic map of Honen and Shinran using SAT Chinese text and Unicode-safe chunks. PCA was fitted on 69 Honen chunks and 191 Shinran chunks. The display range and ellipse definition are the same as the Honen/Shinran ellipses in Figure <a href="#fig:sat-safe-anchor-map">2</a>.</figcaption></figure>
+<p>Honen and Shinran overlap substantially, but Shinran has a broader distribution. Honen forms a relatively compact distribution, while Shinran extends from the shared core toward the right and downward directions. This two-author map is the baseline for reading where the patriarchal anchors enter.</p>
+<h3 id="section-4-2"><span class="secno">4.2</span>Patriarchal Anchors and Shinran&#x27;s Spread</h3>
+<p>Figure <a href="#fig:sat-safe-anchor-map">2</a> projects Nagarjuna, Vasubandhu, Tanluan, Daochuo, Shandao, and Genshin into the same PCA plane. The PCA fitting target remains Honen and Shinran only. Adding the patriarchal texts adds their points and ellipses to the same plane; it does not recompute the Honen/Shinran ellipses.</p>
+<figure id="fig:sat-safe-anchor-map"><a href="../../figures/en/sat-safe-honen-shinran-high-priest-anchor-map.png"><img src="../../figures/en/sat-safe-honen-shinran-high-priest-anchor-map.png" alt="Semantic map of Honen, Shinran, and Pure Land patriarchal anchors using SAT Chinese text and Unicode-safe chunks. The Honen/Shinran display range and ellipse definition are identical to Figure 1."></a><figcaption>Figure 2. Semantic map of Honen, Shinran, and Pure Land patriarchal anchors using SAT Chinese text and Unicode-safe chunks. The Honen/Shinran display range and ellipse definition are identical to Figure <a href="#fig:sat-safe-focus-map">1</a>.</figcaption></figure>
+<p>Daochuo and Shandao lie close to the shared core, while Genshin and Tanluan overlap more with Shinran&#x27;s broader distribution. The 2D display is then paired with nearest-neighbor counts in the original 3072-dimensional space.</p>
+<h3 id="section-4-3"><span class="secno">4.3</span>Post-hoc Interpretation of 2D Directions</h3>
+<p>PCA axes do not carry doctrinal labels by themselves, and their signs may flip under recomputation. Therefore, the directions in the map must be read after the fact from chunks at the extremes: their fascicle or chapter labels, word groups, source markers, and high-frequency terms. Table <a href="#tab:pca-direction-reading">5</a> summarizes the approximate labels assigned from the outer 15/85 percentiles of the Honen/Shinran coordinates.</p>
+<div class="table-wrap" id="tab:pca-direction-reading"><table><caption>Table 5. Approximate 2D direction labels based on PCA-endpoint aggregation</caption><thead><tr><th>Direction</th><th>Main authors/fascicles or chapters</th><th>Frequent word groups</th><th>Approximate label</th></tr></thead><tbody><tr><td>Right / PC1+</td><td>Shinran; Shin and Keshindo fascicles</td><td>sin / salvation; abandoning / establishing</td><td>Shinran expansion toward sin / salvation and transformed-land problems</td></tr>
+<tr><td>Left / PC1-</td><td>Honen; right / miscellaneous practices, single-minded nembutsu, three minds</td><td>shinjin / three minds; birth / Pure Land; right / miscellaneous practices</td><td>selection argument and shared core</td></tr>
+<tr><td>Up / PC2+</td><td>Shinran; Practice and True Buddha Land fascicles</td><td>vow / transfer; birth / Pure Land; nembutsu / name</td><td>Amida, light, Name, and vow-transfer direction</td></tr>
+<tr><td>Down / PC2-</td><td>Shinran; Shin and Keshindo fascicles</td><td>shinjin / three minds; sin / salvation; expedient means / transformed land</td><td>shinjin / three minds, sin / salvation, and expedient / external-teaching direction</td></tr></tbody></table></div>
+<p>On this reading, the horizontal direction runs roughly from Honen-heavy selection argument and shared core on the left to Shinran&#x27;s Shin/Keshindo expansion on the right. The vertical direction roughly separates Amida, light, Name, and vow-transfer above from shinjin / three minds, sin / salvation, and expedient / external-teaching concerns below. This is only a description of the present PCA plane.</p>
+<div class="table-wrap" id="tab:shared-protrusion-summary"><table><caption>Table 6. Summary of the shared core and divergence zones</caption><thead><tr><th>Region</th><th>Computational sign</th><th>Main word groups/fascicles or chapters</th><th>Interpretation</th></tr></thead><tbody><tr><td>Shared core</td><td>Honen and Shinran chunks are mutually close, and Daochuo/Shandao anchors also overlap.</td><td>nembutsu / name, birth / Pure Land, shinjin / three minds</td><td>A shared Pure Land problem field.</td></tr>
+<tr><td>Honen divergence</td><td>Honen chunks move relatively away from non-Honen points and concentrate in selection-argument sections.</td><td>right / miscellaneous practices, three grades and single-minded nembutsu, Primal Vow nembutsu, entrustment / verification</td><td>An argument for selecting nembutsu from among other practices.</td></tr>
+<tr><td>Shinran divergence</td><td>Shinran chunks move relatively away from non-Shinran points and concentrate in the Shin and Keshindo fascicles.</td><td>Shin fascicle, Keshindo fascicle, sin / salvation, expedient means / transformed land, abandoning / establishing</td><td>A source-based architecture of Primal Vow, shinjin, realization, true Buddha land, and transformed land.</td></tr></tbody></table></div>
+<p>Table <a href="#tab:shared-protrusion-summary">6</a> is the guiding summary for the result section. The following tables and figures test that tripartite reading through the semantic, lexical-thematic, and source-marker layers.</p>
+<div class="table-wrap" id="tab:honen-nearest"><table><caption>Table 7. Nearest non-self groups for Honen chunks</caption><thead><tr><th>Nearest group</th><th>Chunks</th></tr></thead><tbody><tr><td>Shinran</td><td>50</td></tr>
+<tr><td>Daochuo</td><td>11</td></tr>
+<tr><td>Genshin</td><td>4</td></tr>
+<tr><td>Shandao</td><td>3</td></tr>
+<tr><td>Tanluan</td><td>1</td></tr></tbody></table></div>
+<div class="table-wrap" id="tab:shinran-nearest"><table><caption>Table 8. Nearest non-self groups for Shinran chunks</caption><thead><tr><th>Nearest group</th><th>Chunks</th></tr></thead><tbody><tr><td>Honen</td><td>48</td></tr>
+<tr><td>Daochuo</td><td>45</td></tr>
+<tr><td>Genshin</td><td>36</td></tr>
+<tr><td>Tanluan</td><td>23</td></tr>
+<tr><td>Vasubandhu</td><td>21</td></tr>
+<tr><td>Shandao</td><td>17</td></tr>
+<tr><td>Nagarjuna</td><td>1</td></tr></tbody></table></div>
+<figure id="fig:shared-protrusion-bars"><a href="../../figures/en/shared-core-protrusion-nearest-bars.png"><img src="../../figures/en/shared-core-protrusion-nearest-bars.png" alt="Visualization of the shared core and divergence zones. The upper band schematizes Table 6 and does not encode quantity by width. The lower bars show the simple nearest non-self counts from Tables 7 and 8."></a><figcaption>Figure 3. Visualization of the shared core and divergence zones. The upper band schematizes Table <a href="#tab:shared-protrusion-summary">6</a> and does not encode quantity by width. The lower bars show the simple nearest non-self counts from Tables <a href="#tab:honen-nearest">7</a> and <a href="#tab:shinran-nearest">8</a>.</figcaption></figure>
+<p>For Honen, 50 of 69 chunks take Shinran as the nearest non-self group. Under these data, chunking, and embedding settings, many Honen chunks are therefore strongly close to Shinran chunks in semantic space. This should not be read as a proof of influence or its direction; it is a semantic-neighborhood result.</p>
+<p>For Shinran, nearest non-self neighbors are distributed across Honen, Daochuo, Genshin, Tanluan, Vasubandhu, Shandao, and Nagarjuna. Thus Shinran keeps a shared core with Honen while spreading toward several patriarchal directions.</p>
+<div class="table-wrap" id="tab:nearest-subsampling"><table><caption>Table 9. Nearest-neighbor ratios under capped-20 subsampling</caption><thead><tr><th>Target</th><th>Nearest group</th><th>Full/capped sample</th><th>Simple ratio</th><th>Capped-20 mean ratio (95% range)</th></tr></thead><tbody><tr><td>Honen</td><td>Shinran</td><td>191/20</td><td>72.5%</td><td>33.9% (11.6--55.1%)</td></tr>
+<tr><td>Honen</td><td>Daochuo</td><td>42/20</td><td>15.9%</td><td>27.2% (11.6--43.5%)</td></tr>
+<tr><td>Honen</td><td>Shandao</td><td>23/20</td><td>4.3%</td><td>18.2% (10.1--27.5%)</td></tr>
+<tr><td>Honen</td><td>Genshin</td><td>73/20</td><td>5.8%</td><td>15.7% (2.9--31.9%)</td></tr>
+<tr><td>Shinran</td><td>Daochuo</td><td>42/20</td><td>23.6%</td><td>22.8% (15.2--29.3%)</td></tr>
+<tr><td>Shinran</td><td>Honen</td><td>69/20</td><td>25.1%</td><td>19.0% (11.5--26.2%)</td></tr>
+<tr><td>Shinran</td><td>Vasubandhu</td><td>9/9</td><td>11.0%</td><td>15.9% (13.1--19.4%)</td></tr>
+<tr><td>Shinran</td><td>Tanluan</td><td>31/20</td><td>12.0%</td><td>14.4% (9.4--19.4%)</td></tr></tbody></table></div>
+<p>Table <a href="#tab:nearest-subsampling">9</a> shows that the simple Honen-to-Shinran nearest-neighbor ratio includes a chunk-count effect: it falls from 72.5 percent to a 33.9 percent mean when Shinran is capped at twenty sampled chunks. Even so, Honen remains oriented toward Shinran and Daochuo, while Shinran remains distributed across Daochuo, Honen, Vasubandhu, Tanluan, and others.</p>
+<h3 id="section-4-4"><span class="secno">4.4</span>Shinran by Fascicle and Proximity Zone</h3>
+<p>Shinran chunks were grouped by fascicle and then classified by nearest non-self group and relative protrusion. The &quot;Shinran-side protrusion candidate&quot; label here does not mean doctrinal originality; it indicates places where, under the present analysis, proximity to non-Shinran chunks is relatively weak.</p>
+<div class="table-wrap" id="tab:shinran-volume-affinity"><table><caption>Table 10. Major Shinran fascicle/proximity zones</caption><thead><tr><th>Fascicle</th><th>Proximity zone</th><th>Chunks</th></tr></thead><tbody><tr><td>Shin fascicle</td><td>Honen-proximate</td><td>21</td></tr>
+<tr><td>Keshindo fascicle</td><td>Daochuo-proximate</td><td>19</td></tr>
+<tr><td>Practice fascicle</td><td>Honen-proximate</td><td>14</td></tr>
+<tr><td>Shin fascicle</td><td>Shinran-side protrusion candidate</td><td>13</td></tr>
+<tr><td>Realization fascicle</td><td>Vasubandhu-proximate</td><td>11</td></tr>
+<tr><td>Keshindo fascicle</td><td>Honen-proximate</td><td>10</td></tr>
+<tr><td>Keshindo fascicle</td><td>Genshin-proximate</td><td>9</td></tr>
+<tr><td>Shin fascicle</td><td>Genshin-proximate</td><td>8</td></tr>
+<tr><td>True Buddha Land fascicle</td><td>Shandao-proximate</td><td>8</td></tr>
+<tr><td>Practice fascicle</td><td>Genshin-proximate</td><td>8</td></tr></tbody></table></div>
+<p>The Shin fascicle includes both Honen-proximate chunks and Shinran-side protrusion candidates. The Keshindo fascicle mixes Daochuo, Genshin, Shandao, Honen, and Shinran-side protrusion candidates. This suggests a broad problem field including expedient means, the last age, external teachings, protective deities, and true / provisional sorting.</p>
+<h3 id="section-4-5"><span class="secno">4.5</span>Honen Three-Layer Sequence: Convergence Toward the Selection Argument</h3>
+<p>Figure <a href="#fig:honen-three-layer">4</a> places the 69 Honen chunks in textual order and stacks the semantic layer, lexical-thematic layer, and source-marker layer. The semantic layer shows maximum cosine similarity from each Honen chunk to Shinran and the patriarchal groups. The lexical-thematic and source-marker layers use the same dictionaries as the Shinran figure.</p>
+<figure id="fig:honen-three-layer"><a href="../../figures/en/honen-three-layer-sequence-heatmap.png"><img src="../../figures/en/honen-three-layer-sequence-heatmap.png" alt="Three-layer chunk sequence for Honen&#x27;s Senchakushu. The upper band is the semantic layer, the middle band is the lexical-thematic layer, and the lower band is the source-marker layer. The x-axis is Honen chunk order, and vertical lines mark approximate chapter or position boundaries based on SAT line ranges."></a><figcaption>Figure 4. Three-layer chunk sequence for Honen&#x27;s <em>Senchakushu</em>. The upper band is the semantic layer, the middle band is the lexical-thematic layer, and the lower band is the source-marker layer. The x-axis is Honen chunk order, and vertical lines mark approximate chapter or position boundaries based on SAT line ranges.</figcaption></figure>
+<p>The semantic layer is frequently close to Shinran, while some locations incline toward Daochuo, Shandao, or Genshin. The lexical-thematic layer forms bands around right / miscellaneous practices, Primal Vow nembutsu, three grades and single-minded nembutsu, three minds / shinjin, and entrustment or verification. The source-marker layer shows strong quotation-introduction markers across the text. Honen&#x27;s sequence therefore appears as semantic overlap with Shinran combined with convergence toward the argument for selecting nembutsu.</p>
+<h3 id="section-4-6"><span class="secno">4.6</span>Shinran Three-Layer Sequence: Expansion Toward a Source-Based Architecture</h3>
+<p>Figure <a href="#fig:shinran-three-layer">5</a> places the 191 Shinran chunks in textual order and stacks the same three layers. The semantic layer shows maximum cosine similarity from each Shinran chunk to Honen and the patriarchal groups. The source-marker layer counts explicit markers for the Pure Land sutras, other sutras, treatises, patriarchs, and quotation-introduction forms.</p>
+<figure id="fig:shinran-three-layer"><a href="../../figures/en/shinran-three-layer-sequence-heatmap.png"><img src="../../figures/en/shinran-three-layer-sequence-heatmap.png" alt="Three-layer chunk sequence for Shinran&#x27;s Kyogyoshinsho. The upper band is the semantic layer, the middle band is the lexical-thematic layer, and the lower band is the source-marker layer. The x-axis is Shinran chunk order, and vertical lines mark fascicle boundaries."></a><figcaption>Figure 5. Three-layer chunk sequence for Shinran&#x27;s <em>Kyogyoshinsho</em>. The upper band is the semantic layer, the middle band is the lexical-thematic layer, and the lower band is the source-marker layer. The x-axis is Shinran chunk order, and vertical lines mark fascicle boundaries.</figcaption></figure>
+<p>In the Shin fascicle, semantic nearest neighbors divide among Honen, Genshin, and Daochuo, while the lexical-thematic layer emphasizes shinjin / three minds and sin / salvation. In the Keshindo fascicle, Daochuo, Honen, and Genshin proximity coexists with word groups for shinjin, vow / transfer, birth / Pure Land, expedient means, and abandoning / establishing. This shows why the three layers must be kept apart: semantic proximity, lexical density, and explicit source markers do not always move together.</p>
+<h3 id="section-4-7"><span class="secno">4.7</span>Honen Divergence Zones</h3>
+<p>Honen-side divergence candidates were extracted by the protrusion score. Table <a href="#tab:honen-protrusion">11</a> lists the top ten chunks.</p>
+<div class="table-wrap" id="tab:honen-protrusion"><table><caption>Table 11. Top Honen-side divergence chunks</caption><thead><tr><th>No.</th><th>Position</th><th>Start line</th><th>Nearest</th><th>Nearest patriarch</th><th>Word group</th></tr></thead><tbody><tr><td>7</td><td>right / miscellaneous practices</td><td>T2608, 83.0003a04</td><td>Shinran</td><td>Shandao</td><td>right / miscellaneous practices</td></tr>
+<tr><td>44</td><td>entrustment / verification / selection conclusion</td><td>T2608, 83.0013b17</td><td>Shinran</td><td>Tanluan</td><td>nembutsu / name</td></tr>
+<tr><td>22</td><td>three grades and single-minded nembutsu</td><td>T2608, 83.0007b07</td><td>Shinran</td><td>Shandao</td><td>nembutsu / name</td></tr>
+<tr><td>29</td><td>three minds / shinjin</td><td>T2608, 83.0009b05</td><td>Shinran</td><td>Tanluan</td><td>nembutsu / name</td></tr>
+<tr><td>59</td><td>entrustment / verification / selection conclusion</td><td>T2608, 83.0017c18</td><td>Daochuo</td><td>Daochuo</td><td>nembutsu / name</td></tr>
+<tr><td>56</td><td>entrustment / verification / selection conclusion</td><td>T2608, 83.0017a01</td><td>Shinran</td><td>Daochuo</td><td>nembutsu / name</td></tr>
+<tr><td>15</td><td>Primal Vow nembutsu</td><td>T2608, 83.0005b05</td><td>Shinran</td><td>Genshin</td><td>birth / Pure Land</td></tr>
+<tr><td>37</td><td>three minds / shinjin</td><td>T2608, 83.0011b21</td><td>Shinran</td><td>Genshin</td><td>shinjin / three minds</td></tr>
+<tr><td>21</td><td>three grades and single-minded nembutsu</td><td>T2608, 83.0007a11</td><td>Daochuo</td><td>Daochuo</td><td>right / miscellaneous practices</td></tr>
+<tr><td>55</td><td>entrustment / verification / selection conclusion</td><td>T2608, 83.0016b22</td><td>Shinran</td><td>Daochuo</td><td>birth / Pure Land</td></tr></tbody></table></div>
+<p>These candidates concentrate in right / miscellaneous practices, the three grades and single-minded nembutsu, Primal Vow nembutsu, three minds / shinjin, and entrustment / verification / selection conclusion. Honen&#x27;s divergence is therefore best read here not as a different meaning of nembutsu itself, but as a dense argument that selects nembutsu from among other practices.</p>
+<h3 id="section-4-8"><span class="secno">4.8</span>Shinran Divergence Zones</h3>
+<p>The same score was computed for Shinran chunks. Table <a href="#tab:shinran-protrusion">12</a> lists the top ten.</p>
+<div class="table-wrap" id="tab:shinran-protrusion"><table><caption>Table 12. Top Shinran-side divergence chunks</caption><thead><tr><th>No.</th><th>Fascicle</th><th>Content zone</th><th>Start line</th><th>Nearest</th><th>Word group</th></tr></thead><tbody><tr><td>162</td><td>Keshindo fascicle</td><td>protective deities and cosmic order</td><td>T2646, 83.0635b21</td><td>Genshin</td><td>birth / Pure Land</td></tr>
+<tr><td>84</td><td>Shin fascicle</td><td>shinjin / three minds and sin / salvation</td><td>T2646, 83.0614a08</td><td>Genshin</td><td>sin / salvation</td></tr>
+<tr><td>72</td><td>Shin fascicle</td><td>shinjin / three minds and sin / salvation</td><td>T2646, 83.0610b22</td><td>Genshin</td><td>sin / salvation</td></tr>
+<tr><td>83</td><td>Shin fascicle</td><td>shinjin / three minds and sin / salvation</td><td>T2646, 83.0613c14</td><td>Daochuo</td><td>sin / salvation</td></tr>
+<tr><td>85</td><td>Shin fascicle</td><td>shinjin / three minds and sin / salvation</td><td>T2646, 83.0614b02</td><td>Genshin</td><td>abandoning / establishing</td></tr>
+<tr><td>71</td><td>Shin fascicle</td><td>shinjin / three minds and sin / salvation</td><td>T2646, 83.0610a27</td><td>Genshin</td><td>vow / transfer</td></tr>
+<tr><td>182</td><td>Keshindo fascicle</td><td>critique of external teachings</td><td>T2646, 83.0640b28</td><td>Daochuo</td><td>abandoning / establishing</td></tr>
+<tr><td>75</td><td>Shin fascicle</td><td>shinjin / three minds and sin / salvation</td><td>T2646, 83.0611b10</td><td>Daochuo</td><td>sin / salvation</td></tr>
+<tr><td>74</td><td>Shin fascicle</td><td>shinjin / three minds and sin / salvation</td><td>T2646, 83.0611a10</td><td>Genshin</td><td>sin / salvation</td></tr>
+<tr><td>78</td><td>Shin fascicle</td><td>shinjin / three minds and sin / salvation</td><td>T2646, 83.0612b05</td><td>Genshin</td><td>sin / salvation</td></tr></tbody></table></div>
+<p>Among the top twenty-four Shinran candidates, the Shin fascicle accounts for thirteen and the Keshindo fascicle for eight. The nearest non-self groups include Genshin, Daochuo, Tanluan, Honen, and Shandao. Shinran-side divergence therefore does not simply move away from Honen; it spreads through several patriarchal and thematic fields, especially sin / salvation in the Shin fascicle and true / provisional or external-teaching problems in the Keshindo fascicle.</p>
+<h3 id="section-4-9"><span class="secno">4.9</span>Comparison of Honen and Shinran Divergence</h3>
+<p>Among the top twenty-four Honen candidates, entrustment / verification / selection conclusion appears ten times, three grades and single-minded nembutsu four times, Primal Vow nembutsu four times, three minds / shinjin three times, and right / miscellaneous practices three times. In contrast, Shinran concentrates in the Shin and Keshindo fascicles. The same notion of divergence therefore appears differently: Honen&#x27;s side is a concentrated argument for selecting nembutsu, whereas Shinran&#x27;s side is the expansion of a doctrinal architecture around shinjin, sin / salvation, expedient means, true / provisional sorting, and transformed land.</p>
+<h3 id="section-4-10"><span class="secno">4.10</span>Representative Passage Checks</h3>
+<p>The following three examples show how the computationally extracted candidates can be returned to close reading without reproducing source text. They are selected as representative cases of Honen&#x27;s selection argument, Shinran&#x27;s Shin-fascicle sin / salvation problem, and Shinran&#x27;s Keshindo-fascicle external-teaching or true / provisional sorting.</p>
+<div class="table-wrap" id="tab:case-study-chunks"><table><caption>Table 13. Representative candidate passages</caption><thead><tr><th>Target</th><th>Location</th><th>SAT line range</th><th>Neighbor/word group</th><th>Reading point</th></tr></thead><tbody><tr><td>Honen</td><td>chunk 7, right / miscellaneous practices</td><td>T2608, 83.0003a04--0003b04</td><td>nearest: Shinran; nearest patriarch: Shandao; word group: right / miscellaneous practices</td><td>The passage is a candidate for reading Honen&#x27;s divergence as an argument that selects nembutsu through the classification of right and miscellaneous practices.</td></tr>
+<tr><td>Shinran</td><td>chunk 84, Shin fascicle</td><td>T2646, 83.0614a08--0614b05</td><td>nearest: Genshin; word group: sin / salvation</td><td>The Shin fascicle&#x27;s sin / salvation problem appears not as simple distance from Honen, but in contact with a Genshin-like thematic field.</td></tr>
+<tr><td>Shinran</td><td>chunk 182, Keshindo fascicle</td><td>T2646, 83.0640b28--0640c27</td><td>nearest: Daochuo; word group: abandoning / establishing</td><td>The Keshindo fascicle&#x27;s critique of external teachings and true / provisional sorting appears near a Daochuo-oriented problem field.</td></tr></tbody></table></div>
+<p>The first case is semantically close to Shinran but lexically concentrated in right / miscellaneous practices. The second case shows Shinran&#x27;s Shin fascicle near a Genshin-like sin / salvation field. The third case shows the Keshindo fascicle&#x27;s critique and sorting near a Daochuo-oriented field. None of these cases proves a historical relation; they are coordinates for further philological reading.</p>
+<h3 id="section-4-11"><span class="secno">4.11</span>Robustness Check for the Protrusion Score</h3>
+<p>Because the protrusion score uses 2D PCA distance, it was compared with a ranking based only on high-dimensional isolation, <span class="math-inline">1 - s<sub>i</sub></span>. Table <a href="#tab:high-dim-isolation-check">14</a> summarizes the top twenty-four comparison.</p>
+<div class="table-wrap" id="tab:high-dim-isolation-check"><table><caption>Table 14. Comparison of protrusion-score and high-dimensional-isolation top-24 candidates</caption><thead><tr><th>Target</th><th>Center of top-24 protrusion-score candidates</th><th>Center of top-24 high-dimensional-isolation candidates</th><th>Overlap</th><th>Interpretation</th></tr></thead><tbody><tr><td>Honen</td><td>entrustment / verification / selection conclusion 10; three grades / single-minded nembutsu 4; Primal Vow nembutsu 4; right / miscellaneous practices 3; three minds / shinjin 3</td><td>entrustment / verification / selection conclusion 8; three minds / shinjin 5; right / miscellaneous practices 4; Primal Vow nembutsu 2; sacred path / Pure Land paths 2</td><td>11 chunks, J=0.297</td><td>Individual ranks change, but selection argument, entrustment / verification, and right / miscellaneous practices remain.</td></tr>
+<tr><td>Shinran</td><td>Shin fascicle 13; Keshindo fascicle 8; True Buddha Land fascicle 2; Realization fascicle 1</td><td>Keshindo fascicle 13; Shin fascicle 7; True Buddha Land fascicle 3; Realization fascicle 1</td><td>11 chunks, J=0.297</td><td>Ranks change, but concentration in the Shin and Keshindo fascicles remains.</td></tr></tbody></table></div>
+<p>The top sets do not fully match, which is expected because one ranking includes 2D PCA isolation and the other uses only the original embedding space. Even so, the broad reading remains: Honen keeps selection-argument candidates, while Shinran remains centered in the Shin and Keshindo fascicles.</p>
+<h2 id="section-5"><span class="secno">5</span>Discussion</h2>
+<h3 id="section-5-1"><span class="secno">5.1</span>Scope of Interpretation</h3>
+<p>The following interpretation is restricted to what can be inferred from embedding-space arrangement, high-dimensional cosine similarity, 2D PCA protrusion, dictionary-based word groups, and source markers. The results do not replace historical scholarship. They are a map of candidate regions to be compared with doctrinal, historical, and citation-based research.</p>
+<h3 id="section-5-2"><span class="secno">5.2</span>Honen Constructs the Logic of Choosing Nembutsu</h3>
+<p>In this analysis, Honen&#x27;s distinctive region is not primarily a difference in the meaning of nembutsu itself. It is the density of a classification and selection argument: why nembutsu, rather than other practices, is to be selected. This fits the form of <em>Senchakushu</em> as a work that cites sutras and Shandao in order to position vocal nembutsu as the practice for birth.</p>
+<h3 id="section-5-3"><span class="secno">5.3</span>Shinran Expands Toward a Source-Based Doctrinal Architecture</h3>
+<p>Shinran keeps a region close to Honen, but spreads toward Daochuo, Genshin, Tanluan, Vasubandhu, and Shandao. Especially in the Shin and Keshindo fascicles, Honen proximity, Shinran-side protrusion candidates, and patriarchal proximity coexist. This suggests that Shinran does not merely repeat Honen, but re-places the nembutsu field within a larger architecture of Primal Vow, shinjin, transfer, Name, true Buddha land, transformed land, expedient means, sin and salvation, and critique of external teachings.</p>
+<h3 id="section-5-4"><span class="secno">5.4</span>Significance of the Three-Layer Analysis</h3>
+<p>The semantic layer alone mixes several things: quotation, shared topic, vocabulary, and authorial exposition. A chunk near Tanluan may contain a Tanluan quotation, or Shinran&#x27;s own exposition may develop a Tanluan-like theme. The current pipeline cannot separate those cases. Keeping the semantic layer, lexical-thematic layer, and source-marker layer distinct helps avoid reading embedding proximity directly as influence or doctrinal identity.</p>
+<p>Prior studies have addressed exclusive nembutsu, selected Primal Vow, practice and shinjin, Primal Vow transfer, true / provisional sorting, and patriarchal citation. This paper does not verify those interpretations directly. It offers a computational map of where those questions appear in the full-text distribution.</p>
+<h2 id="section-6"><span class="secno">6</span>Limitations</h2>
+<ol>
+<li>The two PCA axes explain only about 11.6 percent of the variance, so map distances are not identical to high-dimensional proximity.</li>
+<li>PCA is only one projection method. UMAP, t-SNE, and MDS have not yet been compared.</li>
+<li>Fixed 700-token chunks with 100-token overlap do not match fascicle, chapter, paragraph, or quotation boundaries.</li>
+<li>Fascicle and chapter labels are approximate labels based on SAT line ranges.</li>
+<li>The lexical-thematic layer is dictionary-based and does not distinguish negation, speaker, context, or meaning.</li>
+<li>The source-marker layer is not quotation detection. It does not separate quoted source standpoint from authorial standpoint. Comparison with quotation studies and old manuscript sutra research, including Fujiwara [<a href="#ref-fujiwara2020">11</a>], remains necessary.</li>
+<li>The interpretation is exploratory and has not been fully checked against existing scholarship for each candidate passage.</li>
+<li>Manuscript variants and old manuscript traditions have not been incorporated into the analysis.</li>
+</ol>
+<h2 id="section-7"><span class="secno">7</span>Conclusion</h2>
+<p>This paper mapped Honen&#x27;s <em>Senchakushu</em>, Shinran&#x27;s <em>Kyogyoshinsho</em>, and Pure Land patriarchal anchors using SAT Chinese text, Unicode-safe chunks, and <code>text-embedding-3-large</code>. Honen and Shinran strongly overlap in semantic space. The main question is what moves away from that shared core.</p>
+<p>Honen-side divergence appears as an argument that selects nembutsu from among practices: right and miscellaneous practices, selection and rejection, Primal Vow, and entrustment or verification. Shinran-side divergence appears in the Shin fascicle&#x27;s sin / salvation problem and the Keshindo fascicle&#x27;s expedient means, true / provisional sorting, protective deities and cosmic order, and critique of external teachings. Capped-20 subsampling reduces the simple chunk-count effect, but the broad pattern remains.</p>
+<p>Within this analysis, the difference between Honen and Shinran appears less as a difference in the meaning of nembutsu itself than as a difference in how the same nembutsu field is developed into forms of argument and source-based doctrinal architecture. This is not a replacement for existing research. It is a set of candidate regions to be tested through historical, doctrinal, and citation-based comparison.</p>
+<h2 id="license">License</h2>
+<p>The text and figures of this paper are released under Creative Commons Attribution 4.0 International (CC BY 4.0), <a href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a>. The accompanying analysis code is licensed under the MIT License, as stated in <code>LICENSE-CODE</code> in the repository. Source texts obtained from SAT and other providers are not redistributed in the paper or public data and remain subject to each provider&#x27;s terms of use.</p>
+<section id="references" class="references"><h2>References</h2><ol class="ref-list">
+<li id="ref-ueyama2026three-layer-map" value="1">Daishin Ueyama, &quot;Exploratory Mapping of Buddhist Texts with a Three-Layer Map of Meaning, Style, and Source Markers: A Preliminary Analysis of Sectarian Reference Groups, Two Chinese Translations of the Amitabha Sutra, and Shinran Texts,&quot; 2026. <a href="https://dueyama.github.io/buddhist-text-embedding-map/paper/">Previous paper HTML</a>. Accessed June 5, 2026.</li>
+<li id="ref-sat" value="2">SAT Taisho Shinshu Daizokyo Text Database. <a href="https://21dzk.l.u-tokyo.ac.jp/SAT/">https://21dzk.l.u-tokyo.ac.jp/SAT/</a>. Accessed June 5, 2026.</li>
+<li id="ref-moriwaki1953" value="3">Ikku Moriwaki, &quot;Senchakushu to Kyogyoshinsho ni kansuru ichi kosatsu,&quot;<em>Ryukoku Ronsou</em> 1, 48--72, 1953. INBUDS ID: IB00020630A.</li>
+<li id="ref-inaba1972" value="4">Shuken Inaba, &quot;&#x27;Kyogyoshinsho&#x27; to &#x27;Senchakushu&#x27;,&quot;<em>Shinran Kyogaku</em> 21, 33--50, 1972.</li>
+<li id="ref-umehara1974" value="5">Ryusho Umehara, &quot;Senchakushu to Kyogyoshinsho,&quot; in <em>Nihon Bunka to Jodokyo Ronko</em>, 362--371, 1974. INBUDS ID: IB00046839A.</li>
+<li id="ref-asai2004" value="6">Narumi Asai, &quot;&#x27;Senchakushu&#x27; to &#x27;Kyogyoshinsho&#x27;: Keihonteki mondai no keisho to tenkai,&quot;<em>Gyoshin Gakuho</em> 18, 2004.</li>
+<li id="ref-nezu2024" value="7">Shigeru Nezu, <em>Nihon Bukkyo o kaeta Shinran no dokujisei: &#x27;Kyogyoshinsho&#x27; to &#x27;Senchakushu&#x27; no hikaku kara miete kita, nembutsu no shinka</em>, Hozokan, 2024.</li>
+<li id="ref-jodoshuzensho-senchaku" value="8">Jodoshuzensho Dictionary, &quot;Senchaku Hongan Nembutsu Shu.&quot; <a href="https://jodoshuzensho.jp/daijiten/index.php/%E9%81%B8%E6%8A%9E%E6%9C%AC%E9%A1%98%E5%BF%B5%E4%BB%8F%E9%9B%86">jodoshuzensho.jp</a>. Accessed June 5, 2026.</li>
+<li id="ref-jodoshuzensho-gotoroku" value="9">Jodoshuzensho Dictionary, &quot;Kurodani Shonin Gotouroku.&quot; <a href="https://jodoshuzensho.jp/daijiten/index.php/%E9%BB%92%E8%B0%B7%E4%B8%8A%E4%BA%BA%E8%AA%9E%E7%81%AF%E9%8C%B2">jodoshuzensho.jp</a>. Accessed June 5, 2026.</li>
+<li id="ref-jodoshu-senchaku" value="10">Jodoshu official site, &quot;Honen Shonin no goshogai to Jodoshu no oshie: Senchakushu.&quot; <a href="https://jodo.or.jp/newspaper/special/6226/">jodo.or.jp</a>. Accessed June 5, 2026.</li>
+<li id="ref-fujiwara2020" value="11">Satoshi Fujiwara, &quot;A Reexamination of Quotations in Kyogyoshinsho Based on Old Manuscript Sutras,&quot; <em>Kindai Gendai &#x27;Kyogyoshinsho&#x27; Kenkyu Kensho Project Research Bulletin</em> 3, 63--107, 2020.</li>
+<li id="ref-openai-embeddings" value="12">OpenAI, Embeddings documentation. <a href="https://platform.openai.com/docs/guides/embeddings">platform.openai.com</a>. Accessed June 5, 2026.</li>
+<li id="ref-tiktoken" value="13">OpenAI, <code>tiktoken</code>. <a href="https://github.com/openai/tiktoken">GitHub</a>. Accessed June 5, 2026.</li>
+</ol></section>
 </main>
-<footer><div class="page">English access version. For citation, check the Japanese v3 PDF.</div></footer>
+<footer><div class="page">English HTML is generated from the English TeX, which is structurally aligned to the Japanese TeX. For citation and nuance, use the Japanese edition as the primary text.</div></footer>
 
 </body>
 </html>

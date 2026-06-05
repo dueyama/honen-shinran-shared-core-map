@@ -61,7 +61,7 @@
 ## 再実行
 
 ```bash
-/Users/daishin/.pyenv/shims/python scripts/prepare_sat_kanbun_texts.py
+python3 scripts/prepare_sat_kanbun_texts.py
 ```
 
 このコマンドは API を呼ばない。

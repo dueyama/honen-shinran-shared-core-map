@@ -5,23 +5,38 @@ repository.
 
 Japanese paper PDF
   Path: docs/paper/honen-shinran-shared-core-paper.pdf
-  Public URL: https://dueyama.github.io/Okyou2/paper/honen-shinran-shared-core-paper.pdf
-  SHA-256: c177fc6c02a5eabbc112999d2fd495ec921dbbb705abaa50dfe2287c87d22098
+  Public URL: https://dueyama.github.io/honen-shinran-shared-core-map/paper/honen-shinran-shared-core-paper.pdf
+  SHA-256: 886dd089af33a17f4a983795d6d1d38730f309fc5c1ebc49e36a1dbc6b7c1b34
   Verified against: pre-release working tree, before public tag
   Date recorded: 2026-06-05 JST
 
 Japanese paper TeX
   Path: docs/paper/honen-shinran-shared-core-paper.tex
-  Public URL: https://dueyama.github.io/Okyou2/paper/honen-shinran-shared-core-paper.tex
-  SHA-256: 21e5d4af9b0f44912ef8d0d639841f672ba2f36076ac5ded0ebec236db2c7d81
+  Public URL: https://dueyama.github.io/honen-shinran-shared-core-map/paper/honen-shinran-shared-core-paper.tex
+  SHA-256: ed5880e1d25a8c4c87bca53203cbed3000bb856484e062078acd06a69ceb1e6a
+  Verified against: pre-release working tree, before public tag
+  Date recorded: 2026-06-05 JST
+
+English paper PDF
+  Path: docs/paper/honen-shinran-shared-core-paper-en.pdf
+  Public URL: https://dueyama.github.io/honen-shinran-shared-core-map/paper/honen-shinran-shared-core-paper-en.pdf
+  SHA-256: 28291b93d8496096d67cce85f1dea2b3c53db4b314c93ea50ccdc1ee8d8831a8
+  Verified against: pre-release working tree, before public tag
+  Date recorded: 2026-06-05 JST
+
+English paper TeX
+  Path: docs/paper/honen-shinran-shared-core-paper-en.tex
+  Public URL: https://dueyama.github.io/honen-shinran-shared-core-map/paper/honen-shinran-shared-core-paper-en.tex
+  SHA-256: 02ecbc972ab00ad7daf8b7e1aab7ff3bfbfd227b15f736c2607dab5757044c9f
   Verified against: pre-release working tree, before public tag
   Date recorded: 2026-06-05 JST
 
 Purpose
   The Japanese paper PDF is treated as the fixed public Japanese edition. The
-  TeX file is recorded as the corresponding source file for that edition. At
-  public release time, verify that the files stored at the release tag match
-  the hashes above.
+  TeX file is recorded as the corresponding source file for that edition. The
+  English PDF and HTML are generated from the English TeX, which is generated
+  against the Japanese TeX structural source. At public release time, verify
+  that the files stored at the release tag match the hashes above.
 
   Later corrections and validation notes should be published as separate
   supplements or errata, rather than silent rewrites of these fixed public

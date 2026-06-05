@@ -411,6 +411,9 @@ def md_table(rows: list[dict[str, Any]], fields: list[tuple[str, str]], limit: i
 
 
 def render_doc(summary: dict[str, Any]) -> str:
+    figure_path = str(summary["figure"])
+    if figure_path.startswith("docs/"):
+        figure_path = figure_path.removeprefix("docs/")
     lines: list[str] = [
         "# Shinran Three-Layer Sequence 2026-06-04",
         "",
@@ -425,7 +428,7 @@ def render_doc(summary: dict[str, Any]) -> str:
         "",
         "## 出力図",
         "",
-        f"![親鸞三層ヒートマップ](/Users/daishin/Documents/Codex/Okyou2/{summary['figure']})",
+        f"![親鸞三層ヒートマップ]({figure_path})",
         "",
         "## 意味層: 巻別トップ近傍",
         "",
