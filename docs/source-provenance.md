@@ -893,3 +893,120 @@ Verification:
 - Rebuilt `okyou2-honen-shinran-paper-v0.tex` with `uplatex` twice and
   `dvipdfmx` once.
 - Searched repository docs/scripts for the old manuscript filename.
+
+## 2026-06-05 Peer-Review Response V1
+
+External input:
+
+- `/Users/daishin/Downloads/okyou2-honen-shinran-peer-review-report.md`
+
+Scope:
+
+- Created the next manuscript snapshot:
+  - `docs/paper/okyou2-honen-shinran-paper-v1.tex`
+  - `docs/paper/okyou2-honen-shinran-paper-v1.pdf`
+- Updated `scripts/analyze_high_dim_isolation.py`.
+- Regenerated `docs/high-dim-isolation-2026-06-04.md`.
+- Regenerated the local text-free high-dimensional isolation CSV under
+  `data/outputs/`.
+
+Source and API boundary:
+
+- No OpenAI API calls were made for this revision.
+- No new SAT, J-SOKEN, Jodoshuzensho, or other source text fetches were made.
+- Existing SAT safe chunk metadata, existing embedding cache, existing figure
+  assets, and existing text-free analysis outputs were reused.
+- The manuscript and committed docs do not include raw SAT text, processed
+  source text, chunk previews, or embedding vectors.
+
+Peer-review responses incorporated:
+
+- Added three representative case-study candidates without reproducing raw
+  source text. Each row uses SAT line range, chunk number, nearest-neighbor
+  relation, and word-group labels only.
+- Added supplementary-style dictionary tables for the `文体語彙層` and
+  `典拠マーカー層`.
+- Clarified that the current `文体語彙層` is a dictionary-based doctrinal
+  vocabulary proxy, not strict stylometry.
+- Clarified that the `典拠マーカー層` is a marker count for locating
+  inspection targets, not citation detection.
+- Expanded caveats for anchor representativeness, especially small or excerpted
+  anchor groups.
+- Added a note that the upper-20 subsampling cap is a practical sensitivity
+  setting, not a theoretically privileged threshold.
+- Replaced overstrong independence wording with `親鸞側突出候補`.
+- Added a high-dimensional isolation robustness check using `1 - s_i` over all
+  eligible Honen/Shinran chunks.
+
+High-dimensional isolation check:
+
+- Honen protrusion top 24 vs high-dimensional isolation top 24:
+  overlap 11 chunks, Jaccard `0.297`.
+- Shinran protrusion top 24 vs high-dimensional isolation top 24:
+  overlap 11 chunks, Jaccard `0.297`.
+- Interpretation: individual chunk rankings are exploratory and method
+  dependent, but the broad Honen selection-logic and Shinran Shin/Keshindo
+  concentration remains visible without the 2D PCA distance term.
+
+Verification:
+
+- `/Users/daishin/.pyenv/shims/python -m py_compile scripts/analyze_high_dim_isolation.py`
+- `/Users/daishin/.pyenv/shims/python scripts/analyze_high_dim_isolation.py`
+- `uplatex -interaction=nonstopmode okyou2-honen-shinran-paper-v1.tex`
+- `dvipdfmx okyou2-honen-shinran-paper-v1.dvi`
+- Rendered selected V1 PDF pages to PNG with PyMuPDF and visually checked the
+  title/abstract, dictionary tables, shared-core/bar figure, three-layer
+  figures, representative examples, robustness table, discussion, and
+  references.
+- Searched V1 TeX, high-dimensional isolation markdown, and CSV output for
+  `U+FFFD`; no matches.
+- The V1 TeX log had no overfull boxes, unresolved references, fatal errors, or
+  LaTeX errors. Remaining underfull warnings are from wrapped SAT line ranges
+  in the representative-example table.
+
+## 2026-06-05 Peer-Review Response V2
+
+External input:
+
+- `/Users/daishin/Downloads/okyou2-honen-shinran-peer-review-report-v1.md`
+
+Scope:
+
+- Created the next manuscript snapshot:
+  - `docs/paper/okyou2-honen-shinran-paper-v2.tex`
+  - `docs/paper/okyou2-honen-shinran-paper-v2.pdf`
+
+Source and API boundary:
+
+- No OpenAI API calls were made for this revision.
+- No new SAT, J-SOKEN, Jodoshuzensho, or other source text fetches were made.
+- Existing paper text, existing analysis outputs, and existing figure assets
+  were reused.
+- The manuscript does not include raw SAT text, processed source text, chunk
+  previews, or embedding vectors.
+
+Peer-review responses incorporated:
+
+- Removed the displayed manuscript version marker from the date.
+- Clarified the first definition of `はみ出し領域` as a relative protrusion
+  region.
+- Reconfirmed that `文体語彙層` is dictionary-based lexical/topic density and
+  not strict stylometry.
+- Added a selection rationale for the three representative chunks.
+- Normalized Table 13 SAT range notation to `T2608, 83...` and `T2646, 83...`
+  style.
+- Added a concluding paragraph returning the result to prior
+  `選択集`/`教行信証` comparison research.
+
+Verification:
+
+- `uplatex -interaction=nonstopmode okyou2-honen-shinran-paper-v2.tex` was run
+  twice.
+- `dvipdfmx okyou2-honen-shinran-paper-v2.dvi` regenerated the PDF.
+- Rendered selected V2 PDF pages to PNG with PyMuPDF and visually checked the
+  title/abstract, method caveat, three-layer figure caption, representative
+  examples, robustness table, limits/conclusion, and references.
+- Searched the V2 TeX log for overfull boxes, unresolved references, fatal
+  errors, and LaTeX errors; no matches.
+- Searched the V2 TeX for stale v1/date markers, old SAT table notation,
+  `親鸞独自候補`, and `U+FFFD`; no matches.

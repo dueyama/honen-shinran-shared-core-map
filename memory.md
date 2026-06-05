@@ -383,3 +383,93 @@
   - Rebuilt the renamed TeX file with `uplatex` twice and `dvipdfmx` once.
   - Searched repository docs/scripts for the old draft filename.
 - Commit: pending.
+
+## 2026-06-05 JST: Peer-Review Response V1
+
+- Summary: Incorporated the external peer-review memo
+  `/Users/daishin/Downloads/okyou2-honen-shinran-peer-review-report.md`
+  into a new V1 manuscript snapshot.
+- Files:
+  - Created `docs/paper/okyou2-honen-shinran-paper-v1.tex`.
+  - Regenerated `docs/paper/okyou2-honen-shinran-paper-v1.pdf`.
+  - Rebuilt `scripts/analyze_high_dim_isolation.py` so the high-dimensional
+    isolation check ranks all eligible Honen/Shinran chunks, not only the
+    protrusion table rows.
+  - Regenerated `docs/high-dim-isolation-2026-06-04.md` and the local
+    text-free CSV output.
+- Text changes:
+  - Added representative close-reading candidates without quoting raw text:
+    Honen chunk 7, Shinran chunk 84, and Shinran chunk 182.
+  - Added dictionary summary tables for the `文体語彙層` and
+    `典拠マーカー層`.
+  - Clarified that `文体語彙層` is a dictionary-based doctrinal word-group
+    proxy, and that `典拠マーカー層` is not quote detection.
+  - Added caveats for anchor imbalance, the arbitrary but practical upper-20
+    subsampling cap, and the exploratory meaning of protrusion rankings.
+  - Replaced overstrong wording such as `親鸞独自候補` with
+    `親鸞側突出候補`.
+  - Added a robustness table comparing protrusion-score top 24 chunks with
+    high-dimensional isolation top 24 chunks. Both Honen and Shinran have
+    overlap 11/24 and Jaccard `0.297`, so individual ranks are unstable while
+    the broad Honen selection-logic and Shinran Shin/Keshindo readings remain.
+- Source and API boundary:
+  - No OpenAI API calls.
+  - No new SAT or other source-text fetches.
+  - Existing SAT safe chunks, embedding cache, and text-free analysis outputs
+    were reused.
+  - No raw/processed text or embedding vectors were added to the manuscript.
+- Verification:
+  - `/Users/daishin/.pyenv/shims/python -m py_compile scripts/analyze_high_dim_isolation.py`
+  - `/Users/daishin/.pyenv/shims/python scripts/analyze_high_dim_isolation.py`
+  - `uplatex -interaction=nonstopmode okyou2-honen-shinran-paper-v1.tex`
+    and `dvipdfmx okyou2-honen-shinran-paper-v1.dvi`
+  - Rendered selected PDF pages to PNG via PyMuPDF and visually checked the
+    title/abstract, dictionary tables, shared-core/bar figure, three-layer
+    figures, representative examples, robustness table, discussion, and
+    references.
+  - Searched generated V1 artifacts for `U+FFFD`; no matches.
+  - TeX log had no overfull boxes, unresolved references, fatal errors, or
+    LaTeX errors. Only harmless underfull warnings remained for wrapped SAT
+    line ranges in the representative-example table.
+- Commit: pending.
+
+## 2026-06-05 JST: Peer-Review Response V2
+
+- Summary: Incorporated the v1 peer-review memo
+  `/Users/daishin/Downloads/okyou2-honen-shinran-peer-review-report-v1.md`
+  into a new V2 manuscript snapshot.
+- Files:
+  - Created `docs/paper/okyou2-honen-shinran-paper-v2.tex`.
+  - Regenerated `docs/paper/okyou2-honen-shinran-paper-v2.pdf`.
+- Text changes:
+  - Removed the version marker from the displayed paper date.
+  - Clarified the first definition of `はみ出し領域` as a relative protrusion
+    region.
+  - Added an abstract-level caveat that `文体語彙層` is dictionary-based
+    lexical/topic density, not strict stylometry.
+  - Strengthened the method explanation of `文体語彙層` as a proxy inherited
+    from the predecessor naming.
+  - Added a short selection rationale for the three representative chunks:
+    Honen selection argument, Shinran Shin-volume sin/salvation, and Shinran
+    Keshindo external/provisional sorting.
+  - Normalized the Table 13 SAT ranges to `T2608, 83...` / `T2646, 83...`
+    style.
+  - Added a conclusion paragraph that returns the result to prior
+    `選択集`/`教行信証` comparison research and frames the output as candidate
+    regions rather than replacement conclusions.
+- Source and API boundary:
+  - No OpenAI API calls.
+  - No new source-text fetches.
+  - No raw/processed text or embedding vectors were added.
+- Verification:
+  - `uplatex -interaction=nonstopmode okyou2-honen-shinran-paper-v2.tex`
+    was run twice.
+  - `dvipdfmx okyou2-honen-shinran-paper-v2.dvi` regenerated the PDF.
+  - Rendered selected V2 PDF pages to PNG via PyMuPDF and visually checked the
+    title/abstract, method caveat, three-layer figure caption, representative
+    examples, robustness table, limits/conclusion, and references.
+  - Searched the V2 TeX log for overfull boxes, unresolved references, fatal
+    errors, and LaTeX errors; no matches.
+  - Searched the V2 TeX for stale v1/date markers, old SAT table notation,
+    `親鸞独自候補`, and `U+FFFD`; no matches.
+- Commit: pending.
