@@ -201,7 +201,7 @@ AIは次の点を守って解釈する。
 
 ```text
 このリポジトリは、法然『選択本願念仏集』と親鸞『教行信証』を、
-意味埋め込み、文体語彙、典拠マーカーの三層で比較する公開準備リポジトリです。
+意味埋め込み、文体語彙、典拠マーカーの三層で比較する公開リポジトリです。
 
 まず README.md と AI_RESEARCHER_GUIDE.md を読み、その後
 docs/paper/honen-shinran-shared-core-paper.tex、

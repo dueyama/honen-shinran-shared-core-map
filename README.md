@@ -1,6 +1,6 @@
 # 法然・親鸞の共有核とはみ出し領域
 
-三層探索地図による『選択集』・『教行信証』比較の論文・図表・再現用コードをまとめた公開準備リポジトリです。意味埋め込み、語群カウント、典拠マーカーを重ね、法然『選択本願念仏集』と親鸞『教行信証』が共有する念仏圏と、そこからのはみ出し領域を探索的に可視化します。
+三層探索地図による『選択集』・『教行信証』比較の論文・図表・再現用コードをまとめた公開リポジトリです。意味埋め込み、語群カウント、典拠マーカーを重ね、法然『選択本願念仏集』と親鸞『教行信証』が共有する念仏圏と、そこからのはみ出し領域を探索的に可視化します。
 
 This repository contains the paper, figures, publication pages, and reproducibility scripts for an exploratory three-layer comparison of Honen's *Senchaku Hongan Nembutsu Shu* and Shinran's *Ken Jodo Shinjitsu Kyo Gyo Sho Monrui* (*Kyogyoshinsho*). It uses semantic embeddings, lexical-thematic counts, and source-marker features to examine their shared core and divergence zones.
 
@@ -124,7 +124,7 @@ See `docs/PUBLICATION.md` for the publication checklist.
 
 Public repository: `https://github.com/dueyama/honen-shinran-shared-core-map`
 
-Planned public site: `https://dueyama.github.io/honen-shinran-shared-core-map/`
+Public site: `https://dueyama.github.io/honen-shinran-shared-core-map/`
 
 Use GitHub Pages with:
 
