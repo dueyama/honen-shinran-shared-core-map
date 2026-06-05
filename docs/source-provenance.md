@@ -1010,3 +1010,48 @@ Verification:
   errors, and LaTeX errors; no matches.
 - Searched the V2 TeX for stale v1/date markers, old SAT table notation,
   `親鸞独自候補`, and `U+FFFD`; no matches.
+
+## 2026-06-05 Final Public Check V3
+
+External input:
+
+- `/tmp/codex-remote-attachments/019e8ca1-3204-7170-9150-32a368a08ba1/678697D5-730F-4B48-B178-D35286DA47DA/1-okyou2-honen-shinran-final-public-check.md`
+
+Scope:
+
+- Created a publication-polish manuscript snapshot:
+  - `docs/paper/okyou2-honen-shinran-paper-v3.tex`
+  - `docs/paper/okyou2-honen-shinran-paper-v3.pdf`
+- Added English-version terminology notes:
+  - `docs/paper/okyou2-honen-shinran-english-terminology.md`
+
+Source and API boundary:
+
+- No OpenAI API calls were made for this revision.
+- No new SAT, J-SOKEN, Jodoshuzensho, or other source text fetches were made.
+- Existing paper text, existing analysis outputs, and existing figure assets
+  were reused.
+- The new manuscript and terminology memo do not include raw SAT text,
+  processed source text, chunk previews, or embedding vectors.
+
+Public-version responses incorporated:
+
+- Changed Table 12 column `zone` to `内容ゾーン`.
+- Normalized Table 11 and Table 12 SAT line references to
+  `T2608, 83...` / `T2646, 83...` style.
+- Added `（2026年6月5日閲覧）` to URL-based bibliography entries.
+- Fixed English-version terminology before translation:
+  `shared core`, `divergence zones`, `relative protrusion zones`,
+  `lexical-thematic layer`, `source-marker layer`, and related terms.
+
+Verification:
+
+- `uplatex -interaction=nonstopmode okyou2-honen-shinran-paper-v3.tex` was run
+  twice.
+- `dvipdfmx okyou2-honen-shinran-paper-v3.dvi` regenerated the PDF.
+- Rendered selected V3 PDF pages to PNG with PyMuPDF and visually checked
+  Table 11, Table 12, and references.
+- Searched the V3 TeX and terminology memo for stale `zone`, old SAT table
+  notation, `U+FFFD`, and `親鸞独自候補`; no matches.
+- Searched the V3 TeX log for overfull boxes, unresolved references, fatal
+  errors, and LaTeX errors; no matches.
