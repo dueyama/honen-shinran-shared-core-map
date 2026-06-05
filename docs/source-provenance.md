@@ -1102,3 +1102,49 @@ Verification:
 - Playwright screenshot verification was attempted, but the local Node
   environment did not have the `playwright` package installed.
 - Predecessor `/Users/daishin/Documents/Codex/Okyou` remained unchanged.
+
+## 2026-06-05 Public Filename and Checksum Final Check
+
+Predecessor pattern checked:
+
+- Read-only predecessor `Okyou` uses `docs/checksums.txt` to record SHA-256
+  hashes for fixed public artifacts.
+- The predecessor README and Pages top pages link to `checksums.txt` and
+  describe later corrections as separate supplements or errata, not silent
+  rewrites of the fixed public PDFs.
+
+Public filename changes:
+
+- Renamed the public Japanese paper files from versioned working names to
+  stable publication names:
+  - `docs/paper/honen-shinran-shared-core-paper.pdf`
+  - `docs/paper/honen-shinran-shared-core-paper.tex`
+- Historical v0/v1/v2 manuscript snapshots remain versioned.
+- Updated public HTML and publication docs to link to the stable publication
+  filename, not the v3 working filename.
+
+SHA-256 checksums:
+
+- Added `docs/checksums.txt`.
+- Recorded fixed-public-artifact hashes:
+  - `c177fc6c02a5eabbc112999d2fd495ec921dbbb705abaa50dfe2287c87d22098`
+    for `docs/paper/honen-shinran-shared-core-paper.pdf`.
+  - `21e5d4af9b0f44912ef8d0d639841f672ba2f36076ac5ded0ebec236db2c7d81`
+    for `docs/paper/honen-shinran-shared-core-paper.tex`.
+
+Verification:
+
+- Built the public TeX filename with `uplatex` twice.
+- Regenerated the public PDF filename with `dvipdfmx`.
+- Ran `shasum -a 256` on the public PDF and TeX.
+- Rendered selected public PDF pages to PNG with PyMuPDF and visually checked
+  title/abstract, method, shared-core/bar figure, representative-section, and
+  references pages.
+- Searched the public TeX log for overfull boxes, unresolved references, fatal
+  errors, and LaTeX errors; no matches. Only existing underfull warnings for
+  wrapped SAT line ranges remained.
+- Regenerated GitHub Pages HTML from `scripts/build_public_pages.py`.
+- Checked generated HTML relative links and page anchors.
+- Checked public files for API keys, local absolute paths, old SAT URL tokens,
+  `U+FFFD`, and stale public links to the v3 PDF name.
+- Predecessor `/Users/daishin/Documents/Codex/Okyou` remained unchanged.

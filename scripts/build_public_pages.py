@@ -15,6 +15,8 @@ AUTHOR_JA = "上山大信"
 AUTHOR_EN = "Daishin Ueyama"
 DATE_JA = "2026年6月5日"
 DATE_EN = "June 5, 2026"
+PUBLIC_PAPER_PDF = "honen-shinran-shared-core-paper.pdf"
+PUBLIC_PAPER_TEX = "honen-shinran-shared-core-paper.tex"
 
 
 STYLE = r"""
@@ -118,7 +120,7 @@ def nav(lang: str, current: str) -> str:
     if lang == "ja":
         top = "../" if current == "paper" else "./"
         paper_href = "./" if current == "paper" else "paper/"
-        pdf_href = "okyou2-honen-shinran-paper-v3.pdf" if current == "paper" else "paper/okyou2-honen-shinran-paper-v3.pdf"
+        pdf_href = PUBLIC_PAPER_PDF if current == "paper" else f"paper/{PUBLIC_PAPER_PDF}"
         source_href = "../source-provenance.html" if current == "paper" else "source-provenance.html"
         errata_href = "../errata.html" if current == "paper" else "errata.html"
         ja_href = {
@@ -145,7 +147,7 @@ def nav(lang: str, current: str) -> str:
 <nav class="site-nav" aria-label="Site navigation">
   <a class="nav-link" href="{top}"{aria_page(current == 'home')}>Top</a>
   <a class="nav-link" href="{'../paper/en/' if current == 'home' else './'}"{aria_page(current == 'paper')}>Paper HTML</a>
-  <a class="nav-link" href="{'../paper/okyou2-honen-shinran-paper-v3.pdf' if current == 'home' else '../okyou2-honen-shinran-paper-v3.pdf'}">PDF JP</a>
+  <a class="nav-link" href="{'../paper/' + PUBLIC_PAPER_PDF if current == 'home' else '../' + PUBLIC_PAPER_PDF}">PDF JP</a>
   <a class="nav-link" href="{'../paper/okyou2-honen-shinran-english-terminology.md' if current == 'home' else '../okyou2-honen-shinran-english-terminology.md'}">Terminology</a>
   <a class="nav-link" href="{'../errata.html' if current == 'home' else '../../errata.html'}">Errata</a>
   <span class="lang-switch" aria-label="Language">
@@ -181,7 +183,7 @@ def home_ja() -> str:
     <article class="card">
       <h2>PDF</h2>
       <p>ページ固定の引用・印刷用PDFです。</p>
-      <p><a href="paper/okyou2-honen-shinran-paper-v3.pdf">PDFを開く</a></p>
+      <p><a href="paper/{PUBLIC_PAPER_PDF}">PDFを開く</a></p>
     </article>
     <article class="card">
       <h2>English</h2>
@@ -193,6 +195,7 @@ def home_ja() -> str:
     <h2>公開境界</h2>
     <p>この公開版は本文そのもの、processed text、chunk preview、embedding cache、embedding vectorを含みません。図表・集計・SAT行範囲・検証メモなど、本文を含まない派生情報のみを公開対象にします。</p>
     <p>リリース後は公開版本文を直接書き換えず、訂正・補足・変更履歴は<a href="errata.html">エラッタ</a>として公開する。</p>
+    <p>固定公開物のSHA-256は <a href="checksums.txt">checksums.txt</a> に記録する。</p>
   </section>
   <section>
     <h2>主要図</h2>
@@ -234,7 +237,7 @@ def home_en() -> str:
     <article class="card">
       <h2>Japanese PDF</h2>
       <p>The Japanese version is the authoritative version for citation.</p>
-      <p><a href="../paper/okyou2-honen-shinran-paper-v3.pdf">Open PDF</a></p>
+      <p><a href="../paper/{PUBLIC_PAPER_PDF}">Open PDF</a></p>
     </article>
     <article class="card">
       <h2>Terminology</h2>
@@ -246,6 +249,7 @@ def home_en() -> str:
     <h2>Publication Boundary</h2>
     <p>This public draft does not redistribute source text, processed text, chunk previews, embedding caches, or embedding vectors. It publishes only derived figures, tables, line ranges, and documentation.</p>
     <p>After release, the public paper is treated as a fixed release. Corrections and additions are published through the <a href="../errata.html">errata</a> page rather than silently rewriting the release text.</p>
+    <p>SHA-256 checksums for fixed public artifacts are recorded in <a href="../checksums.txt">checksums.txt</a>.</p>
   </section>
 </main>
 <footer><div class="page">Okyou2 / GitHub Pages publication draft.</div></footer>
@@ -564,6 +568,8 @@ def source_provenance_html() -> str:
   </ul>
   <h2>リリース後の訂正</h2>
   <p>公開リリース後は、本文・PDF・主要HTMLをその時点の固定版として扱う。誤記、補足、解釈の変更、図表差し替えが必要な場合は、公開版を黙って置き換えず、<a href="errata.html">エラッタ</a>に記録する。</p>
+  <h2>固定公開物</h2>
+  <p>公開用PDFとTeXのSHA-256は <a href="checksums.txt">checksums.txt</a> に記録する。tag/release作成時には、このハッシュとrelease tag上のファイルが一致することを確認する。</p>
 </main>
 <footer><div class="page">Okyou2 provenance summary.</div></footer>
 """
@@ -633,12 +639,13 @@ def publication_md() -> str:
 - `docs/en/index.html`: English top
 - `docs/paper/index.html`: 日本語HTML論文
 - `docs/paper/en/index.html`: English HTML access version
-- `docs/paper/okyou2-honen-shinran-paper-v3.pdf`: 日本語PDF
-- `docs/paper/okyou2-honen-shinran-paper-v3.tex`: 日本語TeX
+- `docs/paper/honen-shinran-shared-core-paper.pdf`: 日本語PDF
+- `docs/paper/honen-shinran-shared-core-paper.tex`: 日本語TeX
 - `docs/paper/okyou2-honen-shinran-english-terminology.md`: 英語版訳語メモ
 - `docs/source-provenance.html`: 公開用出典・検証サマリ
 - `docs/errata.html`: リリース後エラッタ
 - `docs/ERRATA.md`: エラッタ記録のMarkdown原本
+- `docs/checksums.txt`: 固定公開物のSHA-256記録
 
 ## GitHub Pages 設定
 
@@ -666,7 +673,7 @@ def publication_md() -> str:
 
 ## 英語版方針
 
-日本語v3 PDFを引用・精読用の正本とし、英語HTMLは access version として提供する。英語版PDF/TeXは次の公開準備段階で作成できる。
+公開用日本語PDFを引用・精読用の正本とし、英語HTMLは access version として提供する。英語版PDF/TeXは次の公開準備段階で作成できる。
 """
 
 

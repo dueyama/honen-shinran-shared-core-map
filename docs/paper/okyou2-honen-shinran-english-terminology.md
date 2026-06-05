@@ -2,7 +2,7 @@
 
 作成日: 2026-06-05
 
-このメモは、`okyou2-honen-shinran-paper-v3.tex` を英語版へ展開する際の訳語を固定するための公開可能な補助メモである。本文、processed text、chunk preview、embedding vector は含めない。
+このメモは、公開用TeX `honen-shinran-shared-core-paper.tex` を英語版へ展開する際の訳語を固定するための公開可能な補助メモである。本文、processed text、chunk preview、embedding vector は含めない。
 
 ## 推奨タイトル
 

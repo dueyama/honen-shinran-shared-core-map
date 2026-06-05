@@ -1,0 +1,28 @@
+# Publication checksums
+
+This file records SHA-256 checksums for fixed public artifacts in this
+repository.
+
+Japanese paper PDF
+  Path: docs/paper/honen-shinran-shared-core-paper.pdf
+  Public URL: https://dueyama.github.io/Okyou2/paper/honen-shinran-shared-core-paper.pdf
+  SHA-256: c177fc6c02a5eabbc112999d2fd495ec921dbbb705abaa50dfe2287c87d22098
+  Verified against: pre-release working tree, before public tag
+  Date recorded: 2026-06-05 JST
+
+Japanese paper TeX
+  Path: docs/paper/honen-shinran-shared-core-paper.tex
+  Public URL: https://dueyama.github.io/Okyou2/paper/honen-shinran-shared-core-paper.tex
+  SHA-256: 21e5d4af9b0f44912ef8d0d639841f672ba2f36076ac5ded0ebec236db2c7d81
+  Verified against: pre-release working tree, before public tag
+  Date recorded: 2026-06-05 JST
+
+Purpose
+  The Japanese paper PDF is treated as the fixed public Japanese edition. The
+  TeX file is recorded as the corresponding source file for that edition. At
+  public release time, verify that the files stored at the release tag match
+  the hashes above.
+
+  Later corrections and validation notes should be published as separate
+  supplements or errata, rather than silent rewrites of these fixed public
+  artifacts.

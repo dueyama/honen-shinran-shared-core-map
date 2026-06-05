@@ -20,11 +20,24 @@ GitHub Pages では `docs/` を公開ルートとして使います。repository
 - `docs/en/index.html`: English top。
 - `docs/paper/index.html`: 日本語HTML論文。
 - `docs/paper/en/index.html`: English HTML access version。
-- `docs/paper/okyou2-honen-shinran-paper-v3.pdf`: 日本語PDF。
+- `docs/paper/honen-shinran-shared-core-paper.pdf`: 日本語PDF。
+- `docs/paper/honen-shinran-shared-core-paper.tex`: 日本語TeX。
 - `docs/source-provenance.html`: 公開用の出典・検証記録。
 - `docs/errata.html` / `docs/ERRATA.md`: リリース後エラッタ。
+- `docs/checksums.txt`: 固定公開物のSHA-256記録。
 
 リリース後の公開版PDF/HTMLは固定版として扱います。誤記、リンク切れ、図表ラベル、数値、補足説明、解釈変更が見つかった場合は、公開済み本文を黙って差し替えず、エラッタとして記録します。本文更新が必要な場合は、新しい版として明示し、旧版との差分と理由をエラッタに残します。
+
+## Publication Integrity / 公開版の固定
+
+公開用PDFとTeXは、版番号を含まない安定ファイル名で置きます。SHA-256ハッシュは `docs/checksums.txt` に記録します。
+
+```text
+c177fc6c02a5eabbc112999d2fd495ec921dbbb705abaa50dfe2287c87d22098  docs/paper/honen-shinran-shared-core-paper.pdf
+21e5d4af9b0f44912ef8d0d639841f672ba2f36076ac5ded0ebec236db2c7d81  docs/paper/honen-shinran-shared-core-paper.tex
+```
+
+公開tagまたはGitHub Releaseを作成するときは、tag上のファイルがこのハッシュと一致することを確認します。以後の訂正や検証は、公開版を黙って書き換えるのではなく、追補・エラッタとして別に公開します。
 
 ## 最初に読むファイル
 

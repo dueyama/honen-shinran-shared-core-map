@@ -6,12 +6,13 @@
 - `docs/en/index.html`: English top
 - `docs/paper/index.html`: 日本語HTML論文
 - `docs/paper/en/index.html`: English HTML access version
-- `docs/paper/okyou2-honen-shinran-paper-v3.pdf`: 日本語PDF
-- `docs/paper/okyou2-honen-shinran-paper-v3.tex`: 日本語TeX
+- `docs/paper/honen-shinran-shared-core-paper.pdf`: 日本語PDF
+- `docs/paper/honen-shinran-shared-core-paper.tex`: 日本語TeX
 - `docs/paper/okyou2-honen-shinran-english-terminology.md`: 英語版訳語メモ
 - `docs/source-provenance.html`: 公開用出典・検証サマリ
 - `docs/errata.html`: リリース後エラッタ
 - `docs/ERRATA.md`: エラッタ記録のMarkdown原本
+- `docs/checksums.txt`: 固定公開物のSHA-256記録
 
 ## GitHub Pages 設定
 
@@ -39,4 +40,4 @@
 
 ## 英語版方針
 
-日本語v3 PDFを引用・精読用の正本とし、英語HTMLは access version として提供する。英語版PDF/TeXは次の公開準備段階で作成できる。
+公開用日本語PDFを引用・精読用の正本とし、英語HTMLは access version として提供する。英語版PDF/TeXは次の公開準備段階で作成できる。
